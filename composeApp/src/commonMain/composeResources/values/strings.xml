@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">HanSan</string>
+    <string name="tense_present">Present</string>
+    <string name="tense_past">Past</string>
+    <string name="tense_future">Future</string>
+
+    <string name="formality_formal_high">Formal High</string>
+    <string name="formality_formal_low">Formal Low</string>
+    <string name="formality_informal_low">Informal Low</string>
+
+    <string name="type_verb">Verb</string>
+    <string name="type_adjective">Adjective</string>
+    <string name="type_adverb">Adverb</string>
+</resources>

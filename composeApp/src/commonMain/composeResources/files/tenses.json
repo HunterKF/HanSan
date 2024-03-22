@@ -1,0 +1,92 @@
+[
+  {
+    "tense":"present_declarative",
+    "formality": "formal_high",
+    "conjugation": "~ㅂ니다/습니다",
+    "explanation": "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
+    "example_gada": "가다 -> 가 -> 갑니다",
+    "example_boda": "보다 -> 보 -> 봅니다",
+    "example_mokda": "먹다 -> 먹 -> 먹습니다",
+    "example_hada": "하다 -> 하 -> 합니다"
+  },
+  {
+    "tense":"past_declarative",
+    "formality": "formal_high",
+    "conjugation": "었/았/였~습니다",
+    "explanation": "Last vowel 아/오 - 았습니다 \n Last vowel 어 - 었습니다 \n 하다 - 했습니다",
+    "example_gada": "가다 -> 가 -> 갔습니다",
+    "example_boda": "보다 -> 보 -> 봤습니다",
+    "example_mokda": "먹다 -> 먹 -> 먹었습니다",
+    "example_hada": "하다 -> 하 -> 합니다"
+  },
+  {
+    "tense":"future_declarative",
+    "formality": "formal_high",
+    "conjugation": "~ㄹ/을 겁니다",
+    "explanation": "Ends in consonant - 을 겁니다 \n Ends in vowel - ㄹ 겁니다",
+    "example_gada": "가다 -> 가 -> 갈 겁니다",
+    "example_boda": "보다 -> 보 -> 볼 겁니다",
+    "example_mokda": "먹다 -> 먹 -> 먹을 겁니다",
+    "example_hada": "하다 -> 하 -> 할 겁니다"
+  },
+  {
+    "tense":"present_declarative",
+    "formality": "formal_low",
+    "conjugation": "아/어/여~요",
+    "explanation": "Last vowel ㅗ/ㅏ - 아요 \n Last letter NOT ㅗ/ㅏ - 어요 \n For 하다 verbs - 여요",
+    "example_gada": "가다 -> 가 -> 가요",
+    "example_boda": "보다 -> 보 -> 봐요",
+    "example_mokda": "먹다 -> 먹 -> 먹어요",
+    "example_hada": "하다 -> 하 -> 해요"
+  },
+  {
+    "tense":"past_declarative",
+    "formality": "formal_low",
+    "conjugation": "았/었/였~어요",
+    "explanation": "Last vowel ㅗ/ㅏ - 았어요 \n Last letter NOT ㅗ/ㅏ - 었어요 \n For 하다 verbs - 였어요",
+    "example_gada": "가다 -> 가 -> 갔어요",
+    "example_boda": "보다 -> 보 -> 봤어요",
+    "example_mokda": "먹다 -> 먹 -> 먹었어요",
+    "example_hada": "하다 -> 하 -> 했어요"
+  },
+  {
+    "tense":"future_declarative",
+    "formality": "formal_low",
+    "conjugation": "~ㄹ/을 거에요",
+    "explanation": "Ends in consonant - 을 거에요 \n Ends in vowel - ㄹ 거에요",
+    "example_gada": "가다 -> 가 -> 갈 거에요",
+    "example_boda": "보다 -> 보 -> 볼 거에요",
+    "example_mokda": "먹다 -> 먹 -> 먹을 거에요",
+    "example_hada": "하다 -> 하 -> 할 거에요"
+  },
+  {
+    "tense":"present_declarative",
+    "formality": "informal_low",
+    "conjugation": "아/어/여",
+    "explanation": "Last vowel ㅗ/ㅏ - 아 \n Last letter NOT ㅗ/ㅏ - 어 \n For 하다 verbs - 여",
+    "example_gada": "가다 -> 가 -> 가",
+    "example_boda": "보다 -> 보 -> 봐",
+    "example_mokda": "먹다 -> 먹 -> 먹어",
+    "example_hada": "하다 -> 하 -> 해"
+  },
+  {
+    "tense":"past_declarative",
+    "formality": "informal_low",
+    "conjugation": "았/었/였~어",
+    "explanation": "Last vowel ㅗ/ㅏ - 았어 \n Last letter NOT ㅗ/ㅏ - 었어 \n For 하다 verbs - 였어",
+    "example_gada": "가다 -> 가 -> 갔어",
+    "example_boda": "보다 -> 보 -> 봤어",
+    "example_mokda": "먹다 -> 먹 -> 먹었어",
+    "example_hada": "하다 -> 하 -> 했어"
+  },
+  {
+    "tense":"future_declarative",
+    "formality": "informal_low",
+    "conjugation": "~ㄹ/을 거야",
+    "explanation": "Ends in consonant - 을 거야 \n Ends in vowel - ㄹ 거야",
+    "example_gada": "가다 -> 가 -> 갈 거야",
+    "example_boda": "보다 -> 보 -> 볼 거야",
+    "example_mokda": "먹다 -> 먹 -> 먹을 거야",
+    "example_hada": "하다 -> 하 -> 할 거야"
+  }
+]

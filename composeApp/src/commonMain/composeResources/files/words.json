@@ -1,0 +1,49 @@
+[
+  {
+    "dictionary_form": "하다",
+    "dictionary_definition": "to do",
+    "formal_high_present_declarative": "합니다",
+    "formal_high_past_declarative": "했습니다",
+    "formal_high_future_declarative": "할 겁니다",
+
+    "formal_low_present_declarative": "해요",
+    "formal_low_past_declarative": "했어요",
+    "formal_low_future_declarative": "할 거에요",
+
+    "informal_low_present_declarative": "해",
+    "informal_low_past_declarative": "했어",
+    "informal_low_future_declarative": "할 거야"
+  },
+
+  {
+    "dictionary_form": "가다",
+    "dictionary_definition": "to go",
+    "formal_high_present_declarative": "갑니다",
+    "formal_high_past_declarative": "갔습니다",
+    "formal_high_future_declarative": "갈 겁니다",
+
+    "formal_low_present_declarative": "가요",
+    "formal_low_past_declarative": "갔어요",
+    "formal_low_future_declarative": "갈 거에요",
+
+    "informal_low_present_declarative": "가",
+    "informal_low_past_declarative": "갔어",
+    "informal_low_future_declarative": "갈 거야"
+  },
+
+  {
+    "dictionary_form": "먹다",
+    "dictionary_definition": "to eat",
+    "formal_high_present_declarative": "먹습니다",
+    "formal_high_past_declarative": "먹었습니다",
+    "formal_high_future_declarative": "먹을 겁니다",
+
+    "formal_low_present_declarative": "먹어요",
+    "formal_low_past_declarative": "먹었어요",
+    "formal_low_future_declarative": "먹을 거에요",
+
+    "informal_low_present_declarative": "먹어",
+    "informal_low_past_declarative": "먹었어",
+    "informal_low_future_declarative": "먹을 거야"
+  }
+]
