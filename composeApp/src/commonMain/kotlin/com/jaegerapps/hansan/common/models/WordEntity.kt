@@ -7,6 +7,7 @@ import kotlinx.serialization.json.Json
 data class WordEntity(
     val dictionary_form: String,
     val dictionary_definition: String,
+    val type: String,
     val formal_high_present_declarative: String,
     val formal_high_past_declarative: String,
     val formal_high_future_declarative: String,

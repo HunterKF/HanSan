@@ -4,21 +4,23 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
 import com.arkivanov.decompose.router.stack.replaceAll
-import com.arkivanov.essenty.lifecycle.doOnCreate
+import com.arkivanov.decompose.router.stack.replaceCurrent
+import com.jaegerapps.hansan.common.util.Routes
 import com.jaegerapps.hansan.di.AppModule
+import com.jaegerapps.hansan.presentation.learn.presentation.LearnComponent
 import com.jaegerapps.hansan.presentation.loading.presentation.LoadingComponent
 import com.jaegerapps.hansan.presentation.practice.presentation.PracticeComponent
+import com.jaegerapps.hansan.presentation.words.word_list.presentation.WordsComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 
 class RootComponent(
     componentContext: ComponentContext,
-    private val appModule: AppModule
+    private val appModule: AppModule,
 ) : ComponentContext by componentContext {
 
     private val navigation = StackNavigation<Configuration>()
@@ -47,7 +49,7 @@ class RootComponent(
                         tenses = state.value.tenses,
                         words = state.value.words,
                         onNavigate = {
-
+                            onNavigate(it)
                         }
                     )
                 )
@@ -70,11 +72,39 @@ class RootComponent(
                     )
                 )
             }
+
+            Configuration.LearnScreen -> {
+                Child.LearnScreen(
+                    LearnComponent(
+                        componentContext = context,
+                        tenses = state.value.tenses,
+                        onNavigate = {
+                            onNavigate(it)
+                        }
+                    )
+                )
+            }
+            Configuration.WordsScreen -> {
+                Child.WordsScreen(
+                    WordsComponent(
+                        componentContext = context,
+                        words = state.value.words,
+                        onNavigate = {
+                            onNavigate(it)
+                        },
+                        onWordNavigate = {
+
+                        }
+                    )
+                )
+            }
         }
     }
 
     sealed class Child {
         data class PracticeScreen(val component: PracticeComponent) : Child()
+        data class LearnScreen(val component: LearnComponent) : Child()
+        data class WordsScreen(val component: WordsComponent) : Child()
         data class LoadingScreen(val component: LoadingComponent) : Child()
     }
 
@@ -82,8 +112,23 @@ class RootComponent(
     sealed class Configuration {
         @Serializable
         data object PracticeScreen : Configuration()
+
+        @Serializable
+        data object LearnScreen : Configuration()
+        @Serializable
+        data object WordsScreen : Configuration()
+
         @Serializable
         data object LoadingScreen : Configuration()
 
+    }
+
+    private fun onNavigate(route: String) {
+        when (route) {
+            Routes.LEARN -> navigation.replaceCurrent(Configuration.LearnScreen)
+            Routes.PRACTICE -> navigation.replaceAll(Configuration.PracticeScreen)
+            Routes.WORDS -> navigation.replaceCurrent(Configuration.WordsScreen)
+            else -> navigation.replaceAll(Configuration.PracticeScreen)
+        }
     }
 }

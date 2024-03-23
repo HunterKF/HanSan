@@ -3,6 +3,7 @@ package com.jaegerapps.hansan.common.models
 data class WordModel(
     val dictionaryWord: String,
     val definition: String,
+    val type: ModifierType,
     //fh - formal high
     val fhPresentDeclarative: WordTenseModel,
     val fhPastDeclarative: WordTenseModel,

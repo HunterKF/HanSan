@@ -9,11 +9,13 @@ import com.jaegerapps.hansan.common.models.WordModel
 import com.jaegerapps.hansan.common.models.WordTenseModel
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.getTenseFromString
+import com.jaegerapps.hansan.common.models.stringToType
 
 fun WordEntity.toWordModel(): WordModel {
     return WordModel(
         dictionaryWord = dictionary_form,
         definition = dictionary_definition,
+        type = stringToType(type),
         fhPresentDeclarative = WordTenseModel(
             formal_high_present_declarative,
             Tense.PRESENT_DECLARATIVE,

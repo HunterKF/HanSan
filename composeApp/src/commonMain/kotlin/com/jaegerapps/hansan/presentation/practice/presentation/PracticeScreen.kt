@@ -19,7 +19,6 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.components.BottomBarIcon
 import com.jaegerapps.hansan.common.models.formalityToStringResource
-import com.jaegerapps.hansan.common.models.getTenseString
 import com.jaegerapps.hansan.common.models.typeToStringResource
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon.Companion.routeList
 import com.jaegerapps.hansan.common.util.Routes

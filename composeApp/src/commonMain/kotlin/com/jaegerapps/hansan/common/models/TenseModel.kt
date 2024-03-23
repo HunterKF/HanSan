@@ -35,7 +35,7 @@ fun getTenseFromString(value: String): Tense {
     }
 }
 @OptIn(ExperimentalResourceApi::class)
-fun getTenseString(value: Tense): StringResource {
+fun getTenseResString(value: Tense): StringResource {
     return when (value) {
         Tense.PRESENT_DECLARATIVE -> Res.string.tense_present
         Tense.PAST_DECLARATIVE -> Res.string.tense_past

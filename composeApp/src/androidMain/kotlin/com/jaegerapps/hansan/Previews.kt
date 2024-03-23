@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.components.BottomBarIcon
 import com.jaegerapps.hansan.common.models.Formality
+import com.jaegerapps.hansan.common.models.ModifierType
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.WordModel
@@ -34,7 +35,10 @@ import hansan.composeapp.generated.resources.icon_mountain
 import hansan.composeapp.generated.resources.icon_quotes
 import hansan.composeapp.generated.resources.icon_settings
 import com.jaegerapps.hansan.core.presentation.HanSanTheme
+import com.jaegerapps.hansan.presentation.learn.presentation.LearnScreen
+import com.jaegerapps.hansan.presentation.learn.presentation.LearnUiState
 import com.jaegerapps.hansan.presentation.learn.presentation.components.FormSelectorItem
+import com.jaegerapps.hansan.presentation.learn.presentation.components.LearnTense
 import com.jaegerapps.hansan.presentation.practice.domain.models.AnswerResponse
 import com.jaegerapps.hansan.presentation.practice.presentation.PracticeScreen
 import com.jaegerapps.hansan.presentation.practice.presentation.PracticeUiState
@@ -43,6 +47,9 @@ import com.jaegerapps.hansan.presentation.practice.presentation.components.DropD
 import com.jaegerapps.hansan.presentation.practice.presentation.components.KeyboardEnabledIcon
 import com.jaegerapps.hansan.presentation.practice.presentation.components.KeyboardInputContainer
 import com.jaegerapps.hansan.presentation.practice.presentation.components.WordContainer
+import com.jaegerapps.hansan.presentation.words.word_individual.component.ExamineWordContainer
+import com.jaegerapps.hansan.presentation.words.word_list.presentation.WordUiState
+import com.jaegerapps.hansan.presentation.words.word_list.presentation.WordsScreen
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
@@ -50,6 +57,7 @@ import org.jetbrains.compose.resources.stringResource
 private val hadaWordModel = WordModel(
     dictionaryWord = "하다",
     definition = "to do",
+    type = ModifierType.VERBS,
     fhPresentDeclarative = WordTenseModel("합니다", Tense.PRESENT_DECLARATIVE, Formality.FORMAL_HIGH),
     fhPastDeclarative = WordTenseModel("했습니다", Tense.PAST_DECLARATIVE, Formality.FORMAL_HIGH),
     fhFutureDeclarative = WordTenseModel("할 겁니다", Tense.FUTURE_DECLARATIVE, Formality.FORMAL_HIGH),
@@ -70,6 +78,39 @@ private val tenseModel = TenseModel(
     exampleBoda = "보다 -> 보 -> 봅니다",
     exampleMokda = "먹다 -> 먹 -> 먹습니다",
     exampleHada = "하다 -> 하 -> 합니다"
+)
+
+private val tenseModelList = listOf(
+    TenseModel(
+        tense = Tense.PRESENT_DECLARATIVE,
+        formality = Formality.FORMAL_HIGH,
+        conjugation = "~ㅂ니다/습니다",
+        explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
+        exampleGada = "가다 -> 가 -> 갑니다",
+        exampleBoda = "보다 -> 보 -> 봅니다",
+        exampleMokda = "먹다 -> 먹 -> 먹습니다",
+        exampleHada = "하다 -> 하 -> 합니다"
+    ),
+    TenseModel(
+        tense = Tense.PRESENT_DECLARATIVE,
+        formality = Formality.FORMAL_HIGH,
+        conjugation = "~ㅂ니다/습니다",
+        explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
+        exampleGada = "가다 -> 가 -> 갑니다",
+        exampleBoda = "보다 -> 보 -> 봅니다",
+        exampleMokda = "먹다 -> 먹 -> 먹습니다",
+        exampleHada = "하다 -> 하 -> 합니다"
+    ),
+    TenseModel(
+        tense = Tense.PRESENT_DECLARATIVE,
+        formality = Formality.FORMAL_HIGH,
+        conjugation = "~ㅂ니다/습니다",
+        explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
+        exampleGada = "가다 -> 가 -> 갑니다",
+        exampleBoda = "보다 -> 보 -> 봅니다",
+        exampleMokda = "먹다 -> 먹 -> 먹습니다",
+        exampleHada = "하다 -> 하 -> 합니다"
+    )
 )
 
 @Preview
@@ -388,5 +429,73 @@ fun Preview_FormSelectorItem() {
                 }
             }
         }
+    }
+}
+
+@Preview
+@Composable
+fun Preview_LearnTense() {
+    var expanded by remember { mutableStateOf(false) }
+    HanSanTheme(false) {
+        Column {
+
+            LearnTense(
+                tenseModel = tenseModel,
+                expanded = false,
+                onClick = {}
+            )
+
+            Spacer(Modifier.height(12.dp))
+            LearnTense(
+                tenseModel = tenseModel,
+                expanded = true,
+                onClick = {}
+            )
+            Spacer(Modifier.height(12.dp))
+            LearnTense(
+                tenseModel = tenseModel,
+                expanded = expanded,
+                onClick = {
+                    expanded = !expanded
+                }
+            )
+        }
+    }
+}
+@Preview
+@Composable
+fun Preview_LearnScreen() {
+    val state = LearnUiState(
+        filterFormality = Formality.FORMAL_HIGH,
+        tenses = tenseModelList,
+        tensesShow = tenseModelList.filter { it.formality ==  Formality.FORMAL_HIGH}
+    )
+    HanSanTheme(false) {
+        LearnScreen(
+            state = state,
+            onEvent = {
+
+            }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun Preview_ExamineWordContainer() {
+    HanSanTheme(false) {
+        ExamineWordContainer(
+            word = "하다",
+            def = "to do"
+        )
+    }
+}
+
+@Preview
+@Composable
+fun Preview_WordScreen() {
+
+    HanSanTheme(false) {
+
     }
 }

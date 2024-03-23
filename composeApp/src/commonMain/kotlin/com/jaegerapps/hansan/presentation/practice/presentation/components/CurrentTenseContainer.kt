@@ -2,12 +2,6 @@ package com.jaegerapps.hansan.presentation.practice.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -26,7 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.models.TenseModel
-import com.jaegerapps.hansan.common.models.getTenseString
+import com.jaegerapps.hansan.common.models.getTenseResString
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
@@ -51,7 +45,7 @@ fun CurrentTenseContainer(
                 .padding(12.dp)
         ) {
             Text(
-                text = stringResource(getTenseString(tense.tense)),
+                text = stringResource(getTenseResString(tense.tense)),
                 style = MaterialTheme.typography.labelMedium
             )
         }

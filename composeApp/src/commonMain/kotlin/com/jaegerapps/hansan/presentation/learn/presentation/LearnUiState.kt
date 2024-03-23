@@ -6,5 +6,6 @@ import com.jaegerapps.hansan.common.models.TenseModel
 
 data class LearnUiState(
     val filterFormality: Formality = Formality.FORMAL_HIGH,
-    val tenses: List<Tense> = emptyList()
+    val tenses: List<TenseModel> = emptyList(),
+    val tensesShow: List<TenseModel> = emptyList()
 )
