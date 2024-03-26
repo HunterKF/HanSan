@@ -21,18 +21,16 @@ class LoadingComponent(
     private val scope = CoroutineScope(Dispatchers.IO)
 
     init {
-        lifecycle.doOnCreate {
-            scope.launch {
-                val result = repo.getDefaultData()
-                if (result.isFailure) {
-                    Knower.e("LoadingComponent", "This error shouldn't be possible?")
-                } else if (result.isSuccess) {
-                    val data = result.getOrNull()
-                    if (data != null) {
-                        onStart(data.words, data.tenses)
-                    }
-
+        scope.launch {
+            val result = repo.getDefaultData()
+            if (result.isFailure) {
+                Knower.e("LoadingComponent", "This error shouldn't be possible?")
+            } else if (result.isSuccess) {
+                val data = result.getOrNull()
+                if (data != null) {
+                    onStart(data.words, data.tenses)
                 }
+
             }
         }
     }

@@ -10,16 +10,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.ime
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContent
-import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -36,8 +30,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.WindowInfo
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.jaegerapps.hansan.common.components.BottomBarIcon
@@ -45,20 +39,17 @@ import com.jaegerapps.hansan.common.models.formalityToStringResource
 import com.jaegerapps.hansan.common.models.typeToStringResource
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon.Companion.routeList
 import com.jaegerapps.hansan.common.util.Routes
-import com.jaegerapps.hansan.screens.practice.presentation.components.CurrentTenseContainer
+import com.jaegerapps.hansan.screens.practice.presentation.components.TargetFormsContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.DropDownContainer
-import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardEnabledIcon
 import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardInputContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.WordContainer
 import hansan.composeapp.generated.resources.Res
 import hansan.composeapp.generated.resources.error_answer_blank
 import hansan.composeapp.generated.resources.error_not_korean
-import hansan.composeapp.generated.resources.prompt_type_here
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.stringResource
 
@@ -81,7 +72,8 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                     onEvent(PracticeUiEvent.ClearErrorMessage)
                     delay(1000)
                     showErrorMessage = false
-
+                    //Give time for the animation to fade
+                    delay(200)
                     message = null
                 }
             }
@@ -118,21 +110,30 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
         AnimatedVisibility(
             showErrorMessage,
             enter = fadeIn(),
-            exit = fadeOut()
+            exit = fadeOut(animationSpec = tween(200))
         ) {
             Box(
-                modifier = Modifier.padding(12.dp).fillMaxWidth().zIndex(3f)
-                    .background(MaterialTheme.colorScheme.tertiary).padding(12.dp)
+                modifier = Modifier.padding(12.dp).fillMaxSize()
+                    .padding(12.dp),
+                contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = message ?: "Unknown error",
-                    style = MaterialTheme.typography.labelSmall
-                )
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.tertiary)
+                        .shadow(2.dp, RoundedCornerShape(25.dp)).fillMaxWidth().zIndex(3f)
+                        .padding(12.dp)
+                        .clip(RoundedCornerShape(25.dp))
+                ) {
+
+                    Text(
+                        text = message ?: "Unknown error",
+                        style = MaterialTheme.typography.labelMedium
+                    )
+                }
             }
         }
         Column(
-            modifier = Modifier.padding(paddingValues).padding(horizontal = 12.dp).fillMaxSize()
-            ,
+            modifier = Modifier.padding(paddingValues).padding(horizontal = 12.dp).fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -168,7 +169,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                 modifier = Modifier.fillMaxWidth().blur(blur)
             ) {
                 WordContainer(
-                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    modifier = Modifier.fillMaxWidth().weight(1.2f),
                     word = state.currentWord?.dictionaryWord ?: "고장",
                     definition = state.currentWord?.definition ?: "error",
                     answerResponse = state.answerResponse,
@@ -176,17 +177,24 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                         onEvent(PracticeUiEvent.ClearAnswer)
                     }
                 )
-                state.targetTense?.let {
-                    CurrentTenseContainer(
-                        tense = it,
-                        expanded = state.tenseExplanationExpanded,
-                        onClick = {
-                            onEvent(PracticeUiEvent.ToggleTenseExplanation)
-                        }
-                    )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+
+                    state.targetTense?.let {
+                        TargetFormsContainer(
+                            tense = it,
+                            expanded = state.tenseExplanationExpanded,
+                            onClick = {
+                                onEvent(PracticeUiEvent.ToggleTenseExplanation)
+                            }
+                        )
+                    }
                 }
                 Box(
-                    modifier = Modifier.fillMaxWidth().weight(1f)
+                    modifier = Modifier.fillMaxWidth().weight(0.8f)
                 ) {
                     KeyboardEnabledIcon(
                         modifier = Modifier.align(Alignment.TopEnd),
