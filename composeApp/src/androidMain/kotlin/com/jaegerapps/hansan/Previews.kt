@@ -2,7 +2,10 @@ package com.jaegerapps.hansan
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +13,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.KeyboardArrowUp
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -19,9 +27,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.components.BottomBarIcon
+import com.jaegerapps.hansan.common.components.getScreenSizeInfo
 import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.ModifierType
 import com.jaegerapps.hansan.common.models.Tense
@@ -35,21 +45,26 @@ import hansan.composeapp.generated.resources.icon_mountain
 import hansan.composeapp.generated.resources.icon_quotes
 import hansan.composeapp.generated.resources.icon_settings
 import com.jaegerapps.hansan.core.presentation.HanSanTheme
-import com.jaegerapps.hansan.presentation.learn.presentation.LearnScreen
-import com.jaegerapps.hansan.presentation.learn.presentation.LearnUiState
-import com.jaegerapps.hansan.presentation.learn.presentation.components.FormSelectorItem
-import com.jaegerapps.hansan.presentation.learn.presentation.components.LearnTense
-import com.jaegerapps.hansan.presentation.practice.domain.models.AnswerResponse
-import com.jaegerapps.hansan.presentation.practice.presentation.PracticeScreen
-import com.jaegerapps.hansan.presentation.practice.presentation.PracticeUiState
-import com.jaegerapps.hansan.presentation.practice.presentation.components.CurrentTenseContainer
-import com.jaegerapps.hansan.presentation.practice.presentation.components.DropDownContainer
-import com.jaegerapps.hansan.presentation.practice.presentation.components.KeyboardEnabledIcon
-import com.jaegerapps.hansan.presentation.practice.presentation.components.KeyboardInputContainer
-import com.jaegerapps.hansan.presentation.practice.presentation.components.WordContainer
-import com.jaegerapps.hansan.presentation.words.word_individual.component.ExamineWordContainer
-import com.jaegerapps.hansan.presentation.words.word_list.presentation.WordUiState
-import com.jaegerapps.hansan.presentation.words.word_list.presentation.WordsScreen
+import com.jaegerapps.hansan.screens.learn.presentation.LearnScreen
+import com.jaegerapps.hansan.screens.learn.presentation.LearnUiState
+import com.jaegerapps.hansan.screens.learn.presentation.components.FormSelectorItem
+import com.jaegerapps.hansan.screens.learn.presentation.components.LearnTense
+import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
+import com.jaegerapps.hansan.screens.practice.presentation.PracticeErrorMessage
+import com.jaegerapps.hansan.screens.practice.presentation.PracticeScreen
+import com.jaegerapps.hansan.screens.practice.presentation.PracticeUiState
+import com.jaegerapps.hansan.screens.practice.presentation.components.CurrentTenseContainer
+import com.jaegerapps.hansan.screens.practice.presentation.components.DropDownContainer
+import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardContainer
+import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardEnabledIcon
+import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardIconButton
+import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardInputContainer
+import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardKey
+import com.jaegerapps.hansan.screens.practice.presentation.components.WordContainer
+import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordScreen
+import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordUiState
+import com.jaegerapps.hansan.screens.words.word_individual.component.ExamineWordContainer
+import com.jaegerapps.hansan.screens.words.word_individual.component.TenseContainer
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
@@ -61,12 +76,12 @@ private val hadaWordModel = WordModel(
     fhPresentDeclarative = WordTenseModel("합니다", Tense.PRESENT_DECLARATIVE, Formality.FORMAL_HIGH),
     fhPastDeclarative = WordTenseModel("했습니다", Tense.PAST_DECLARATIVE, Formality.FORMAL_HIGH),
     fhFutureDeclarative = WordTenseModel("할 겁니다", Tense.FUTURE_DECLARATIVE, Formality.FORMAL_HIGH),
-    flPresentDeclarative = WordTenseModel("해요", Tense.PRESENT_DECLARATIVE, Formality.FORMAL_HIGH),
-    flPastDeclarative = WordTenseModel("했어요", Tense.PAST_DECLARATIVE, Formality.FORMAL_HIGH),
-    flFutureDeclarative = WordTenseModel("할 거에요", Tense.FUTURE_DECLARATIVE, Formality.FORMAL_HIGH),
-    ilPresentDeclarative = WordTenseModel("해", Tense.PRESENT_DECLARATIVE, Formality.FORMAL_HIGH),
-    ilPastDeclarative = WordTenseModel("했어", Tense.PAST_DECLARATIVE, Formality.FORMAL_HIGH),
-    ilFutureDeclarative = WordTenseModel("할 거야", Tense.FUTURE_DECLARATIVE, Formality.FORMAL_HIGH),
+    flPresentDeclarative = WordTenseModel("해요", Tense.PRESENT_DECLARATIVE, Formality.FORMAL_LOW),
+    flPastDeclarative = WordTenseModel("했어요", Tense.PAST_DECLARATIVE, Formality.FORMAL_LOW),
+    flFutureDeclarative = WordTenseModel("할 거에요", Tense.FUTURE_DECLARATIVE, Formality.FORMAL_LOW),
+    ilPresentDeclarative = WordTenseModel("해", Tense.PRESENT_DECLARATIVE, Formality.INFORMAL_LOW),
+    ilPastDeclarative = WordTenseModel("했어", Tense.PAST_DECLARATIVE, Formality.INFORMAL_LOW),
+    ilFutureDeclarative = WordTenseModel("할 거야", Tense.FUTURE_DECLARATIVE, Formality.INFORMAL_LOW),
 
     )
 private val tenseModel = TenseModel(
@@ -361,6 +376,22 @@ fun Preview_PracticeScreen() {
         PracticeScreen(state, {})
     }
 }
+@Preview
+@Composable
+fun Preview_PracticeScreenErrorMessage() {
+    var errorMessage: PracticeErrorMessage? by remember { mutableStateOf(null) }
+    val state = PracticeUiState(
+        currentWord = hadaWordModel,
+        targetTense = tenseModel,
+        errorMessage = errorMessage
+    )
+
+    HanSanTheme(false) {
+        PracticeScreen(state) {
+            errorMessage = if (errorMessage != null) null else PracticeErrorMessage.NOT_KOREAN
+        }
+    }
+}
 
 @Preview
 @Composable
@@ -415,7 +446,10 @@ fun Preview_FormSelectorItem() {
             )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 list.forEach {
-                    val weight by animateFloatAsState(targetValue = if (it == select) 1f else 0.8f, tween())
+                    val weight by animateFloatAsState(
+                        targetValue = if (it == select) 1f else 0.8f,
+                        tween()
+                    )
                     FormSelectorItem(
                         modifier = Modifier.weight(weight),
                         text = stringResource(formalityToStringResource(it)),
@@ -462,13 +496,14 @@ fun Preview_LearnTense() {
         }
     }
 }
+
 @Preview
 @Composable
 fun Preview_LearnScreen() {
     val state = LearnUiState(
         filterFormality = Formality.FORMAL_HIGH,
         tenses = tenseModelList,
-        tensesShow = tenseModelList.filter { it.formality ==  Formality.FORMAL_HIGH}
+        tensesShow = tenseModelList.filter { it.formality == Formality.FORMAL_HIGH }
     )
     HanSanTheme(false) {
         LearnScreen(
@@ -483,19 +518,204 @@ fun Preview_LearnScreen() {
 @Preview
 @Composable
 fun Preview_ExamineWordContainer() {
+    Column {
+
+        HanSanTheme(false) {
+            Column(
+                modifier = Modifier.background(MaterialTheme.colorScheme.background).fillMaxWidth()
+            ) {
+
+                ExamineWordContainer(
+                    word = "하다",
+                    def = "to do"
+                )
+            }
+        }
+        HanSanTheme(true) {
+            Box(
+                modifier = Modifier.background(MaterialTheme.colorScheme.background)
+            ) {
+
+                ExamineWordContainer(
+                    word = "하다",
+                    def = "to do"
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Preview_TenseContainer() {
+
+    Column() {
+
+        HanSanTheme(false) {
+            Box(
+                modifier = Modifier.background(MaterialTheme.colorScheme.background)
+            ) {
+
+                TenseContainer(
+                    tenseTitle = "Present",
+                    tenses = listOf(
+                        hadaWordModel.fhPresentDeclarative,
+                        hadaWordModel.flPresentDeclarative,
+                        hadaWordModel.ilPresentDeclarative
+                    )
+                )
+            }
+        }
+        Spacer(Modifier.height(24.dp))
+        HanSanTheme(true) {
+            Box(
+                modifier = Modifier.background(MaterialTheme.colorScheme.background)
+            ) {
+
+                TenseContainer(
+                    tenseTitle = "Present",
+                    tenses = listOf(
+                        hadaWordModel.fhPresentDeclarative,
+                        hadaWordModel.flPresentDeclarative,
+                        hadaWordModel.ilPresentDeclarative
+                    )
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Preview_IndividualWordScreen() {
+    val state = IndividualWordUiState(
+        currentWord = hadaWordModel,
+        present = listOf(
+            hadaWordModel.fhPresentDeclarative,
+            hadaWordModel.flPresentDeclarative,
+            hadaWordModel.ilPresentDeclarative
+        ),
+        past = listOf(
+            hadaWordModel.fhPastDeclarative,
+            hadaWordModel.flPastDeclarative,
+            hadaWordModel.ilPastDeclarative
+        ),
+        future = listOf(
+            hadaWordModel.fhFutureDeclarative,
+            hadaWordModel.flFutureDeclarative,
+            hadaWordModel.ilFutureDeclarative
+        )
+    )
     HanSanTheme(false) {
-        ExamineWordContainer(
-            word = "하다",
-            def = "to do"
+        IndividualWordScreen(
+            state = state,
+            onNavigate = {}
         )
     }
 }
 
 @Preview
 @Composable
-fun Preview_WordScreen() {
+fun Preview_KeyboardKey() {
+    val size = getScreenSizeInfo().wDP
+    val width = (size - (4.dp * 10)) /10
+    Column {
+        HanSanTheme(false) {
+            Row() {
+                KeyboardKey(
+                    key = "ㅎ",
+                    isShift = false,
+                    onClick = {}
+                )
+                Spacer(Modifier.width(12.dp))
+                KeyboardKey(
+                    key = "ㄲ",
+                    isShift = false,
+                    onClick = {}
+                )
+                Spacer(Modifier.width(12.dp))
+                KeyboardKey(
+                    width = size / 10,
+                    key = "ㄲ",
+                    isShift = false,
+                    onClick = {}
+                )
+            }
+            Text("Width: $width")
+            Text("Size: ${size}")
+            Row {
+                for (i in 1..10) {
+                    KeyboardKey(
+                        width = width,
+                        key = "$i",
+                        isShift = false,
+                        onClick = {}
+                    )
+                }
+            }
+            KeyboardKey(
+                key = "ㅎ",
+                isShift = false,
+                onClick = {}
+            )
+            Spacer(Modifier.height(12.dp))
+            KeyboardKey(
+                key = "ㄲ",
+                isShift = false,
+                onClick = {}
+            )
+        }
+        HanSanTheme(true) {
+            Spacer(Modifier.height(12.dp))
 
-    HanSanTheme(false) {
+            KeyboardKey(
+                key = "ㅎ",
+                isShift = false,
+                onClick = {}
+            )
+        }
+    }
 
+}
+
+@Preview
+@Composable
+fun Preview_KeyboardContainer() {
+    Column {
+        HanSanTheme(false) {
+            KeyboardContainer(
+                input = "",
+                onEvent = {}
+            )
+        }
+        Spacer(Modifier.height(12.dp))
+        HanSanTheme(true) {
+            KeyboardContainer(
+                input = "",
+                onEvent = {}
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Preview_KeyboardIconButton() {
+    Column {
+        HanSanTheme(false) {
+            KeyboardIconButton(
+                icon = Icons.Sharp.KeyboardArrowUp,
+                contentDescription = "shift",
+                onClick = {}
+            )
+        }
+        Spacer(Modifier.height(12.dp))
+        HanSanTheme(true) {
+            KeyboardIconButton(
+                icon = Icons.Sharp.KeyboardArrowUp,
+                contentDescription = "shift",
+                onClick = {}
+            )
+        }
     }
 }

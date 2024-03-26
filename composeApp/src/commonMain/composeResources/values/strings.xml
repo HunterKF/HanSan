@@ -11,4 +11,11 @@
     <string name="type_verb">Verb</string>
     <string name="type_adjective">Adjective</string>
     <string name="type_adverb">Adverb</string>
+
+    <string name="prompt_type_here">Type here to answer</string>
+
+
+    <string name="error_not_korean">Please change your keyboard to Korean to type.</string>
+    <string name="error_answer_blank">Please type your answer first.</string>
+
 </resources>

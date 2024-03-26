@@ -1,16 +1,20 @@
 package com.jaegerapps.hansan
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.router.stack.StackNavigation
 import com.arkivanov.decompose.router.stack.childStack
+import com.arkivanov.decompose.router.stack.pop
+import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.router.stack.replaceCurrent
 import com.jaegerapps.hansan.common.util.Routes
 import com.jaegerapps.hansan.di.AppModule
-import com.jaegerapps.hansan.presentation.learn.presentation.LearnComponent
-import com.jaegerapps.hansan.presentation.loading.presentation.LoadingComponent
-import com.jaegerapps.hansan.presentation.practice.presentation.PracticeComponent
-import com.jaegerapps.hansan.presentation.words.word_list.presentation.WordsComponent
+import com.jaegerapps.hansan.screens.learn.presentation.LearnComponent
+import com.jaegerapps.hansan.screens.loading.presentation.LoadingComponent
+import com.jaegerapps.hansan.screens.practice.presentation.PracticeComponent
+import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordComponent
+import com.jaegerapps.hansan.screens.words.word_list.presentation.WordsComponent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -37,6 +41,7 @@ class RootComponent(
         childFactory = ::createChild
     )
 
+    @OptIn(ExperimentalDecomposeApi::class)
     private fun createChild(
         config: Configuration,
         context: ComponentContext,
@@ -93,7 +98,18 @@ class RootComponent(
                             onNavigate(it)
                         },
                         onWordNavigate = {
-
+                            navigation.pushNew(Configuration.IndividualWordScreen(it))
+                        }
+                    )
+                )
+            }
+            is Configuration.IndividualWordScreen -> {
+                Child.IndividualWordScreen(
+                    IndividualWordComponent(
+                        currentWord = state.value.words.first { it.dictionaryWord == config.word },
+                        componentContext = context,
+                        onNavigate = {
+                            navigation.pop()
                         }
                     )
                 )
@@ -106,6 +122,7 @@ class RootComponent(
         data class LearnScreen(val component: LearnComponent) : Child()
         data class WordsScreen(val component: WordsComponent) : Child()
         data class LoadingScreen(val component: LoadingComponent) : Child()
+        data class IndividualWordScreen(val component: IndividualWordComponent) : Child()
     }
 
     @Serializable
@@ -120,6 +137,10 @@ class RootComponent(
 
         @Serializable
         data object LoadingScreen : Configuration()
+        @Serializable
+        data class IndividualWordScreen(
+            val word: String
+        ) : Configuration()
 
     }
 

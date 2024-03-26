@@ -1,14 +1,17 @@
 import androidx.compose.runtime.*
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
+import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.jaegerapps.hansan.RootComponent
 import com.jaegerapps.hansan.core.presentation.HanSanTheme
-import com.jaegerapps.hansan.presentation.learn.presentation.LearnScreen
-import com.jaegerapps.hansan.presentation.loading.presentation.LoadingScreen
-import com.jaegerapps.hansan.presentation.practice.presentation.PracticeScreen
-import com.jaegerapps.hansan.presentation.words.word_list.presentation.WordsScreen
+import com.jaegerapps.hansan.screens.learn.presentation.LearnScreen
+import com.jaegerapps.hansan.screens.loading.presentation.LoadingScreen
+import com.jaegerapps.hansan.screens.practice.presentation.PracticeScreen
+import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordScreen
+import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordUiEvent
+import com.jaegerapps.hansan.screens.words.word_list.presentation.WordsScreen
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -24,9 +27,13 @@ fun App(
     HanSanTheme(
         darkTheme,
     ) {
+        var animationSlide by remember { mutableStateOf(slide()) }
+        LaunchedEffect(Unit) {
+            animationSlide = fade()
+        }
         Children(
             stack = childStack,
-            animation = stackAnimation(slide())
+            animation = stackAnimation(animationSlide)
         ) { child ->
             when (val instance = child.instance) {
 
@@ -51,6 +58,15 @@ fun App(
                 is RootComponent.Child.WordsScreen -> {
                     val wordState = instance.component.state
                     WordsScreen(wordState, onEvent = { instance.component.onEvent(it) })
+                }
+
+                is RootComponent.Child.IndividualWordScreen -> {
+                    val state = instance.component.state
+                    IndividualWordScreen(state, onNavigate = {
+                        instance.component.onEvent(
+                            IndividualWordUiEvent.OnNavigateBack
+                        )
+                    })
                 }
             }
 

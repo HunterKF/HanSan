@@ -6,9 +6,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.core.view.WindowCompat
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.retainedComponent
 import com.jaegerapps.hansan.di.AppModule
+import java.lang.Character.UnicodeBlock
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalDecomposeApi::class)
@@ -20,6 +22,7 @@ class MainActivity : ComponentActivity() {
             RootComponent(it, appModule)
         }
         setContent {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
             App(
                 darkTheme = isSystemInDarkTheme(),
                 root = root
