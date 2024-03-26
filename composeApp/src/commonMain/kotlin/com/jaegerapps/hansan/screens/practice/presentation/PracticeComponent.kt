@@ -8,6 +8,7 @@ import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.stringToType
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.d
+import com.jaegerapps.hansan.common.util.Knower.e
 import com.jaegerapps.hansan.screens.practice.domain.hangul.HangulToolkit
 import com.jaegerapps.hansan.screens.practice.domain.hangul.isHangul
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
@@ -52,6 +53,8 @@ class PracticeComponent(
 
             is PracticeUiEvent.ClickAnswer -> TODO()
             PracticeUiEvent.EnterAnswerKeyboard -> {
+                val isKorean = _state.value.textInput.split(" ").map { it.isHangul() }
+
                 if (_state.value.textInput.isEmpty()) {
                     _state.update {
                         it.copy(
@@ -59,11 +62,21 @@ class PracticeComponent(
                         )
                     }
                     return
+                } else if (isKorean.contains(false)) {
+                    _state.update {
+                        it.copy(
+                            textInput = "",
+                            errorMessage = PracticeErrorMessage.NOT_KOREAN
+                        )
+                    }
+                    return
                 }
                 val result = _state.value.currentWord?.let {
                     EnterAnswer.textAnswer(
-                        _state.value.textInput, _state.value.targetTense!!.tense,
-                        it
+                        _state.value.textInput,
+                        _state.value.targetTense!!.tense,
+                        wordModel = it,
+                        formality = _state.value.targetFormality
                     )
                 }
                 result?.let { answer ->
@@ -80,6 +93,7 @@ class PracticeComponent(
                         }
 
                         AnswerResponse.WRONG -> {
+                            Knower.e("EnterAnswerKeyboard", "The answer was wrong. Here are the values: \n Tense: ${_state.value.targetTense} \n Word: ${_state.value.currentWord} \n Text input: ${_state.value.textInput}")
                             _state.update {
                                 it.copy(
                                     answerResponse = answer,
@@ -97,39 +111,30 @@ class PracticeComponent(
             }
 
             is PracticeUiEvent.OnValueChange -> {
-                if (!event.value.isHangul()) {
-                    _state.update {
-                        it.copy(
-                            errorMessage = PracticeErrorMessage.NOT_KOREAN
-                        )
-                    }
-                } else if (event.value.isEmpty()){
-                    _state.update {
-                        it.copy(
-                            errorMessage = PracticeErrorMessage.ANSWER_BLANK
-                        )
-                    }
-                } else {
-                    _state.update {
-                        it.copy(
-                            textInput = event.value
-                        )
-                    }
+                _state.update {
+                    it.copy(
+                        textInput = event.value
+                    )
                 }
             }
 
             is PracticeUiEvent.SelectFormality -> {
+
+                val formality = getFormalityFromString(event.formality.lowercase().replace(" ", "_"))
+
                 _state.update {
                     it.copy(
-                        targetFormality = getFormalityFromString(event.formality)
+                        targetFormality =formality
                     )
                 }
             }
 
             is PracticeUiEvent.SelectType -> {
+                val type = stringToType(event.type.lowercase())
                 _state.update {
                     it.copy(
-                        targetType = stringToType(event.type)
+                        targetType = type,
+                        typeDropDown = false
                     )
                 }
             }

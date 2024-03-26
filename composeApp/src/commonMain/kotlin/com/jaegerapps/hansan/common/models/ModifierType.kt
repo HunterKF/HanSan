@@ -38,9 +38,9 @@ fun stringToType(
     type: String,
 ): ModifierType {
     return when (type) {
-        "verbs" -> ModifierType.VERBS
-        "adjectives" -> ModifierType.ADJECTIVES
-        "adverbs" -> ModifierType.ADVERBS
+        "verb" -> ModifierType.VERBS
+        "adjective" -> ModifierType.ADJECTIVES
+        "adverb" -> ModifierType.ADVERBS
         else -> ModifierType.VERBS
     }
 }

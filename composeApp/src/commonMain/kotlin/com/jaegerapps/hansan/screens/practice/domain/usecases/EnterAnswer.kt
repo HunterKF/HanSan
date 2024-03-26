@@ -1,5 +1,6 @@
 package com.jaegerapps.hansan.screens.practice.domain.usecases
 
+import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.WordModel
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
@@ -9,9 +10,10 @@ class EnterAnswer {
         fun textAnswer(
             input: String,
             targetTense: Tense,
+            formality: Formality,
             wordModel: WordModel,
         ): AnswerResponse {
-            val answer = getTenseModel(targetTense, wordModel)
+            val answer = getTenseModel(targetTense, wordModel, formality)
             return if (input == answer) {
                 AnswerResponse.CORRECT
             } else {
@@ -19,7 +21,7 @@ class EnterAnswer {
             }
         }
 
-        private fun getTenseModel(targetTense: Tense, wordModel: WordModel): String {
+        private fun getTenseModel(targetTense: Tense,  wordModel: WordModel, formality: Formality): String {
             val result = listOf(
                 wordModel.fhPresentDeclarative,
                 wordModel.fhPastDeclarative,
@@ -30,7 +32,7 @@ class EnterAnswer {
                 wordModel.ilPresentDeclarative,
                 wordModel.ilPastDeclarative,
                 wordModel.ilFutureDeclarative,
-            ).filter { it.tense == targetTense }
+            ).filter { it.tense == targetTense && it.formality == formality }
             return result.first().string
         }
     }
