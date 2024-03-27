@@ -2,6 +2,7 @@ package com.jaegerapps.hansan.screens.practice.presentation
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.doOnCreate
+import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.WordModel
 import com.jaegerapps.hansan.common.models.getFormalityFromString
@@ -9,7 +10,6 @@ import com.jaegerapps.hansan.common.models.stringToType
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.common.util.Knower.e
-import com.jaegerapps.hansan.screens.practice.domain.hangul.HangulToolkit
 import com.jaegerapps.hansan.screens.practice.domain.hangul.isHangul
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 import com.jaegerapps.hansan.screens.practice.domain.usecases.EnterAnswer
@@ -27,16 +27,24 @@ class PracticeComponent(
     private val _state = MutableStateFlow(PracticeUiState())
     val state = _state.asStateFlow()
 
-    val toolkit = HangulToolkit()
 
     init {
         lifecycle.doOnCreate {
+            val word = WordAndTenseHandler.newWord(words)
+            val tense =
+                WordAndTenseHandler.newTense(filterTenses(_state.value.targetFormality))
+            val answerOptions = WordAndTenseHandler.newAnswerOptions(
+                word,
+                tense.tense,
+                formality = _state.value.targetFormality
+            )
             _state.update {
                 it.copy(
-                    currentWord = words.firstOrNull(),
-                    targetTense = tenses.firstOrNull(),
+                    currentWord = word,
+                    targetTense = tense,
+                    answerOptions = answerOptions
 
-                    )
+                )
             }
             Knower.d("PracticeComponent - init", "Here are the values: $words \n $tenses")
 
@@ -51,7 +59,54 @@ class PracticeComponent(
                 }
             }
 
-            is PracticeUiEvent.ClickAnswer -> TODO()
+            is PracticeUiEvent.ClickAnswer -> {
+                val result = _state.value.currentWord?.let {
+                    EnterAnswer.textAnswer(
+                        input = event.answer,
+                        targetTense = _state.value.targetTense!!.tense,
+                        wordModel = it,
+                        formality = _state.value.targetFormality
+                    )
+                }
+                result?.let { answer ->
+                    when (answer) {
+                        AnswerResponse.CORRECT -> {
+                            val word = WordAndTenseHandler.newWord(words)
+                            val tense =
+                                WordAndTenseHandler.newTense(filterTenses(_state.value.targetFormality))
+                            val answerOptions = WordAndTenseHandler.newAnswerOptions(
+                                word,
+                                tense.tense,
+                                formality = _state.value.targetFormality
+                            )
+                            _state.update {
+                                it.copy(
+                                    answerResponse = answer,
+                                    textInput = "",
+                                    currentWord = word,
+                                    targetTense = tense,
+                                    answerOptions = answerOptions
+                                )
+                            }
+                        }
+
+                        AnswerResponse.WRONG -> {
+                            Knower.e(
+                                "EnterAnswerKeyboard",
+                                "The answer was wrong. Here are the values: \n Tense: ${_state.value.targetTense} \n Word: ${_state.value.currentWord} \n Text input: ${_state.value.textInput}"
+                            )
+                            _state.update {
+                                it.copy(
+                                    answerResponse = answer,
+                                    textInput = "",
+                                )
+                            }
+                        }
+                    }
+
+                }
+            }
+
             PracticeUiEvent.EnterAnswerKeyboard -> {
                 val isKorean = _state.value.textInput.split(" ").map { it.isHangul() }
 
@@ -73,8 +128,8 @@ class PracticeComponent(
                 }
                 val result = _state.value.currentWord?.let {
                     EnterAnswer.textAnswer(
-                        _state.value.textInput,
-                        _state.value.targetTense!!.tense,
+                        input = _state.value.textInput,
+                        targetTense = _state.value.targetTense!!.tense,
                         wordModel = it,
                         formality = _state.value.targetFormality
                     )
@@ -82,18 +137,30 @@ class PracticeComponent(
                 result?.let { answer ->
                     when (answer) {
                         AnswerResponse.CORRECT -> {
+                            val word = WordAndTenseHandler.newWord(words)
+                            val tense =
+                                WordAndTenseHandler.newTense(filterTenses(_state.value.targetFormality))
+                            val answerOptions = WordAndTenseHandler.newAnswerOptions(
+                                word,
+                                tense.tense,
+                                formality = _state.value.targetFormality
+                            )
                             _state.update {
                                 it.copy(
                                     answerResponse = answer,
                                     textInput = "",
-                                    currentWord = WordAndTenseHandler.newWord(words),
-                                    targetTense = WordAndTenseHandler.newTense(tenses)
+                                    currentWord = word,
+                                    targetTense = tense,
+                                    answerOptions = answerOptions
                                 )
                             }
                         }
 
                         AnswerResponse.WRONG -> {
-                            Knower.e("EnterAnswerKeyboard", "The answer was wrong. Here are the values: \n Tense: ${_state.value.targetTense} \n Word: ${_state.value.currentWord} \n Text input: ${_state.value.textInput}")
+                            Knower.e(
+                                "EnterAnswerKeyboard",
+                                "The answer was wrong. Here are the values: \n Tense: ${_state.value.targetTense} \n Word: ${_state.value.currentWord} \n Text input: ${_state.value.textInput}"
+                            )
                             _state.update {
                                 it.copy(
                                     answerResponse = answer,
@@ -120,13 +187,32 @@ class PracticeComponent(
 
             is PracticeUiEvent.SelectFormality -> {
 
-                val formality = getFormalityFromString(event.formality.lowercase().replace(" ", "_"))
-
+                val formality =
+                    getFormalityFromString(event.formality.lowercase().replace(" ", "_"))
+                val word = WordAndTenseHandler.newWord(words)
+                val tense = WordAndTenseHandler.newTense(filterTenses(formality))
+                val answerOptions = WordAndTenseHandler.newAnswerOptions(
+                    word,
+                    tense.tense,
+                    formality = formality
+                )
                 _state.update {
                     it.copy(
-                        targetFormality =formality
+                        targetFormality = formality,
+                        targetTense = tense,
+                        formalityDropDown = false,
+                        textInput = "",
+                        currentWord = word,
+                        answerOptions = answerOptions
                     )
                 }
+                /*_state.update {
+                    it.copy(
+                        targetFormality = formality,
+                        targetTense = WordAndTenseHandler.newTense(filterTenses(formality)),
+                        formalityDropDown = false
+                    )
+                }*/
             }
 
             is PracticeUiEvent.SelectType -> {
@@ -143,6 +229,7 @@ class PracticeComponent(
                 _state.update {
                     it.copy(
                         formalityDropDown = !_state.value.formalityDropDown,
+
                         typeDropDown = false
                     )
                 }
@@ -158,6 +245,7 @@ class PracticeComponent(
             }
 
             PracticeUiEvent.ToggleTypeDropDown -> {
+
                 _state.update {
                     it.copy(
                         typeDropDown = !_state.value.typeDropDown,
@@ -186,4 +274,10 @@ class PracticeComponent(
             }
         }
     }
+
+    private fun filterTenses(formality: Formality): List<TenseModel> {
+        return tenses.filter { tense -> tense.formality == formality }
+    }
+
+
 }

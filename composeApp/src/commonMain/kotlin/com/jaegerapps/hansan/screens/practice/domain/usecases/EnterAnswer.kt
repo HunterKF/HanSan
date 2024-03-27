@@ -3,6 +3,8 @@ package com.jaegerapps.hansan.screens.practice.domain.usecases
 import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.WordModel
+import com.jaegerapps.hansan.common.util.Knower
+import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 
 class EnterAnswer {

@@ -50,8 +50,10 @@ import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeErrorMessage
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeScreen
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeUiState
+import com.jaegerapps.hansan.screens.practice.presentation.components.AnswerItem
 import com.jaegerapps.hansan.screens.practice.presentation.components.TargetFormsContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.DropDownContainer
+import com.jaegerapps.hansan.screens.practice.presentation.components.ErrorBox
 import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardEnabledIcon
 import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardIconButton
@@ -713,6 +715,69 @@ fun Preview_KeyboardIconButton() {
                 contentDescription = "shift",
                 onClick = {}
             )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Preview_ErrorBox() {
+    Column {
+
+        HanSanTheme(false) {
+            ErrorBox(message = "Please use Korean.")
+        }
+        Spacer(Modifier.height(25.dp))
+        HanSanTheme(true) {
+            ErrorBox(message = "Please use Korean.")
+        }
+    }
+}
+@Preview
+@Composable
+fun Preview_AnswerContainer() {
+    Column {
+
+        HanSanTheme(false) {
+            AnswerItem(answer = "했어") {
+
+            }
+        }
+        Spacer(Modifier.height(25.dp))
+        HanSanTheme(true) {
+            Box(
+                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)
+            ) {
+
+                AnswerItem(answer = "했어") {}
+            }
+        }
+        Spacer(Modifier.height(25.dp))
+
+        HanSanTheme(false) {
+            Row(modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly) {
+
+                AnswerItem(answer = "했어") {
+
+                }
+
+                AnswerItem(answer = "했어요") {
+
+                }
+            }
+            Spacer(Modifier.height(25.dp))
+            Row(modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly) {
+
+                AnswerItem(answer = "걱정스러웠어요") {
+
+                }
+
+                AnswerItem(answer = "걱정스러웠겠네요") {
+
+                }
+            }
         }
     }
 }

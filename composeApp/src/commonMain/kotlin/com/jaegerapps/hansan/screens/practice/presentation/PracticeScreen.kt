@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.jaegerapps.hansan.common.components.BottomBarIcon
@@ -39,8 +40,10 @@ import com.jaegerapps.hansan.common.models.formalityToStringResource
 import com.jaegerapps.hansan.common.models.typeToStringResource
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon.Companion.routeList
 import com.jaegerapps.hansan.common.util.Routes
+import com.jaegerapps.hansan.screens.practice.presentation.components.AnswerContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.TargetFormsContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.DropDownContainer
+import com.jaegerapps.hansan.screens.practice.presentation.components.ErrorBox
 import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardEnabledIcon
 import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardInputContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.WordContainer
@@ -70,7 +73,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                     }
                     showErrorMessage = true
                     onEvent(PracticeUiEvent.ClearErrorMessage)
-                    delay(1000)
+                    delay(1500)
                     showErrorMessage = false
                     //Give time for the animation to fade
                     delay(200)
@@ -113,23 +116,14 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
             exit = fadeOut(animationSpec = tween(200))
         ) {
             Box(
-                modifier = Modifier.padding(12.dp).fillMaxSize()
-                    .padding(12.dp),
+                modifier = Modifier.background(Color.Black.copy(alpha = 0.2f)).fillMaxSize()
+                    .zIndex(2f),
                 contentAlignment = Alignment.Center
             ) {
-                Box(
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.tertiary)
-                        .shadow(2.dp, RoundedCornerShape(25.dp)).fillMaxWidth().zIndex(3f)
-                        .padding(12.dp)
-                        .clip(RoundedCornerShape(25.dp))
-                ) {
 
-                    Text(
-                        text = message ?: "Unknown error",
-                        style = MaterialTheme.typography.labelMedium
-                    )
-                }
+                ErrorBox(
+                    message = message
+                )
             }
         }
         Column(
@@ -140,6 +134,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                //Type drop down
                 DropDownContainer(
                     modifier = Modifier.blur(if (!state.typeDropDown && state.formalityDropDown) 10.dp else 0.dp),
                     selected = stringResource(typeToStringResource(state.targetType)),
@@ -152,8 +147,10 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                         onEvent(PracticeUiEvent.SelectType(it))
                     }
                 )
+                //Formality drop down
                 DropDownContainer(
                     modifier = Modifier.blur(if (state.typeDropDown && !state.formalityDropDown) 10.dp else 0.dp),
+
                     selected = stringResource(formalityToStringResource(state.targetFormality)),
                     expanded = state.formalityDropDown,
                     list = state.formalityList.map { stringResource(formalityToStringResource(it)) },
@@ -161,7 +158,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                         onEvent(PracticeUiEvent.ToggleFormalityDropDown)
                     },
                     onSelect = {
-                        onEvent(PracticeUiEvent.SelectType(it))
+                        onEvent(PracticeUiEvent.SelectFormality(it))
                     }
                 )
             }
@@ -183,9 +180,9 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
 
-                    state.targetTense?.let {
+                    state.targetTense?.let { tense ->
                         TargetFormsContainer(
-                            tense = it,
+                            tense = tense,
                             expanded = state.tenseExplanationExpanded,
                             onClick = {
                                 onEvent(PracticeUiEvent.ToggleTenseExplanation)
@@ -196,18 +193,31 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                 Box(
                     modifier = Modifier.fillMaxWidth().weight(0.8f)
                 ) {
+
                     KeyboardEnabledIcon(
                         modifier = Modifier.align(Alignment.TopEnd),
                         enabled = state.keyboardEnabled,
                         onClick = { onEvent(PracticeUiEvent.ToggleKeyboardMode) }
                     )
-                    KeyboardInputContainer(
-                        modifier = Modifier.align(Alignment.Center).fillMaxWidth(),
-                        input = state.textInput,
-                        onEvent = {
-                            onEvent(it)
-                        }
-                    )
+                    if (state.keyboardEnabled) {
+                        KeyboardInputContainer(
+                            modifier = Modifier.align(Alignment.Center).fillMaxWidth(),
+                            input = state.textInput,
+                            onEvent = {
+                                onEvent(it)
+                            }
+                        )
+                    } else {
+                        AnswerContainer(
+                            modifier = Modifier.align(Alignment.Center).fillMaxWidth(),
+                            answers = state.answerOptions,
+                            onSelect = {
+                                onEvent(PracticeUiEvent.ClickAnswer(it))
+                            }
+
+                        )
+                    }
+
                 }
             }
 

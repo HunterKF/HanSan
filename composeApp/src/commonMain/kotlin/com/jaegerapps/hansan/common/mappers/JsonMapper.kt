@@ -57,7 +57,7 @@ fun WordEntity.toWordModel(): WordModel {
             formality = Formality.INFORMAL_LOW
         ),
         ilFutureDeclarative = WordTenseModel(
-            formal_high_past_declarative,
+            informal_low_future_declarative,
             Tense.FUTURE_DECLARATIVE,
             formality = Formality.INFORMAL_LOW
         ),

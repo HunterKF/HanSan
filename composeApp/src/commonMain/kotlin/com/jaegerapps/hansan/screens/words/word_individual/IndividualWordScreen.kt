@@ -41,7 +41,7 @@ fun IndividualWordScreen(
 ) {
     Scaffold {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.padding(it).fillMaxWidth()
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth()

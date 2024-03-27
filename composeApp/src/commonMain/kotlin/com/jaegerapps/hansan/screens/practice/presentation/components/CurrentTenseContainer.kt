@@ -47,10 +47,9 @@ fun TargetFormsContainer(
     ) {
         Row(
             modifier = Modifier.clip(RoundedCornerShape(25.dp))
-                .clickable { onClick()},
+                .clickable { onClick() },
             horizontalArrangement = Arrangement.Center
         ) {
-
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(25.dp))
@@ -58,7 +57,7 @@ fun TargetFormsContainer(
                     .padding(horizontal = 12.dp, vertical = 8.dp)
             ) {
                 Text(
-                    text = stringResource(getTenseResString(tense.tense)),
+                    text = stringResource(formalityToStringResource(tense.formality)),
                     style = MaterialTheme.typography.labelMedium
                 )
             }
@@ -71,10 +70,10 @@ fun TargetFormsContainer(
 
             ) {
                 Text(
-                    text = stringResource(formalityToStringResource(tense.formality)),
+                    text = stringResource(getTenseResString(tense.tense)),
                     maxLines = 1,
                     overflow = TextOverflow.Visible,
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelMedium,
                 )
             }
         }

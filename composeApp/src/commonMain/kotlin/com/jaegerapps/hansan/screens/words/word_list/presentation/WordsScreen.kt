@@ -56,7 +56,7 @@ fun WordsScreen(
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(12.dp)
+            modifier = Modifier.padding(paddingValues).padding(12.dp)
         ) {
             val list = listOf(
                 ModifierType.VERBS,

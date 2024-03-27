@@ -10,7 +10,7 @@ sealed interface PracticeUiEvent {
     data object ToggleKeyboardMode: PracticeUiEvent
     data object OpenKeyboard: PracticeUiEvent
     data class OnValueChange(val value: String): PracticeUiEvent
-    data class ClickAnswer(val string: String): PracticeUiEvent
+    data class ClickAnswer(val answer: String): PracticeUiEvent
     data object EnterAnswerKeyboard: PracticeUiEvent
 
     data object ToggleTenseExplanation: PracticeUiEvent
