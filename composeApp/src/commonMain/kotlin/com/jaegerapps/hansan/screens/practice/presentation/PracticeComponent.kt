@@ -4,6 +4,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.jaegerapps.hansan.common.models.Formality
+import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.UserSettings
 import com.jaegerapps.hansan.common.models.WordModel
@@ -31,7 +32,7 @@ class PracticeComponent(
     private val tenses: List<TenseModel>,
     private val words: List<WordModel>,
     private val onNavigate: (String) -> Unit,
-    private val repo: PracticeRepo
+    private val repo: PracticeRepo,
 ) : ComponentContext by componentContext {
     private val _state = MutableStateFlow(PracticeUiState())
     var userSettings = mutableStateOf<UserSettings?>(null)
@@ -44,33 +45,61 @@ class PracticeComponent(
         lifecycle.subscribe(
             object : Lifecycle.Callbacks {
                 override fun onCreate() {
-                    scope.launch {
-                        userSettings.value = async { repo.getUserSettings() }.await()
-                    }
-                    val targetFormality = returnTargetFormality(userSettings.value?.targetFormality ?: Formality.FORMAL_HIGH)
-                    val word = WordAndTenseHandler.newWord(words)
-                    val tense = WordAndTenseHandler.newTense(filterTenses(targetFormality))
-                    val answerOptions = WordAndTenseHandler.newAnswerOptions(
-                        word,
-                        tense.tense,
-                        formality = _state.value.selectedFormalityCategory
-                    )
-                    _state.update {
-                        it.copy(
-                            selectedFormalityCategory = userSettings.value?.targetFormality ?: Formality.FORMAL_HIGH,
-                            targetFormality = targetFormality,
-                            currentWord = word,
-                            targetTense = tense,
-                            answerOptions = answerOptions
-
-                        )
-                    }
-                    Knower.d("PracticeComponent - init", "Here are the values: $words \n $tenses")
+                    Knower.d("onCreate", "onCreate is being called.")
+                    initializePracticeComponent()
                 }
 
-                // onStart, onResume, onPause, onStop, onDestroy
+                override fun onResume() {
+                    Knower.d("onResume", "onResume is being called.")
+                    initializePracticeComponent()
+                }
             }
         )
+    }
+
+    private fun initializePracticeComponent() {
+        scope.launch {
+            userSettings.value = async { repo.getUserSettings() }.await()
+        }
+        //The target is going to be the current one displayed
+        val targetFormality = returnTargetFormality(
+            userSettings.value?.targetFormality ?: Formality.FORMAL_HIGH
+        )
+        //This takes the enabled tenses from the user's settings and creates a list of Tenses to be used to filter
+        val enabledTenses = filterTensesByUserSettings(
+            presentTense = userSettings.value?.presentTenseEnabled ?: true,
+            pastTense = userSettings.value?.pastTenseEnabled ?: true,
+            futureTense = userSettings.value?.futureTenseEnabled ?: true,
+        )
+        //Gets a random word
+        val word = WordAndTenseHandler.newWord(words)
+        //Gets a random tense. It will filter based on formality and enabled tenses
+        val tense = WordAndTenseHandler.newTense(
+            filterTenses(
+                targetFormality,
+                enabledTenses
+            )
+        )
+        //Returns a list of 4 answers to be used for the clickable section
+        val answerOptions = WordAndTenseHandler.newAnswerOptions(
+            word,
+            tense.tense,
+            formality = _state.value.selectedFormalityCategory
+        )
+
+        _state.update {
+            it.copy(
+                selectedFormalityCategory = userSettings.value?.targetFormality
+                    ?: Formality.FORMAL_HIGH,
+                targetFormality = targetFormality,
+                enabledTenses = enabledTenses,
+                currentWord = word,
+                targetTense = tense,
+                answerOptions = answerOptions
+
+            )
+        }
+        Knower.d("PracticeComponent - init", "Here are the values: $words \n $tenses")
     }
 
     fun onEvent(event: PracticeUiEvent) {
@@ -93,9 +122,15 @@ class PracticeComponent(
                 result?.let { answer ->
                     when (answer) {
                         AnswerResponse.CORRECT -> {
-                            val targetFormality = returnTargetFormality(_state.value.selectedFormalityCategory)
+                            val targetFormality =
+                                returnTargetFormality(_state.value.selectedFormalityCategory)
                             val word = WordAndTenseHandler.newWord(words)
-                            val tense = WordAndTenseHandler.newTense(filterTenses(targetFormality))
+                            val tense = WordAndTenseHandler.newTense(
+                                filterTenses(
+                                    targetFormality,
+                                    _state.value.enabledTenses
+                                )
+                            )
                             val answerOptions = WordAndTenseHandler.newAnswerOptions(
                                 word,
                                 tense.tense,
@@ -156,9 +191,15 @@ class PracticeComponent(
                 result?.let { answer ->
                     when (answer) {
                         AnswerResponse.CORRECT -> {
-                            val targetFormality = returnTargetFormality(_state.value.selectedFormalityCategory)
+                            val targetFormality =
+                                returnTargetFormality(_state.value.selectedFormalityCategory)
                             val word = WordAndTenseHandler.newWord(words)
-                            val tense = WordAndTenseHandler.newTense(filterTenses(targetFormality))
+                            val tense = WordAndTenseHandler.newTense(
+                                filterTenses(
+                                    targetFormality,
+                                    _state.value.enabledTenses
+                                )
+                            )
                             val answerOptions = WordAndTenseHandler.newAnswerOptions(
                                 word,
                                 tense.tense,
@@ -206,10 +247,16 @@ class PracticeComponent(
             }
 
             is PracticeUiEvent.SelectFormality -> {
-                val formality = getFormalityFromString(event.formality.lowercase().replace(" ", "_"))
+                val formality =
+                    getFormalityFromString(event.formality.lowercase().replace(" ", "_"))
                 val targetFormality = returnTargetFormality(formality)
                 val word = WordAndTenseHandler.newWord(words)
-                val tense = WordAndTenseHandler.newTense(filterTenses(targetFormality))
+                val tense = WordAndTenseHandler.newTense(
+                    filterTenses(
+                        targetFormality,
+                        _state.value.enabledTenses
+                    )
+                )
                 val answerOptions = WordAndTenseHandler.newAnswerOptions(
                     word,
                     tense.tense,
@@ -295,18 +342,31 @@ class PracticeComponent(
         }
     }
 
-    private fun filterTenses(formality: Formality): List<TenseModel> {
-        if (formality == Formality.ALL) return tenses
-        return tenses.filter { tense -> tense.formality == formality }
+    private fun filterTenses(formality: Formality, tenseList: List<Tense>): List<TenseModel> {
+        if (formality == Formality.ALL) return tenses.filter { tenseList.contains(it.tense) }
+        return tenses.filter { tense -> tense.formality == formality && tenseList.contains(tense.tense) }
     }
 
     private fun returnTargetFormality(formality: Formality): Formality {
-        val formalityList = listOf(Formality.FORMAL_HIGH, Formality.FORMAL_LOW, Formality.INFORMAL_LOW)
+        val formalityList =
+            listOf(Formality.FORMAL_HIGH, Formality.FORMAL_LOW, Formality.INFORMAL_LOW)
         return if (formality == Formality.ALL) {
             formalityList.random()
         } else {
             _state.value.selectedFormalityCategory
         }
+    }
+
+    private fun filterTensesByUserSettings(
+        presentTense: Boolean,
+        pastTense: Boolean,
+        futureTense: Boolean,
+    ): List<Tense> {
+        var list = emptyList<Tense>()
+        if (presentTense) list = list.plus(Tense.PRESENT_DECLARATIVE)
+        if (pastTense) list = list.plus(Tense.PAST_DECLARATIVE)
+        if (futureTense) list = list.plus(Tense.FUTURE_DECLARATIVE)
+        return list
     }
 
 

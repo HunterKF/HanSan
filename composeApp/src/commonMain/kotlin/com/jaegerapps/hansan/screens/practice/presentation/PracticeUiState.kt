@@ -2,6 +2,7 @@ package com.jaegerapps.hansan.screens.practice.presentation
 
 import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.ModifierType
+import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.WordModel
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
@@ -11,6 +12,7 @@ data class PracticeUiState(
     val currentWord: WordModel? = null,
     val targetTense: TenseModel? = null,
     val selectedFormalityCategory: Formality = Formality.FORMAL_HIGH,
+    val enabledTenses: List<Tense> = emptyList(),
     val targetFormality: Formality = Formality.FORMAL_HIGH,
     val targetType: ModifierType = ModifierType.VERBS,
     val formalityList: List<Formality> = formalityDefaultList,

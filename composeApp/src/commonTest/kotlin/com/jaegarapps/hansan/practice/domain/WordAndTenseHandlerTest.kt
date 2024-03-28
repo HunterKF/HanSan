@@ -17,6 +17,7 @@ class WordAndTenseHandlerTest {
             dictionaryWord = "하다",
             definition = "to do",
             type = ModifierType.VERBS,
+            irregular = false,
             fhPresentDeclarative = WordTenseModel(
                 "합니다",
                 Tense.PRESENT_DECLARATIVE,
@@ -75,6 +76,7 @@ class WordAndTenseHandlerTest {
             dictionaryWord = "하다",
             definition = "to do",
             type = ModifierType.VERBS,
+            irregular = false,
             fhPresentDeclarative = WordTenseModel(
                 "합니다",
                 Tense.PRESENT_DECLARATIVE,

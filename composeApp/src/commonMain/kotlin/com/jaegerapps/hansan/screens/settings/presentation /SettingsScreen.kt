@@ -58,6 +58,7 @@ fun SettingsScreen(
                         SettingsErrorMessage.TENSE_BLANK -> getString(Res.string.error_tense_blank)
                         SettingsErrorMessage.DAILY_BLANK -> getString(Res.string.error_daily_goal_blank)
                     }
+                    snackbarHostState.showSnackbar(message!!)
                     onEvent(SettingsUiEvent.ClearErrorMessage)
                     message = null
                 }
