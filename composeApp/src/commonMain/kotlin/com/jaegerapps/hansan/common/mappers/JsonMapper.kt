@@ -16,6 +16,7 @@ fun WordEntity.toWordModel(): WordModel {
         dictionaryWord = dictionary_form,
         definition = dictionary_definition,
         type = stringToType(type),
+        irregular = irregular,
         fhPresentDeclarative = WordTenseModel(
             formal_high_present_declarative,
             Tense.PRESENT_DECLARATIVE,

@@ -56,7 +56,7 @@ fun WordsScreen(
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues).padding(12.dp)
+            modifier = Modifier.padding(paddingValues)
         ) {
             val list = listOf(
                 ModifierType.VERBS,
@@ -65,12 +65,8 @@ fun WordsScreen(
             )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 list.forEach {
-                    val weight by animateFloatAsState(
-                        targetValue = if (it == state.wordFilter) 1f else 0.8f,
-                        tween()
-                    )
                     FormSelectorItem(
-                        modifier = Modifier.weight(weight),
+                        modifier = Modifier.weight(1f),
                         text = stringResource(typeToStringResource(it)),
                         selected = it == state.wordFilter,
                         onSelect = {
@@ -81,13 +77,13 @@ fun WordsScreen(
             }
             Spacer(Modifier.height(12.dp))
             LazyColumn(
-                modifier = Modifier.fillMaxWidth().padding(paddingValues),
+                modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 itemsIndexed(state.wordList) { index, word ->
                     Column {
                         Row(
-                            modifier = Modifier.fillMaxWidth().clickable {
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp).clickable {
                                 onEvent(WordsUiEvent.OnWordNavigate(word.dictionaryWord))
                             },
                             horizontalArrangement = Arrangement.SpaceBetween

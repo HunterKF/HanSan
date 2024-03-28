@@ -4,6 +4,7 @@ data class WordModel(
     val dictionaryWord: String,
     val definition: String,
     val type: ModifierType,
+    val irregular: Boolean,
     //fh - formal high
     val fhPresentDeclarative: WordTenseModel,
     val fhPastDeclarative: WordTenseModel,

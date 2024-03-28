@@ -9,6 +9,7 @@ import com.jaegerapps.hansan.core.presentation.HanSanTheme
 import com.jaegerapps.hansan.screens.learn.presentation.LearnScreen
 import com.jaegerapps.hansan.screens.loading.presentation.LoadingScreen
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeScreen
+import com.jaegerapps.hansan.screens.settings.presentation.SettingsScreen
 import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordScreen
 import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordUiEvent
 import com.jaegerapps.hansan.screens.words.word_list.presentation.WordsScreen
@@ -61,12 +62,20 @@ fun App(
                 }
 
                 is RootComponent.Child.IndividualWordScreen -> {
-                    val state = instance.component.state
-                    IndividualWordScreen(state, onNavigate = {
+                    val wordState = instance.component.state
+                    IndividualWordScreen(wordState, onNavigate = {
                         instance.component.onEvent(
                             IndividualWordUiEvent.OnNavigateBack
                         )
                     })
+                }
+
+                is RootComponent.Child.SettingsScreen -> {
+                    val settingsState = instance.component.state.collectAsState()
+                    SettingsScreen(
+                        settingsState.value,
+                        onEvent = { instance.component.onEvent(it) }
+                    )
                 }
             }
 

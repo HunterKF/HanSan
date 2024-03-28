@@ -1,20 +1,12 @@
-package com.jaegerapps.hansan.screens.practice.data.repo
+package com.jaegerapps.hansan.screens.settings.data.local
 
-import com.jaegerapps.hansan.common.models.Formality
-import com.jaegerapps.hansan.common.models.ModifierType
-import com.russhwolf.settings.Settings
 import com.jaegerapps.hansan.common.models.UserSettings
-import com.jaegerapps.hansan.common.models.formalityToString
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.stringToType
-import com.jaegerapps.hansan.common.models.typeToString
 import com.jaegerapps.hansan.common.util.SettingKeys
-import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
-import com.russhwolf.settings.get
+import com.russhwolf.settings.Settings
 
-class PracticeRepoImpl(
-    private val settings: Settings,
-) : PracticeRepo {
+class SettingsLocalDataSourceImpl(val settings: Settings) : SettingsLocalDataSource {
     override suspend fun getUserSettings(): UserSettings {
         val formality = settings.getString(SettingKeys.FORMALITY, "formal_high")
         val type = settings.getString(SettingKeys.TYPE, "verb")
@@ -36,17 +28,28 @@ class PracticeRepoImpl(
         )
     }
 
-    override suspend fun updateUserSettingsType(type: ModifierType) {
-        settings.putString(SettingKeys.TYPE, typeToString(type))
+    override suspend fun enableDailyReminders(value: Boolean): Boolean {
+        settings.putBoolean(SettingKeys.DAILY_REMINDERS_ENABLED, value)
+        return settings.getBoolean(SettingKeys.DAILY_REMINDERS_ENABLED, false)
     }
 
-    override suspend fun updateUserSettingsFormality(formality: Formality) {
-        settings.putString(SettingKeys.FORMALITY, formalityToString(formality))
+    override suspend fun updateDailyTarget(value: Int): Int {
+        settings.putInt(SettingKeys.DAILY_TARGET, value)
+        return settings.getInt(SettingKeys.DAILY_TARGET, 50)
     }
 
+    override suspend fun updatePresentTense(value: Boolean): Boolean {
+        settings.putBoolean(SettingKeys.PRESENT_TENSE_ENABLED, value)
+        return settings.getBoolean(SettingKeys.PRESENT_TENSE_ENABLED, true)
+    }
 
-    override suspend fun updateUserSettingsKeyboard(enabled: Boolean): Boolean {
-        settings.putBoolean(SettingKeys.KEYBOARD_ENABLED, enabled)
-        return settings.getBoolean(SettingKeys.KEYBOARD_ENABLED, false)
+    override suspend fun updatePastTense(value: Boolean): Boolean {
+        settings.putBoolean(SettingKeys.PAST_TENSE_ENABLED, value)
+        return settings.getBoolean(SettingKeys.PAST_TENSE_ENABLED, true)
+    }
+
+    override suspend fun updateFutureTense(value: Boolean): Boolean {
+        settings.putBoolean(SettingKeys.FUTURE_TENSE_ENABLED, value)
+        return settings.getBoolean(SettingKeys.FUTURE_TENSE_ENABLED, true)
     }
 }

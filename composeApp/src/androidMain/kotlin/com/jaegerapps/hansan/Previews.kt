@@ -60,6 +60,10 @@ import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardIc
 import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardInputContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardKey
 import com.jaegerapps.hansan.screens.practice.presentation.components.WordContainer
+import com.jaegerapps.hansan.screens.settings.presentation.SettingsScreen
+import com.jaegerapps.hansan.screens.settings.presentation.SettingsUiState
+import com.jaegerapps.hansan.screens.settings.presentation.components.InputItem
+import com.jaegerapps.hansan.screens.settings.presentation.components.ToggleItem
 import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordScreen
 import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordUiState
 import com.jaegerapps.hansan.screens.words.word_individual.component.ExamineWordContainer
@@ -72,6 +76,7 @@ private val hadaWordModel = WordModel(
     dictionaryWord = "하다",
     definition = "to do",
     type = ModifierType.VERBS,
+    irregular = false,
     fhPresentDeclarative = WordTenseModel("합니다", Tense.PRESENT_DECLARATIVE, Formality.FORMAL_HIGH),
     fhPastDeclarative = WordTenseModel("했습니다", Tense.PAST_DECLARATIVE, Formality.FORMAL_HIGH),
     fhFutureDeclarative = WordTenseModel("할 겁니다", Tense.FUTURE_DECLARATIVE, Formality.FORMAL_HIGH),
@@ -778,6 +783,87 @@ fun Preview_AnswerContainer() {
 
                 }
             }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Preview_ToggleItem() {
+    var enabled by remember { mutableStateOf(false) }
+    Column {
+        HanSanTheme(false) {
+            ToggleItem(
+                text = "Daily Reminders",
+                isEnabled = enabled,
+                onClick = {
+                    enabled = it
+                }
+            )
+        }
+        Spacer(Modifier.height(24.dp))
+        HanSanTheme(true) {
+            ToggleItem(
+                text = "Daily Reminders",
+                isEnabled = enabled,
+                onClick = {
+                    enabled = it
+                }
+            )
+        }
+    }
+}
+@Preview
+@Composable
+fun Preview_InputItem() {
+    var number by remember { mutableStateOf("") }
+    Column(
+        modifier = Modifier.padding(12.dp)
+    ) {
+        HanSanTheme(false) {
+            Box(
+                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)
+            ) {
+
+                InputItem(
+                    text = "Daily Goal",
+                    inputText = number,
+                    onValueChange = {
+                        number = it
+                    }
+                )
+            }
+        }
+        Spacer(Modifier.height(24.dp))
+        HanSanTheme(true) {
+            Box(
+                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)
+            ) {
+
+                InputItem(
+                    text = "Daily Goal",
+                    inputText = number,
+                    onValueChange = {
+                        number = it
+                    }
+                )
+            }
+        }
+    }
+}
+@Preview
+@Composable
+fun Preview_SettingsScreen() {
+    val state = SettingsUiState()
+    Column(
+    ) {
+        HanSanTheme(false) {
+            SettingsScreen(
+                state = state,
+                onEvent = {
+
+                }
+            )
         }
     }
 }

@@ -8,6 +8,10 @@ import com.russhwolf.settings.NSUserDefaultsSettings
 import com.russhwolf.settings.Settings
 import com.jaegerapps.hansan.screens.practice.data.repo.PracticeRepoImpl
 import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
+import com.jaegerapps.hansan.screens.settings.data.local.SettingsLocalDataSource
+import com.jaegerapps.hansan.screens.settings.data.local.SettingsLocalDataSourceImpl
+import com.jaegerapps.hansan.screens.settings.data.repo.SettingsRepoImpl
+import com.jaegerapps.hansan.screens.settings.domain.repo.SettingsRepo
 import platform.Foundation.NSUserDefaults
 
 actual class AppModule {
@@ -28,5 +32,11 @@ actual class AppModule {
         LoadingRepoImpl(
             loadingLocalDataSourceJson
         )
+    }
+    actual val settingsLocalDataSource: SettingsLocalDataSource by lazy {
+        SettingsLocalDataSourceImpl(settings)
+    }
+    actual val settingsRepo: SettingsRepo by lazy {
+        SettingsRepoImpl(settingsLocalDataSource)
     }
 }

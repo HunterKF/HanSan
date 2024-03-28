@@ -1,9 +1,12 @@
 package com.jaegerapps.hansan.screens.practice.presentation
 
+import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.TenseModel
+import com.jaegerapps.hansan.common.models.UserSettings
 import com.jaegerapps.hansan.common.models.WordModel
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.stringToType
@@ -12,43 +15,60 @@ import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.common.util.Knower.e
 import com.jaegerapps.hansan.screens.practice.domain.hangul.isHangul
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
+import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
 import com.jaegerapps.hansan.screens.practice.domain.usecases.EnterAnswer
 import com.jaegerapps.hansan.screens.practice.domain.usecases.WordAndTenseHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class PracticeComponent(
     componentContext: ComponentContext,
     private val tenses: List<TenseModel>,
     private val words: List<WordModel>,
     private val onNavigate: (String) -> Unit,
+    private val repo: PracticeRepo
 ) : ComponentContext by componentContext {
     private val _state = MutableStateFlow(PracticeUiState())
+    var userSettings = mutableStateOf<UserSettings?>(null)
     val state = _state.asStateFlow()
 
 
+    private val scope = CoroutineScope(Dispatchers.IO)
+
     init {
-        lifecycle.doOnCreate {
-            val word = WordAndTenseHandler.newWord(words)
-            val tense =
-                WordAndTenseHandler.newTense(filterTenses(_state.value.targetFormality))
-            val answerOptions = WordAndTenseHandler.newAnswerOptions(
-                word,
-                tense.tense,
-                formality = _state.value.targetFormality
-            )
-            _state.update {
-                it.copy(
-                    currentWord = word,
-                    targetTense = tense,
-                    answerOptions = answerOptions
+        lifecycle.subscribe(
+            object : Lifecycle.Callbacks {
+                override fun onCreate() {
+                    scope.launch {
+                        userSettings.value = async { repo.getUserSettings() }.await()
+                    }
+                    val word = WordAndTenseHandler.newWord(words)
+                    val tense = WordAndTenseHandler.newTense(filterTenses(userSettings.value?.targetFormality ?: Formality.FORMAL_HIGH))
+                    val answerOptions = WordAndTenseHandler.newAnswerOptions(
+                        word,
+                        tense.tense,
+                        formality = _state.value.targetFormality
+                    )
+                    _state.update {
+                        it.copy(
+                            currentWord = word,
+                            targetTense = tense,
+                            answerOptions = answerOptions
 
-                )
+                        )
+                    }
+                    Knower.d("PracticeComponent - init", "Here are the values: $words \n $tenses")
+                }
+
+                // onStart, onResume, onPause, onStop, onDestroy
             }
-            Knower.d("PracticeComponent - init", "Here are the values: $words \n $tenses")
-
-        }
+        )
     }
 
     fun onEvent(event: PracticeUiEvent) {
@@ -91,10 +111,6 @@ class PracticeComponent(
                         }
 
                         AnswerResponse.WRONG -> {
-                            Knower.e(
-                                "EnterAnswerKeyboard",
-                                "The answer was wrong. Here are the values: \n Tense: ${_state.value.targetTense} \n Word: ${_state.value.currentWord} \n Text input: ${_state.value.textInput}"
-                            )
                             _state.update {
                                 it.copy(
                                     answerResponse = answer,
@@ -187,8 +203,7 @@ class PracticeComponent(
 
             is PracticeUiEvent.SelectFormality -> {
 
-                val formality =
-                    getFormalityFromString(event.formality.lowercase().replace(" ", "_"))
+                val formality = getFormalityFromString(event.formality.lowercase().replace(" ", "_"))
                 val word = WordAndTenseHandler.newWord(words)
                 val tense = WordAndTenseHandler.newTense(filterTenses(formality))
                 val answerOptions = WordAndTenseHandler.newAnswerOptions(
@@ -276,6 +291,7 @@ class PracticeComponent(
     }
 
     private fun filterTenses(formality: Formality): List<TenseModel> {
+        if (formality == Formality.ALL) return tenses
         return tenses.filter { tense -> tense.formality == formality }
     }
 

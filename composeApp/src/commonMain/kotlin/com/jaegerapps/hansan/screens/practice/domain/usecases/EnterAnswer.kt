@@ -5,6 +5,7 @@ import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.WordModel
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.d
+import com.jaegerapps.hansan.common.util.Knower.e
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 
 class EnterAnswer {
@@ -24,6 +25,7 @@ class EnterAnswer {
         }
 
         private fun getTenseModel(targetTense: Tense,  wordModel: WordModel, formality: Formality): String {
+            Knower.e("getTenseModel", "here are the values: $targetTense, $wordModel, $formality")
             val result = listOf(
                 wordModel.fhPresentDeclarative,
                 wordModel.fhPastDeclarative,

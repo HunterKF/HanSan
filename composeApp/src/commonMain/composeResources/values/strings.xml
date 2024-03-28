@@ -7,6 +7,7 @@
     <string name="formality_formal_high">Formal High</string>
     <string name="formality_formal_low">Formal Low</string>
     <string name="formality_informal_low">Informal Low</string>
+    <string name="formality_all">All</string>
 
     <string name="type_verb">Verb</string>
     <string name="type_adjective">Adjective</string>
@@ -17,5 +18,7 @@
 
     <string name="error_not_korean">Please change your keyboard to Korean to type.</string>
     <string name="error_answer_blank">Please type your answer first.</string>
+    <string name="error_tense_blank">At least one tense must be selected.</string>
+    <string name="error_daily_goal_blank">Daily goal can't be blank.</string>
 
 </resources>

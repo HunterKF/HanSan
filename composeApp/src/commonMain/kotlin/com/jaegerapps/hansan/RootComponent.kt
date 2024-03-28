@@ -13,6 +13,7 @@ import com.jaegerapps.hansan.di.AppModule
 import com.jaegerapps.hansan.screens.learn.presentation.LearnComponent
 import com.jaegerapps.hansan.screens.loading.presentation.LoadingComponent
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeComponent
+import com.jaegerapps.hansan.screens.settings.presentation.SettingsComponent
 import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordComponent
 import com.jaegerapps.hansan.screens.words.word_list.presentation.WordsComponent
 import kotlinx.coroutines.CoroutineScope
@@ -31,7 +32,6 @@ class RootComponent(
 
     private val state = MutableStateFlow(RootState())
 
-    private val scope = CoroutineScope(Dispatchers.IO)
 
     val childStack = childStack(
         source = navigation,
@@ -53,6 +53,7 @@ class RootComponent(
                         componentContext = context,
                         tenses = state.value.tenses,
                         words = state.value.words,
+                        repo = appModule.practiceRepo,
                         onNavigate = {
                             onNavigate(it)
                         }
@@ -89,6 +90,7 @@ class RootComponent(
                     )
                 )
             }
+
             Configuration.WordsScreen -> {
                 Child.WordsScreen(
                     WordsComponent(
@@ -103,6 +105,7 @@ class RootComponent(
                     )
                 )
             }
+
             is Configuration.IndividualWordScreen -> {
                 Child.IndividualWordScreen(
                     IndividualWordComponent(
@@ -110,6 +113,18 @@ class RootComponent(
                         componentContext = context,
                         onNavigate = {
                             navigation.pop()
+                        }
+                    )
+                )
+            }
+
+            Configuration.SettingsScreen -> {
+                Child.SettingsScreen(
+                    SettingsComponent(
+                        componentContext = context,
+                        repo = appModule.settingsRepo,
+                        onNavigate = {
+                            onNavigate(it)
                         }
                     )
                 )
@@ -123,6 +138,7 @@ class RootComponent(
         data class WordsScreen(val component: WordsComponent) : Child()
         data class LoadingScreen(val component: LoadingComponent) : Child()
         data class IndividualWordScreen(val component: IndividualWordComponent) : Child()
+        data class SettingsScreen(val component: SettingsComponent) : Child()
     }
 
     @Serializable
@@ -132,15 +148,19 @@ class RootComponent(
 
         @Serializable
         data object LearnScreen : Configuration()
+
         @Serializable
         data object WordsScreen : Configuration()
 
         @Serializable
         data object LoadingScreen : Configuration()
+
         @Serializable
         data class IndividualWordScreen(
-            val word: String
+            val word: String,
         ) : Configuration()
+        @Serializable
+        data object SettingsScreen : Configuration()
 
     }
 
@@ -149,6 +169,7 @@ class RootComponent(
             Routes.LEARN -> navigation.replaceCurrent(Configuration.LearnScreen)
             Routes.PRACTICE -> navigation.replaceAll(Configuration.PracticeScreen)
             Routes.WORDS -> navigation.replaceCurrent(Configuration.WordsScreen)
+            Routes.SETTINGS -> navigation.replaceCurrent(Configuration.SettingsScreen)
             else -> navigation.replaceAll(Configuration.PracticeScreen)
         }
     }

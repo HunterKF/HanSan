@@ -25,7 +25,6 @@ class LoadingLocalDataSourceJsonImpl : LoadingLocalDataSourceJson {
     override suspend fun getTenses(): List<TenseEntity>? {
         return try {
             val jsonTenses = Res.readBytes("files/tenses.json").decodeToString()
-
             parseJsonTense(jsonTenses)
         } catch (e: Exception) {
             e.printStackTrace()

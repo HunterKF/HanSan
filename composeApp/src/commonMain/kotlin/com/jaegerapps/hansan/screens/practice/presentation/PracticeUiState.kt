@@ -4,6 +4,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.ModifierType
 import com.jaegerapps.hansan.common.models.TenseModel
+import com.jaegerapps.hansan.common.models.UserSettings
 import com.jaegerapps.hansan.common.models.WordModel
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 
@@ -22,7 +23,7 @@ data class PracticeUiState(
     val tenseExplanationExpanded: Boolean = false,
     val typeDropDown: Boolean = false,
     val answerResponse: AnswerResponse? = null,
-    val errorMessage: PracticeErrorMessage? = null
+    val errorMessage: PracticeErrorMessage? = null,
 )
 
 private val modifierTypeList = listOf(
@@ -34,7 +35,8 @@ private val modifierTypeList = listOf(
 private val formalityDefaultList = listOf(
     Formality.FORMAL_HIGH,
     Formality.FORMAL_LOW,
-    Formality.INFORMAL_LOW
+    Formality.INFORMAL_LOW,
+    Formality.ALL
 )
 enum class PracticeErrorMessage {
     NOT_KOREAN,
