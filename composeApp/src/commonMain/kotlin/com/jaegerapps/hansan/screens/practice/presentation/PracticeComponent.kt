@@ -3,7 +3,6 @@ package com.jaegerapps.hansan.screens.practice.presentation
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.UserSettings
@@ -48,15 +47,18 @@ class PracticeComponent(
                     scope.launch {
                         userSettings.value = async { repo.getUserSettings() }.await()
                     }
+                    val targetFormality = returnTargetFormality(userSettings.value?.targetFormality ?: Formality.FORMAL_HIGH)
                     val word = WordAndTenseHandler.newWord(words)
-                    val tense = WordAndTenseHandler.newTense(filterTenses(userSettings.value?.targetFormality ?: Formality.FORMAL_HIGH))
+                    val tense = WordAndTenseHandler.newTense(filterTenses(targetFormality))
                     val answerOptions = WordAndTenseHandler.newAnswerOptions(
                         word,
                         tense.tense,
-                        formality = _state.value.targetFormality
+                        formality = _state.value.selectedFormalityCategory
                     )
                     _state.update {
                         it.copy(
+                            selectedFormalityCategory = userSettings.value?.targetFormality ?: Formality.FORMAL_HIGH,
+                            targetFormality = targetFormality,
                             currentWord = word,
                             targetTense = tense,
                             answerOptions = answerOptions
@@ -91,13 +93,13 @@ class PracticeComponent(
                 result?.let { answer ->
                     when (answer) {
                         AnswerResponse.CORRECT -> {
+                            val targetFormality = returnTargetFormality(_state.value.selectedFormalityCategory)
                             val word = WordAndTenseHandler.newWord(words)
-                            val tense =
-                                WordAndTenseHandler.newTense(filterTenses(_state.value.targetFormality))
+                            val tense = WordAndTenseHandler.newTense(filterTenses(targetFormality))
                             val answerOptions = WordAndTenseHandler.newAnswerOptions(
                                 word,
                                 tense.tense,
-                                formality = _state.value.targetFormality
+                                formality = targetFormality
                             )
                             _state.update {
                                 it.copy(
@@ -105,7 +107,8 @@ class PracticeComponent(
                                     textInput = "",
                                     currentWord = word,
                                     targetTense = tense,
-                                    answerOptions = answerOptions
+                                    answerOptions = answerOptions,
+                                    targetFormality = targetFormality
                                 )
                             }
                         }
@@ -153,13 +156,13 @@ class PracticeComponent(
                 result?.let { answer ->
                     when (answer) {
                         AnswerResponse.CORRECT -> {
+                            val targetFormality = returnTargetFormality(_state.value.selectedFormalityCategory)
                             val word = WordAndTenseHandler.newWord(words)
-                            val tense =
-                                WordAndTenseHandler.newTense(filterTenses(_state.value.targetFormality))
+                            val tense = WordAndTenseHandler.newTense(filterTenses(targetFormality))
                             val answerOptions = WordAndTenseHandler.newAnswerOptions(
                                 word,
                                 tense.tense,
-                                formality = _state.value.targetFormality
+                                formality = targetFormality
                             )
                             _state.update {
                                 it.copy(
@@ -167,7 +170,8 @@ class PracticeComponent(
                                     textInput = "",
                                     currentWord = word,
                                     targetTense = tense,
-                                    answerOptions = answerOptions
+                                    answerOptions = answerOptions,
+                                    targetFormality = targetFormality
                                 )
                             }
                         }
@@ -202,18 +206,19 @@ class PracticeComponent(
             }
 
             is PracticeUiEvent.SelectFormality -> {
-
                 val formality = getFormalityFromString(event.formality.lowercase().replace(" ", "_"))
+                val targetFormality = returnTargetFormality(formality)
                 val word = WordAndTenseHandler.newWord(words)
-                val tense = WordAndTenseHandler.newTense(filterTenses(formality))
+                val tense = WordAndTenseHandler.newTense(filterTenses(targetFormality))
                 val answerOptions = WordAndTenseHandler.newAnswerOptions(
                     word,
                     tense.tense,
-                    formality = formality
+                    formality = targetFormality
                 )
                 _state.update {
                     it.copy(
-                        targetFormality = formality,
+                        selectedFormalityCategory = formality,
+                        targetFormality = targetFormality,
                         targetTense = tense,
                         formalityDropDown = false,
                         textInput = "",
@@ -293,6 +298,15 @@ class PracticeComponent(
     private fun filterTenses(formality: Formality): List<TenseModel> {
         if (formality == Formality.ALL) return tenses
         return tenses.filter { tense -> tense.formality == formality }
+    }
+
+    private fun returnTargetFormality(formality: Formality): Formality {
+        val formalityList = listOf(Formality.FORMAL_HIGH, Formality.FORMAL_LOW, Formality.INFORMAL_LOW)
+        return if (formality == Formality.ALL) {
+            formalityList.random()
+        } else {
+            _state.value.selectedFormalityCategory
+        }
     }
 
 
