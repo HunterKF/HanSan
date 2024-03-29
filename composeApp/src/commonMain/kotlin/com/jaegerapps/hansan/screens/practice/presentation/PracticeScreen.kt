@@ -162,7 +162,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                 modifier = Modifier.fillMaxWidth().blur(blur)
             ) {
                 WordContainer(
-                    modifier = Modifier.fillMaxWidth().weight(1.2f),
+                    modifier = Modifier.fillMaxWidth().weight(1.0f),
                     word = state.currentWord?.dictionaryWord ?: "고장",
                     definition = state.currentWord?.definition ?: "error",
                     answerResponse = state.answerResponse,
@@ -186,18 +186,22 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                         )
                     }
                 }
-                Box(
+                Column(
                     modifier = Modifier.fillMaxWidth().weight(0.8f)
                 ) {
 
-                    KeyboardEnabledIcon(
-                        modifier = Modifier.align(Alignment.TopEnd),
-                        enabled = state.keyboardEnabled,
-                        onClick = { onEvent(PracticeUiEvent.ToggleKeyboardMode) }
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.CenterEnd
+                    ) {
+                        KeyboardEnabledIcon(
+                            enabled = state.keyboardEnabled,
+                            onClick = { onEvent(PracticeUiEvent.ToggleKeyboardMode) }
+                        )
+                    }
                     if (state.keyboardEnabled) {
                         KeyboardInputContainer(
-                            modifier = Modifier.align(Alignment.Center).fillMaxWidth(),
+                            modifier = Modifier.weight(1f).fillMaxWidth(),
                             input = state.textInput,
                             onEvent = {
                                 onEvent(it)
@@ -205,7 +209,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                         )
                     } else {
                         AnswerContainer(
-                            modifier = Modifier.align(Alignment.Center).fillMaxWidth(),
+                            modifier = Modifier.weight(1f).fillMaxWidth(),
                             answers = state.answerOptions,
                             onSelect = {
                                 onEvent(PracticeUiEvent.ClickAnswer(it))

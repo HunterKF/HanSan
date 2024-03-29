@@ -138,9 +138,9 @@ class SettingsComponent(
             is SettingsUiEvent.TogglePresentTense -> {
                 if (
                     !atLeastOneTenseEnabled(
-                        _state.value.presentTenseEnabled,
+                        event.value,
                         _state.value.pastTenseEnabled,
-                        event.value
+                        _state.value.futureTenseEnabled
                     )
                 ) {
                     _state.update { it.copy(errorMessage = SettingsErrorMessage.TENSE_BLANK) }

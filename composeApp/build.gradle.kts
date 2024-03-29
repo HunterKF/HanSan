@@ -33,6 +33,7 @@ kotlin {
             dependencies {
                 implementation(libs.compose.ui.tooling.preview)
                 implementation(libs.androidx.activity.compose)
+                implementation ("androidx.work:work-runtime-ktx:2.9.0")
             }
         }
         val commonMain by getting {
