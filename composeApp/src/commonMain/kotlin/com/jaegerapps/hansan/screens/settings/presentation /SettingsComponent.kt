@@ -2,12 +2,9 @@ package com.jaegerapps.hansan.screens.settings.presentation
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.jaegerapps.hansan.common.util.Knower
-import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.screens.settings.domain.repo.SettingsRepo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,7 +36,7 @@ class SettingsComponent(
                                     pastTenseEnabled = result.pastTenseEnabled,
                                     futureTenseEnabled = result.futureTenseEnabled,
                                     enableReminders = result.enableReminders,
-                                    dailyTarget = result.dailyTarget,
+                                    dailyTarget = result.dailyTargetMax,
                                     loading = false
                                 )
                             }
@@ -78,7 +75,6 @@ class SettingsComponent(
             }
 
             is SettingsUiEvent.ToggleDailyReminders -> {
-
                 scope.launch {
                     val result = async { repo.enableDailyReminders(event.value) }.await()
                     _state.update {

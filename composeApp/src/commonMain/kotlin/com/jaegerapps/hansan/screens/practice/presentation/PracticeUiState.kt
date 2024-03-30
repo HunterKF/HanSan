@@ -24,6 +24,9 @@ data class PracticeUiState(
     val tenseExplanationExpanded: Boolean = false,
     val typeDropDown: Boolean = false,
     val answerResponse: AnswerResponse? = null,
+
+    val dailyGoalMax: Int = 50,
+    val dailyGoalMet: Int? = null,
     val errorMessage: PracticeErrorMessage? = null,
 )
 

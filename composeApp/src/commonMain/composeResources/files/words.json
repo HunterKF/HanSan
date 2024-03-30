@@ -308,7 +308,7 @@
     "dictionary_form": "걷다",
     "dictionary_definition": "to walk",
     "type": "verb",
-    "irregular": false,
+    "irregular": true,
     "formal_high_present_declarative": "걸어요",
     "formal_high_past_declarative": "걸었어요",
     "formal_high_future_declarative": "걸을 거에요",
@@ -613,7 +613,7 @@
     "dictionary_form": "고르다",
     "dictionary_definition": "to choose, to select",
     "type": "verb",
-    "irregular": false,
+    "irregular": true,
     "formal_high_present_declarative": "고릅니다",
     "formal_high_past_declarative": "골랐습니다",
     "formal_high_future_declarative": "골랄 겁니다",
@@ -1045,7 +1045,7 @@
     "dictionary_form": "깎다",
     "dictionary_definition": "to peel, to cut; to cut down, to discount",
     "type": "verb",
-    "irregular": false,
+    "irregular": true,
     "formal_high_present_declarative": "깎습니다",
     "formal_high_past_declarative": "깎았습니다",
     "formal_high_future_declarative": "깎을 겁니다",
@@ -1099,7 +1099,7 @@
     "dictionary_form": "깨닫다",
     "dictionary_definition": "to realize, to become aware",
     "type": "verb",
-    "irregular": false,
+    "irregular": true,
     "formal_high_present_declarative": "깨닭니다",
     "formal_high_past_declarative": "깨달았습니다",
     "formal_high_future_declarative": "깨달을 겁니다",
@@ -1136,17 +1136,17 @@
     "dictionary_definition": "to decorate; to invent, to fabricate",
     "type": "verb",
     "irregular": false,
-    "formal_high_present_declarative": "꾸민다",
-    "formal_high_past_declarative": "꾸몀습니다",
-    "formal_high_future_declarative": "꾸멀 겁니다",
+    "formal_high_present_declarative": "꾸밉니다",
+    "formal_high_past_declarative": "꾸몄습니다",
+    "formal_high_future_declarative": "꾸밀 겁니다",
 
     "formal_low_present_declarative": "꾸며요",
-    "formal_low_past_declarative": "꾸몀어요",
-    "formal_low_future_declarative": "꾸멀 거에요",
+    "formal_low_past_declarative": "꾸몄어요",
+    "formal_low_future_declarative": "꾸밀 거예요",
 
     "informal_low_present_declarative": "꾸며",
-    "informal_low_past_declarative": "꾸몀어",
-    "informal_low_future_declarative": "꾸멀 거야"
+    "informal_low_past_declarative": "꾸몄어",
+    "informal_low_future_declarative": "꾸밀 거야"
   },
   {
     "id": 67,
@@ -1568,17 +1568,17 @@
     "dictionary_definition": "to give, to put; to hand in; to pay",
     "type": "verb",
     "irregular": false,
-    "formal_high_present_declarative": "내놉니다",
-    "formal_high_past_declarative": "내놨습니다",
-    "formal_high_future_declarative": "내겠습니다",
+    "formal_high_present_declarative": "냅니다",
+    "formal_high_past_declarative": "냈습니다",
+    "formal_high_future_declarative": "낼 겁니다",
 
     "formal_low_present_declarative": "내요",
-    "formal_low_past_declarative": "내놨어요",
-    "formal_low_future_declarative": "내겠어요",
+    "formal_low_past_declarative": "냈어요",
+    "formal_low_future_declarative": "낼 거예요",
 
     "informal_low_present_declarative": "내",
-    "informal_low_past_declarative": "내놨어",
-    "informal_low_future_declarative": "내겠어"
+    "informal_low_past_declarative": "냈어",
+    "informal_low_future_declarative": "낼 거야"
   },
   {
     "id": 91,
@@ -1639,14 +1639,14 @@
     "dictionary_form": "내밀다",
     "dictionary_definition": "to stick out, to stretch out",
     "type": "verb",
-    "irregular": false,
-    "formal_high_present_declarative": "내놉니다",
-    "formal_high_past_declarative": "내밀었습니다",
+    "irregular": true,
+    "formal_high_present_declarative": "내밉니다",
+    "formal_high_past_declarative": "",
     "formal_high_future_declarative": "내밀 겁니다",
 
     "formal_low_present_declarative": "내밀어요",
     "formal_low_past_declarative": "내밀었어요",
-    "formal_low_future_declarative": "내밀 거에요",
+    "formal_low_future_declarative": "내밀 거예요",
 
     "informal_low_present_declarative": "내밀어",
     "informal_low_past_declarative": "내밀었어",
@@ -1712,13 +1712,13 @@
     "dictionary_definition": "to cross, to pass",
     "type": "verb",
     "irregular": false,
-    "formal_high_present_declarative": "넘어서요",
-    "formal_high_past_declarative": "넘어섰어요",
-    "formal_high_future_declarative": "넘어설 거에요",
+    "formal_high_present_declarative": "넘어섭니다",
+    "formal_high_past_declarative": "넘어섰습니다",
+    "formal_high_future_declarative": "넘어설 겁니다",
 
-    "formal_low_present_declarative": "넘어서",
-    "formal_low_past_declarative": "넘어섰어",
-    "formal_low_future_declarative": "넘어설 거야",
+    "formal_low_present_declarative": "넘어서요",
+    "formal_low_past_declarative": "넘어섰어요",
+    "formal_low_future_declarative": "넘어설 거예요",
 
     "informal_low_present_declarative": "넘어서",
     "informal_low_past_declarative": "넘어섰어",
@@ -2108,9 +2108,9 @@
     "dictionary_definition": "to go (to); to attend",
     "type": "verb",
     "irregular": false,
-    "formal_high_present_declarative": "다니세요",
-    "formal_high_past_declarative": "다녔어요",
-    "formal_high_future_declarative": "다닐 거에요",
+    "formal_high_present_declarative": "다닙니다",
+    "formal_high_past_declarative": "다녔습니다",
+    "formal_high_future_declarative": "다닐 겁니다",
 
     "formal_low_present_declarative": "다녀요",
     "formal_low_past_declarative": "다녔어요",
@@ -2130,13 +2130,13 @@
     "formal_high_past_declarative": "다쳤습니다",
     "formal_high_future_declarative": "다칠 겁니다",
 
-    "formal_low_present_declarative": "다치세요",
+    "formal_low_present_declarative": "다쳐요",
     "formal_low_past_declarative": "다쳤어요",
     "formal_low_future_declarative": "다칠 거에요",
 
-    "informal_low_present_declarative": "다치세요",
-    "informal_low_past_declarative": "다쳤어요",
-    "informal_low_future_declarative": "다칠 거에요"
+    "informal_low_present_declarative": "다쳐",
+    "informal_low_past_declarative": "다쳤어",
+    "informal_low_future_declarative": "다칠 거야"
   },
   {
     "id": 122,
@@ -2144,11 +2144,11 @@
     "dictionary_definition": "to run out; to carry out, to fulfill",
     "type": "verb",
     "irregular": false,
-    "formal_high_present_declarative": "달합니다",
+    "formal_high_present_declarative": "다합니다",
     "formal_high_past_declarative": "다했습니다",
     "formal_high_future_declarative": "다할 겁니다",
 
-    "formal_low_present_declarative": "달아요",
+    "formal_low_present_declarative": "다해요",
     "formal_low_past_declarative": "다했어요",
     "formal_low_future_declarative": "다할 거에요",
 
@@ -2215,18 +2215,18 @@
     "dictionary_form": "달다",
     "dictionary_definition": "to hoist, to attach, to wear",
     "type": "verb",
-    "irregular": false,
+    "irregular": true,
     "formal_high_present_declarative": "답니다",
-    "formal_high_past_declarative": "다렸습니다",
-    "formal_high_future_declarative": "다를 겁니다",
+    "formal_high_past_declarative": "달았습니다",
+    "formal_high_future_declarative": "달 겁니다",
 
-    "formal_low_present_declarative": "다려요",
-    "formal_low_past_declarative": "다렸어요",
-    "formal_low_future_declarative": "다를 거에요",
+    "formal_low_present_declarative": "달아요",
+    "formal_low_past_declarative": "달았어요",
+    "formal_low_future_declarative": "달 거에요",
 
-    "informal_low_present_declarative": "다려",
-    "informal_low_past_declarative": "다렸어",
-    "informal_low_future_declarative": "다를 거야"
+    "informal_low_present_declarative": "달아",
+    "informal_low_past_declarative": "달았어",
+    "informal_low_future_declarative": "달 거야"
   },
   {
     "id": 127,
@@ -2432,17 +2432,17 @@
     "dictionary_definition": "to put, to apply, to touch",
     "type": "verb",
     "irregular": false,
-    "formal_high_present_declarative": "대입니",
-    "formal_high_past_declarative": "대입니",
-    "formal_high_future_declarative": "대입니",
+    "formal_high_present_declarative": "댑니다",
+    "formal_high_past_declarative": "댔습니다",
+    "formal_high_future_declarative": "댈 겁니다",
 
-    "formal_low_present_declarative": "대",
-    "formal_low_past_declarative": "대",
-    "formal_low_future_declarative": "대",
+    "formal_low_present_declarative": "대요",
+    "formal_low_past_declarative": "댔어요",
+    "formal_low_future_declarative": "댈 거예요",
 
     "informal_low_present_declarative": "대",
-    "informal_low_past_declarative": "대",
-    "informal_low_future_declarative": "대"
+    "informal_low_past_declarative": "댔어",
+    "informal_low_future_declarative": "댈 거야"
   },
   {
     "id": 139,

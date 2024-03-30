@@ -21,4 +21,7 @@
     <string name="error_tense_blank">At least one tense must be selected.</string>
     <string name="error_daily_goal_blank">Daily goal can't be blank.</string>
 
+
+    <string name="daily_task">Daily goal</string>
+
 </resources>

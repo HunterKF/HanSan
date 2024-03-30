@@ -2,6 +2,8 @@ package com.jaegerapps.hansan.di
 
 import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceJson
 import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceJsonImpl
+import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceSettings
+import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceSettingsImpl
 import com.jaegerapps.hansan.screens.loading.data.repo.LoadingRepoImpl
 import com.jaegerapps.hansan.screens.loading.domain.repo.LoadingRepo
 import com.russhwolf.settings.NSUserDefaultsSettings
@@ -21,6 +23,12 @@ actual class AppModule {
     actual val loadingLocalDataSourceJson: LoadingLocalDataSourceJson by lazy {
         LoadingLocalDataSourceJsonImpl()
     }
+    actual val loadingLocalDataSourceSetting: LoadingLocalDataSourceSettings by lazy {
+        LoadingLocalDataSourceSettingsImpl(
+            settings
+        )
+    }
+
 
     actual val practiceRepo: PracticeRepo by lazy {
         PracticeRepoImpl(
@@ -30,7 +38,8 @@ actual class AppModule {
 
     actual val loadingRepo: LoadingRepo by lazy {
         LoadingRepoImpl(
-            loadingLocalDataSourceJson
+            loadingLocalDataSourceJson,
+            loadingLocalDataSourceSetting
         )
     }
     actual val settingsLocalDataSource: SettingsLocalDataSource by lazy {

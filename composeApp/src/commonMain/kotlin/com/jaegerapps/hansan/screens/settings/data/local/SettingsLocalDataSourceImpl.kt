@@ -15,7 +15,8 @@ class SettingsLocalDataSourceImpl(val settings: Settings) : SettingsLocalDataSou
         val pastTenseEnabled = settings.getBoolean(SettingKeys.PAST_TENSE_ENABLED, true)
         val futureTenseEnabled = settings.getBoolean(SettingKeys.FUTURE_TENSE_ENABLED, true)
         val enableReminders = settings.getBoolean(SettingKeys.DAILY_REMINDERS_ENABLED, false)
-        val dailyTarget = settings.getInt(SettingKeys.DAILY_TARGET, 50)
+        val dailyTargetMet = settings.getInt(SettingKeys.DAILY_TARGET_MET, 50)
+        val dailyTargetMax = settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
         return UserSettings(
             targetFormality = getFormalityFromString(formality),
             targetType = stringToType(type),
@@ -24,7 +25,8 @@ class SettingsLocalDataSourceImpl(val settings: Settings) : SettingsLocalDataSou
             pastTenseEnabled = pastTenseEnabled,
             futureTenseEnabled = futureTenseEnabled,
             enableReminders = enableReminders,
-            dailyTarget = dailyTarget
+            dailyTargetMax = dailyTargetMax,
+            dailyTargetMet = dailyTargetMet
         )
     }
 
@@ -34,8 +36,8 @@ class SettingsLocalDataSourceImpl(val settings: Settings) : SettingsLocalDataSou
     }
 
     override suspend fun updateDailyTarget(value: Int): Int {
-        settings.putInt(SettingKeys.DAILY_TARGET, value)
-        return settings.getInt(SettingKeys.DAILY_TARGET, 50)
+        settings.putInt(SettingKeys.DAILY_TARGET_MET, value)
+        return settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
     }
 
     override suspend fun updatePresentTense(value: Boolean): Boolean {

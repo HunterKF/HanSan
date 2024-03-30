@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PracticeComponent(
     componentContext: ComponentContext,
@@ -34,8 +35,10 @@ class PracticeComponent(
     private val onNavigate: (String) -> Unit,
     private val repo: PracticeRepo,
 ) : ComponentContext by componentContext {
+
+    private var userSettings = mutableStateOf<UserSettings?>(null)
+
     private val _state = MutableStateFlow(PracticeUiState())
-    var userSettings = mutableStateOf<UserSettings?>(null)
     val state = _state.asStateFlow()
 
 
@@ -57,50 +60,6 @@ class PracticeComponent(
         )
     }
 
-    private fun initializePracticeComponent() {
-        scope.launch {
-            userSettings.value = async { repo.getUserSettings() }.await()
-        }
-        //The target is going to be the current one displayed
-        val targetFormality = returnTargetFormality(
-            userSettings.value?.targetFormality ?: Formality.FORMAL_HIGH
-        )
-        //This takes the enabled tenses from the user's settings and creates a list of Tenses to be used to filter
-        val enabledTenses = filterTensesByUserSettings(
-            presentTense = userSettings.value?.presentTenseEnabled ?: true,
-            pastTense = userSettings.value?.pastTenseEnabled ?: true,
-            futureTense = userSettings.value?.futureTenseEnabled ?: true,
-        )
-        //Gets a random word
-        val word = WordAndTenseHandler.newWord(words)
-        //Gets a random tense. It will filter based on formality and enabled tenses
-        val tense = WordAndTenseHandler.newTense(
-            filterTenses(
-                targetFormality,
-                enabledTenses
-            )
-        )
-        //Returns a list of 4 answers to be used for the clickable section
-        val answerOptions = WordAndTenseHandler.newAnswerOptions(
-            word,
-            tense.tense,
-            formality = _state.value.selectedFormalityCategory
-        )
-
-        _state.update {
-            it.copy(
-                selectedFormalityCategory = userSettings.value?.targetFormality
-                    ?: Formality.FORMAL_HIGH,
-                targetFormality = targetFormality,
-                enabledTenses = enabledTenses,
-                currentWord = word,
-                targetTense = tense,
-                answerOptions = answerOptions
-
-            )
-        }
-        Knower.d("PracticeComponent - init", "Here are the values: $words \n $tenses")
-    }
 
     fun onEvent(event: PracticeUiEvent) {
         when (event) {
@@ -143,7 +102,8 @@ class PracticeComponent(
                                     currentWord = word,
                                     targetTense = tense,
                                     answerOptions = answerOptions,
-                                    targetFormality = targetFormality
+                                    targetFormality = targetFormality,
+                                    dailyGoalMet = updateDailyTargetMet(it.dailyGoalMet!!)
                                 )
                             }
                         }
@@ -212,7 +172,8 @@ class PracticeComponent(
                                     currentWord = word,
                                     targetTense = tense,
                                     answerOptions = answerOptions,
-                                    targetFormality = targetFormality
+                                    targetFormality = targetFormality,
+                                    dailyGoalMet = updateDailyTargetMet(it.dailyGoalMet!!)
                                 )
                             }
                         }
@@ -357,6 +318,54 @@ class PracticeComponent(
         }
     }
 
+    private fun initializePracticeComponent() {
+        scope.launch {
+            userSettings.value = async { repo.getUserSettings() }.await()
+        }
+        //The target is going to be the current one displayed
+        val targetFormality = returnTargetFormality(
+            userSettings.value?.targetFormality ?: Formality.FORMAL_HIGH
+        )
+        //This takes the enabled tenses from the user's settings and creates a list of Tenses to be used to filter
+        val enabledTenses = filterTensesByUserSettings(
+            presentTense = userSettings.value?.presentTenseEnabled ?: true,
+            pastTense = userSettings.value?.pastTenseEnabled ?: true,
+            futureTense = userSettings.value?.futureTenseEnabled ?: true,
+        )
+        //Gets a random word
+        val word = WordAndTenseHandler.newWord(words)
+        //Gets a random tense. It will filter based on formality and enabled tenses
+        val tense = WordAndTenseHandler.newTense(
+            filterTenses(
+                targetFormality,
+                enabledTenses
+            )
+        )
+        //Returns a list of 4 answers to be used for the clickable section
+        val answerOptions = WordAndTenseHandler.newAnswerOptions(
+            word,
+            tense.tense,
+            formality = _state.value.selectedFormalityCategory
+        )
+
+        _state.update {
+            it.copy(
+                selectedFormalityCategory = userSettings.value?.targetFormality
+                    ?: Formality.FORMAL_HIGH,
+                targetFormality = targetFormality,
+                enabledTenses = enabledTenses,
+                currentWord = word,
+                targetTense = tense,
+                answerOptions = answerOptions,
+                dailyGoalMax = userSettings.value?.dailyTargetMax ?: 50 ,
+                dailyGoalMet = userSettings.value?.dailyTargetMet
+
+            )
+        }
+        Knower.d("PracticeComponent - init", "Here are the values: $words \n $tenses")
+    }
+
+
     private fun filterTensesByUserSettings(
         presentTense: Boolean,
         pastTense: Boolean,
@@ -367,6 +376,16 @@ class PracticeComponent(
         if (pastTense) list = list.plus(Tense.PAST_DECLARATIVE)
         if (futureTense) list = list.plus(Tense.FUTURE_DECLARATIVE)
         return list
+    }
+
+    private fun updateDailyTargetMet(newValue: Int): Int {
+
+        if (newValue + 1 == _state.value.dailyGoalMax) return newValue
+        scope.launch {
+            repo.updateDailyGoalMet(newValue)
+        }
+        return newValue + 1
+
     }
 
 

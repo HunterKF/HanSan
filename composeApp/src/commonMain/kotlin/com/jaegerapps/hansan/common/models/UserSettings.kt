@@ -9,5 +9,6 @@ data class UserSettings(
     val pastTenseEnabled: Boolean,
     val futureTenseEnabled: Boolean,
     val enableReminders: Boolean,
-    val dailyTarget: Int
+    val dailyTargetMax: Int,
+    val dailyTargetMet: Int
 )

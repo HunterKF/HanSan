@@ -11,6 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LoadingComponent(
     componentContext: ComponentContext,
@@ -22,16 +23,20 @@ class LoadingComponent(
 
     init {
         scope.launch {
+            repo.updateDailyGoals()
             val result = repo.getDefaultData()
             if (result.isFailure) {
                 Knower.e("LoadingComponent", "This error shouldn't be possible?")
             } else if (result.isSuccess) {
                 val data = result.getOrNull()
                 if (data != null) {
-                    onStart(data.words, data.tenses)
+                    withContext(Dispatchers.Main) {
+                        onStart(data.words, data.tenses)
+                    }
                 }
 
             }
+
         }
     }
 

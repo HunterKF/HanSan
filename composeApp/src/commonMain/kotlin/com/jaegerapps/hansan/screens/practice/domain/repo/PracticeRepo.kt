@@ -9,4 +9,5 @@ interface PracticeRepo {
     suspend fun updateUserSettingsType(type: ModifierType)
     suspend fun updateUserSettingsFormality(formality: Formality)
     suspend fun updateUserSettingsKeyboard(enabled: Boolean): Boolean
+    suspend fun updateDailyGoalMet(newValue: Int)
 }

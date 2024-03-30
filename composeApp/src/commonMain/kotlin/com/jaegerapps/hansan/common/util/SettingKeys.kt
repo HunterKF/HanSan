@@ -8,5 +8,7 @@ object SettingKeys {
     const val PAST_TENSE_ENABLED = "past_tense"
     const val FUTURE_TENSE_ENABLED = "future_tense"
     const val DAILY_REMINDERS_ENABLED = "daily_reminders"
-    const val DAILY_TARGET = "daily_target"
+    const val DAILY_TARGET_MET = "daily_target_met"
+    const val DAILY_TARGET_MAX = "daily_target_max"
+    const val LAST_DATE = "last_date"
 }

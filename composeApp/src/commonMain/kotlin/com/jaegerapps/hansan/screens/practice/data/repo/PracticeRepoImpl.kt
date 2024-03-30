@@ -10,7 +10,6 @@ import com.jaegerapps.hansan.common.models.stringToType
 import com.jaegerapps.hansan.common.models.typeToString
 import com.jaegerapps.hansan.common.util.SettingKeys
 import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
-import com.russhwolf.settings.get
 
 class PracticeRepoImpl(
     private val settings: Settings,
@@ -23,7 +22,8 @@ class PracticeRepoImpl(
         val pastTenseEnabled = settings.getBoolean(SettingKeys.PAST_TENSE_ENABLED, true)
         val futureTenseEnabled = settings.getBoolean(SettingKeys.FUTURE_TENSE_ENABLED, true)
         val enableReminders = settings.getBoolean(SettingKeys.DAILY_REMINDERS_ENABLED, false)
-        val dailyTarget = settings.getInt(SettingKeys.DAILY_TARGET, 50)
+        val dailyTargetMet = settings.getInt(SettingKeys.DAILY_TARGET_MET, 0)
+        val dailyTargetMax = settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
         return UserSettings(
             targetFormality = getFormalityFromString(formality),
             targetType = stringToType(type),
@@ -32,7 +32,8 @@ class PracticeRepoImpl(
             pastTenseEnabled = pastTenseEnabled,
             futureTenseEnabled = futureTenseEnabled,
             enableReminders = enableReminders,
-            dailyTarget = dailyTarget
+            dailyTargetMet = dailyTargetMet,
+            dailyTargetMax = dailyTargetMax
         )
     }
 
@@ -48,5 +49,9 @@ class PracticeRepoImpl(
     override suspend fun updateUserSettingsKeyboard(enabled: Boolean): Boolean {
         settings.putBoolean(SettingKeys.KEYBOARD_ENABLED, enabled)
         return settings.getBoolean(SettingKeys.KEYBOARD_ENABLED, false)
+    }
+
+    override suspend fun updateDailyGoalMet(newValue: Int) {
+        settings.putInt(SettingKeys.DAILY_TARGET_MET, newValue)
     }
 }
