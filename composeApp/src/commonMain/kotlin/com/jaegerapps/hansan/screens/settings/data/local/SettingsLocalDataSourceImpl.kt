@@ -36,7 +36,7 @@ class SettingsLocalDataSourceImpl(val settings: Settings) : SettingsLocalDataSou
     }
 
     override suspend fun updateDailyTarget(value: Int): Int {
-        settings.putInt(SettingKeys.DAILY_TARGET_MET, value)
+        settings.putInt(SettingKeys.DAILY_TARGET_MAX, value)
         return settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
     }
 
