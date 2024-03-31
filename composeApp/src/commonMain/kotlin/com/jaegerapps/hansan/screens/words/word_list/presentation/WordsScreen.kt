@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.components.BottomBarIcon
 import com.jaegerapps.hansan.common.models.ModifierType
+import com.jaegerapps.hansan.common.models.WordModel
 import com.jaegerapps.hansan.common.models.typeToStringResource
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon
 import com.jaegerapps.hansan.common.util.Routes
@@ -56,7 +57,7 @@ fun WordsScreen(
         }
     ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues).padding(12.dp)
         ) {
             val list = listOf(
                 ModifierType.VERBS,
@@ -82,20 +83,8 @@ fun WordsScreen(
             ) {
                 itemsIndexed(state.wordList) { index, word ->
                     Column {
-                        Row(
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp).clickable {
-                                onEvent(WordsUiEvent.OnWordNavigate(word.dictionaryWord))
-                            },
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(
-                                text = word.dictionaryWord,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
-                            Text(
-                                text = word.definition,
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+                        WordContainer(word) {
+                            onEvent(WordsUiEvent.OnWordNavigate(word.dictionaryWord))
                         }
                         if (state.wordList.lastIndex != index) {
                             HorizontalDivider(Modifier.fillMaxWidth())
@@ -106,5 +95,27 @@ fun WordsScreen(
             }
         }
 
+    }
+}
+
+@Composable
+fun WordContainer(
+    word: WordModel,
+    onEvent: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.clickable {
+            onEvent()
+        }.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = word.dictionaryWord,
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Text(
+            text = word.definition,
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }

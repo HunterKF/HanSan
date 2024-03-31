@@ -65,12 +65,12 @@ fun LearnScreen(
             )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 list.forEach {
-                    val weight by animateFloatAsState(
+                    /*val weight by animateFloatAsState(
                         targetValue = if (it == state.filterFormality) 1f else 0.8f,
                         tween()
-                    )
+                    )*/
                     FormSelectorItem(
-                        modifier = Modifier.weight(weight),
+                        modifier = Modifier.weight(1.0f),
                         text = stringResource(formalityToStringResource(it)),
                         selected = it == state.filterFormality,
                         onSelect = {

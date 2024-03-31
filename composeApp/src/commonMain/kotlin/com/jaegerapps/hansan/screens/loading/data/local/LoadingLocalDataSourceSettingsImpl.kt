@@ -15,7 +15,7 @@ class LoadingLocalDataSourceSettingsImpl(
     override suspend fun updateDailyTasks() {
         //Check if it's the same day, reset inputted goals to 0 if not
         if (!stillCurrentDay()) {
-            settings.putInt(SettingKeys.DAILY_TARGET_MAX, 0)
+            settings.putInt(SettingKeys.DAILY_TARGET_MET, 0)
             Knower.d("updateDailyTasks", "Updating the daily entered.")
         }
     }

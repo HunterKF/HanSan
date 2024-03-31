@@ -27,7 +27,7 @@ fun LearnTense(
     onClick: () -> Unit,
 ) {
     Column(
-        modifier = modifier.fillMaxWidth().clickable { onClick() },
+        modifier = modifier.clickable { onClick() }.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center
     ) {

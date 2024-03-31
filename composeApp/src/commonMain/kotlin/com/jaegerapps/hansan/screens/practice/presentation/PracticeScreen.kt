@@ -201,15 +201,17 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                         strokeCap = StrokeCap.Round
                     )
                 }
-                WordContainer(
-                    modifier = Modifier.fillMaxWidth().weight(1.0f),
-                    word = state.currentWord?.dictionaryWord ?: "고장",
-                    definition = state.currentWord?.definition ?: "error",
-                    answerResponse = state.answerResponse,
-                    onEvent = {
-                        onEvent(PracticeUiEvent.ClearAnswer)
-                    }
-                )
+                Box(modifier = Modifier.fillMaxWidth().weight(1.0f), contentAlignment = Alignment.Center) {
+                    WordContainer(
+                        modifier = Modifier.fillMaxWidth(),
+                        word = state.currentWord?.dictionaryWord ?: "고장",
+                        definition = state.currentWord?.definition ?: "error",
+                        answerResponse = state.answerResponse,
+                        onEvent = {
+                            onEvent(PracticeUiEvent.ClearAnswer)
+                        }
+                    )
+                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
