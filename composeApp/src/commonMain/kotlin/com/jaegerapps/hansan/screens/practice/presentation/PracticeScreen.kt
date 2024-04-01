@@ -66,7 +66,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
     val scope = rememberCoroutineScope()
     var showErrorMessage by remember { mutableStateOf(false) }
     val progress by animateFloatAsState(
-        targetValue = (state.dailyGoalMet!! + 1) / state.dailyGoalMax.toFloat()
+        targetValue = (state.dailyGoalMet ?: (0 + 1)) / state.dailyGoalMax.toFloat()
     )
     LaunchedEffect(state.errorMessage) {
         state.errorMessage?.let {

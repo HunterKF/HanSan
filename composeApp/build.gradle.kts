@@ -33,7 +33,17 @@ kotlin {
             dependencies {
                 implementation(libs.compose.ui.tooling.preview)
                 implementation(libs.androidx.activity.compose)
-                implementation ("androidx.work:work-runtime-ktx:2.9.0")
+//                val billing_version = "6.2.0"
+
+                implementation(libs.billing.ktx)
+                implementation("com.google.guava:guava:24.1-jre")
+                implementation ("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
+                val lifecycleVersion = "2.6.1"
+                implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
+                implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
+                implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+
+
             }
         }
         val commonMain by getting {
@@ -90,8 +100,8 @@ android {
         applicationId = "com.jaegerapps.hansan"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.1"
     }
     packaging {
         resources {

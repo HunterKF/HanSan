@@ -8,6 +8,8 @@ import com.arkivanov.decompose.router.stack.pop
 import com.arkivanov.decompose.router.stack.pushNew
 import com.arkivanov.decompose.router.stack.replaceAll
 import com.arkivanov.decompose.router.stack.replaceCurrent
+import com.jaegerapps.hansan.common.util.Knower
+import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.common.util.Routes
 import com.jaegerapps.hansan.di.AppModule
 import com.jaegerapps.hansan.screens.learn.presentation.LearnComponent
@@ -48,6 +50,8 @@ class RootComponent(
     ): Child {
         return when (config) {
             Configuration.PracticeScreen -> {
+                Knower.d("RootComponent", "PracticeComponent is being made.")
+
                 Child.PracticeScreen(
                     PracticeComponent(
                         componentContext = context,
@@ -73,6 +77,8 @@ class RootComponent(
                                     tenses = tenses,
                                 )
                             }
+                            Knower.d("RootComponent", "Navigation is being called, moving to PracticeComponent")
+
                             navigation.replaceAll(Configuration.PracticeScreen)
                         }
                     )

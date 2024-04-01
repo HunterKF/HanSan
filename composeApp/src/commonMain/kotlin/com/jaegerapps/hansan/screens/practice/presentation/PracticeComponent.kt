@@ -45,6 +45,7 @@ class PracticeComponent(
     private val scope = CoroutineScope(Dispatchers.IO)
 
     init {
+        Knower.d("init", "Initializing PracticeComponent")
         lifecycle.subscribe(
             object : Lifecycle.Callbacks {
                 override fun onCreate() {
@@ -358,7 +359,7 @@ class PracticeComponent(
                 targetTense = tense,
                 answerOptions = answerOptions,
                 dailyGoalMax = userSettings.value?.dailyTargetMax ?: 50 ,
-                dailyGoalMet = userSettings.value?.dailyTargetMet
+                dailyGoalMet = userSettings.value?.dailyTargetMet ?: 0
 
             )
         }

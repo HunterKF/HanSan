@@ -5,6 +5,7 @@ import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.WordModel
 import com.jaegerapps.hansan.common.util.Knower
+import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.common.util.Knower.e
 import com.jaegerapps.hansan.screens.loading.domain.repo.LoadingRepo
 import kotlinx.coroutines.CoroutineScope
@@ -30,6 +31,7 @@ class LoadingComponent(
             } else if (result.isSuccess) {
                 val data = result.getOrNull()
                 if (data != null) {
+                    Knower.d("LoadingComponent", "Leaving LoadingComponent")
                     withContext(Dispatchers.Main) {
                         onStart(data.words, data.tenses)
                     }

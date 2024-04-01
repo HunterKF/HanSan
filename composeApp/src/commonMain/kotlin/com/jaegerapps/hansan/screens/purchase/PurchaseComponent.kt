@@ -6,4 +6,5 @@ class PurchaseComponent(
     componentContext: ComponentContext,
 ) : ComponentContext by componentContext {
 
+
 }
