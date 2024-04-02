@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            val chooseProduct = remember {
+            /*val chooseProduct = remember {
                 ChooseProduct(this)
             }
             LaunchedEffect(key1 = true) {
@@ -85,12 +85,12 @@ class MainActivity : ComponentActivity() {
                         chooseProduct.purchase("ten_pizza_recipes")
                     }
                 )
-            }
-            /*WindowCompat.setDecorFitsSystemWindows(window, false)
+            }*/
+            WindowCompat.setDecorFitsSystemWindows(window, false)
             App(
                 darkTheme = isSystemInDarkTheme(),
                 root = root
-            )*/
+            )
         }
     }
 

@@ -110,6 +110,9 @@ class ChooseProduct(
         billingClient.queryProductDetailsAsync(queryProductDetailsParams) { billingResult, productDetailsList ->
             Knower.d("purchase", "Here is the billingResult $billingResult")
 
+            when (billingResult.responseCode) {
+
+            }
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 // Checking if the current product is the one that we want to buy
                 Knower.d("purchase", "Here is the productDetailsList $productDetailsList")
