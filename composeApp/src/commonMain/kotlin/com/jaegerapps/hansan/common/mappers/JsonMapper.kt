@@ -75,6 +75,12 @@ fun TenseEntity.toTenseModel(): TenseModel {
         example_gada,
         example_boda,
         example_mokda,
-        example_hada
+        example_hada,
+        irregularSieut,
+        irregularDieut,
+        irregularBieub,
+        irregularEu,
+        irregularReu,
+        irregularRieul
     )
 }

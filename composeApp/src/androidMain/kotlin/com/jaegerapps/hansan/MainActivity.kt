@@ -26,9 +26,7 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.retainedComponent
-import com.jaegerapps.hansan.common.billing.ChooseProduct
 import com.jaegerapps.hansan.di.AppModule
-import java.lang.Character.UnicodeBlock
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalDecomposeApi::class)
@@ -42,50 +40,6 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
-            /*val chooseProduct = remember {
-                ChooseProduct(this)
-            }
-            LaunchedEffect(key1 = true) {
-                chooseProduct.billingSetup()
-                chooseProduct.checkProducts()
-            }
-            val products by chooseProduct.purchases.collectAsStateWithLifecycle()
-            Column(
-                modifier = Modifier
-                    .padding(
-                        vertical = 20.dp,
-                        horizontal = 20.dp
-                    )
-            ) {
-                Text(
-                    text = "Products",
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(horizontal = 20.dp)
-                )
-                Spacer(modifier = Modifier.height(10.dp))
-                ListItem(
-                    headlineContent = {
-                        Text(text = "10 Recipes")
-                    },
-                    leadingContent = {
-                        Text(text = if (products.contains("ten_recipes")) "Purchased" else "Not Purchased")
-                    },
-                    modifier = Modifier.clickable {
-                        chooseProduct.purchase("hansan_pro_version")
-                    }
-                )
-                ListItem(
-                    headlineContent = {
-                        Text(text = "10 Pizza Recipes")
-                    },
-                    leadingContent = {
-                        Text(text = if (products.contains("ten_pizza_recipes")) "Purchased" else "Not Purchased")
-                    },
-                    modifier = Modifier.clickable {
-                        chooseProduct.purchase("ten_pizza_recipes")
-                    }
-                )
-            }*/
             WindowCompat.setDecorFitsSystemWindows(window, false)
             App(
                 darkTheme = isSystemInDarkTheme(),

@@ -45,13 +45,13 @@
     "example_hada": "하다 -> 하 -> 합니다",
     "irregular_ㅅ": "If you combine ‘ㅅ’ irregular verbs with a suffix that starts with a vowel, you drop ‘ㅅ’, then conjugate based on the last vowel.\nFor example, 낫다 - 나았습니다, 짓다 -> 지었습니다",
     "irregular_ㄷ": "For irregular ㄷ verbs, no change is made to the 받침 if it is followed by a consonant.\nFor example: 듣다 → 듣습니다\nFor irregular ㄷ verbs, the ㄷ 받침 changes to a ㄹ when followed by a vowel.\nFor example: 듣다 → 들었습니다",
-    "irregular_ㅂ": "You drop ‘ㅂ’ from the verb stem and add 웠습니다.\nFor example: 맵다 -> 매웠습니다, 굽다 -> 구웠습니다",
-    "irregular_ㅡ": "For 르 irregular verbs, if the last vowel is ㅏ/오, change ㅡ to 았습니다. For other vowels, change ㅡ to 었습니다. \\nFor example: 잠그다 -> 잠갔습니, 긁다 -> 긁었습니다, 듣다 -> 들었습니다",
+    "irregular_ㅂ": "You drop ‘ㅂ’ from the verb stem and add 웠습니다.\nFor example: 굽다 -> 구웠습니다",
+    "irregular_ㅡ": "For ㅡ irregular verbs, use the last vowel and conjugate based on that.\nFor example: 잠그다 -> 잠갔습니다",
     "irregular_르": "For 르 irregular verbs, if the last vowel is ㅏ/오, change 르 to ㄹ랐습니다. For other vowels, change ㅡ to ㄹ렀습니다. \\nFor example: 부르다 -> 불렀습니다, 고르다 -> 골랐습니다, 마르다 -> 말랐습니다",
     "irregular_ㄹ": null
   },
   {
-    "tense":"future_declarative",
+    "tense": "future_declarative",
     "formality": "formal_high",
     "conjugation": "~ㄹ/을 겁니다",
     "type": "verb",
@@ -60,13 +60,12 @@
     "example_boda": "보다 -> 보 -> 볼 겁니다",
     "example_mokda": "먹다 -> 먹 -> 먹을 겁니다",
     "example_hada": "하다 -> 하 -> 할 겁니다",
-    "irregular_ㅅ": null,
-    "irregular_ㄷ": null,
-    "irregular_ㅂ": null,
-    "irregular_ㅡ": null,
-    "irregular_르": null,
-    "irregular_ㄹ": null
-
+    "irregular_ㅅ": "For verbs ending in ㅅ, the ㅅ is dropped before adding ~ㄹ/을 겁니다.\nFor example, 짓다 (to build) becomes 짓을 겁니다, transforming to 지을 겁니다.",
+    "irregular_ㄷ": "For verbs ending in ㄷ, the ㄷ changes to ㄹ when adding ~ㄹ/을 겁니다, to ensure smoother pronunciation.\nFor example, 걷다 (to walk) becomes 걸을 겁니다.",
+    "irregular_ㅂ": "For verbs ending in ㅂ, ㅂ is replaced with 우 before adding ~ㄹ/을 겁니다.\nFor example, 돕다 (to help) becomes 도울 겁니다.",
+    "irregular_ㅡ": "If the stem ends in ㅡ, consider the vowel in the preceding syllable to determine if ~아/어 should be applied before conjugating, though this irregular generally does not apply directly in future tense constructions.",
+    "irregular_르": "For verbs ending in 르, an additional ㄹ is inserted into the stem before adding ~ㄹ/을 겁니다. Additionally, 르 changes to 라 or 러 based on the preceding vowel.\nFor example, 다르다 (to be different) becomes 다를 겁니다, with the transformation applied as 달을 겁니다.",
+    "irregular_ㄹ": "For verbs ending in ㄹ, the conjugation directly applies without dropping or altering the stem due to the presence of ㄹ.\nFor example, 놀다 (to play) becomes 놀 겁니다, maintaining the stem as-is."
   },
   {
     "tense":"future_declarative_first_person",
@@ -97,7 +96,7 @@
     "example_hada": "하다 -> 하 -> 해요",
     "irregular_ㅅ": "If you combine ‘ㅅ’ irregular verbs with a suffix that starts with a vowel, you drop ‘ㅅ’, then conjugate based on the last vowel.\nFor example, 낫다 - 나아요, 짓다 -> 지어요",
     "irregular_ㄷ": "For irregular ㄷ verbs, change the ㄷ to a ㄹ and conjugate based on the vowel.\nFor example: 듣다 → 들어요",
-    "irregular_ㅂ": "You drop ‘ㅂ’ from the verb stem and add 워요.\nFor example: 맵다 -> 매워요, 굽다 -> 구워요",
+    "irregular_ㅂ": "You drop ‘ㅂ’ from the verb stem and add 워요.\nFor example:  굽다 -> 구워요",
     "irregular_ㅡ": "For 르 irregular verbs, if the last vowel is ㅏ/오, change ㅡ to 아요. For other vowels, change ㅡ to 어요. \\nFor example: 잠그다 -> 잠가요, 긁다 -> 긁어요, 듣다 -> 들어요",
     "irregular_르": "For 르 irregular verbs, if the last vowel is ㅏ/오, change 르 to ㄹ라요. For other vowels, change ㅡ to ㄹ러요. \\nFor example: 부르다 -> 불러요, 고르다 -> 골라요, 마르다 -> 말라요",
     "irregular_ㄹ": null
@@ -113,12 +112,12 @@
     "example_boda": "보다 -> 보 -> 보나요",
     "example_mokda": "먹다 -> 먹 -> 먹나요",
     "example_hada": "하다 -> 하 -> 하나요",
-    "irregular_ㅅ": "If you combine ‘ㅅ’ irregular verbs with a suffix that starts with a vowel, you drop ‘ㅅ’, then conjugate based on the last vowel.\nFor example, 낫다 - 나아요, 짓다 -> 지어요",
-    "irregular_ㄷ": "For irregular ㄷ verbs, change the ㄷ to a ㄹ and conjugate based on the vowel.\nFor example: 듣다 → 들어요",
-    "irregular_ㅂ": "You drop ‘ㅂ’ from the verb stem and add 워요.\nFor example: 맵다 -> 매워요, 굽다 -> 구워요",
-    "irregular_ㅡ": "For 르 irregular verbs, if the last vowel is ㅏ/오, change ㅡ to 아요. For other vowels, change ㅡ to 어요. \\nFor example: 잠그다 -> 잠가요, 긁다 -> 긁어요, 듣다 -> 들어요",
-    "irregular_르": "For 르 irregular verbs, if the last vowel is ㅏ/오, change 르 to ㄹ라요. For other vowels, change ㅡ to ㄹ러요. \\nFor example: 부르다 -> 불러요, 고르다 -> 골라요, 마르다 -> 말라요",
-    "irregular_ㄹ": null
+    "irregular_ㅅ": null,
+    "irregular_ㄷ": null,
+    "irregular_ㅂ": null,
+    "irregular_ㅡ": null,
+    "irregular_르": null,
+    "irregular_ㄹ": "Ignore the ㄹ and conjugate.\nFor example, 살다 -> 사나요?, 만들다 -> 만드나요?"
   },
   {
     "tense":"present_declarative_narrative",
@@ -129,7 +128,13 @@
     "example_gada": "가다 -> 가 -> 간다",
     "example_boda": "보다 -> 보 -> 본다",
     "example_mokda": "먹다 -> 먹 -> 먹는다",
-    "example_hada": "하다 -> 하 -> 한다"
+    "example_hada": "하다 -> 하 -> 한다",
+    "irregular_ㅅ": null,
+    "irregular_ㄷ": null,
+    "irregular_ㅂ": "You drop ‘ㅂ’ from the verb stem and add 워요.\nFor example: 굽다 -> 굽는다",
+    "irregular_ㅡ": null,
+    "irregular_르": null,
+    "irregular_ㄹ": "Ignore the ㄹ and conjugate.\nFor example, 살다 -> 산다, 만들다 -> 만든다"
   },
   {
     "tense":"past_declarative",
@@ -140,7 +145,13 @@
     "example_gada": "가다 -> 가 -> 갔어요",
     "example_boda": "보다 -> 보 -> 봤어요",
     "example_mokda": "먹다 -> 먹 -> 먹었어요",
-    "example_hada": "하다 -> 하 -> 했어요"
+    "example_hada": "하다 -> 하 -> 했어요",
+    "irregular_ㅅ": "If you combine ‘ㅅ’ irregular verbs with a suffix that starts with a vowel, you drop ‘ㅅ’, then conjugate based on the last vowel.\nFor example, 짓다 -> 지었어요\nNote: All verbs ending in ㅅ are not irregulars, just some.",
+    "irregular_ㄷ": "For irregular ㄷ verbs, change the ㄷ to ㄹ and conjugate by the ending vowel.\nFor example: 듣다 → 들었어요",
+    "irregular_ㅂ": "You drop ‘ㅂ’ from the verb stem and add 웠었어요.\nFor example: 굽다 -> 구웠어요",
+    "irregular_ㅡ": "For 르 irregular verbs, if the last vowel is ㅏ/오, change ㅡ to 았어요. For other vowels, change ㅡ to 었어요. \\nFor example: 잠그다 -> 잠갔어요, 긁다 -> 긁었어요, 듣다 -> 들었어요",
+    "irregular_르": "For 르 irregular verbs, if the last vowel is ㅏ/오, change 르 to ㄹ랐아요. For other vowels, change ㅡ to ㄹ렀어요. \\nFor example: 부르다 -> 불렀어요, 고르다 -> 골랐어요, 마르다 -> 말랐어요",
+    "irregular_ㄹ": null
   },
 
   {
@@ -152,18 +163,30 @@
     "example_gada": "가다 -> 가 -> 갔나요",
     "example_boda": "보다 -> 보 -> 봤나요",
     "example_mokda": "먹다 -> 먹 -> 먹었나요",
-    "example_hada": "하다 -> 하 -> 했나요"
+    "example_hada": "하다 -> 하 -> 했나요",
+    "irregular_ㅅ": "If you combine ‘ㅅ’ irregular verbs with a suffix that starts with a vowel, you drop ‘ㅅ’, then conjugate based on the last vowel.\nFor example, 짓다 -> 지었나요\nNote: All verbs ending in ㅅ are not irregulars, just some.",
+    "irregular_ㄷ": "For irregular ㄷ verbs, change the ㄷ to ㄹ and conjugate by the ending vowel.\nFor example: 듣다 → 들었나요",
+    "irregular_ㅂ": "You drop ‘ㅂ’ from the verb stem and add 웠었나요.\nFor example: 굽다 -> 구웠나요",
+    "irregular_ㅡ": "For 르 irregular verbs, if the last vowel is ㅏ/오, change ㅡ to 았나요. For other vowels, change ㅡ to 었나요. \\nFor example: 잠그다 -> 잠갔나요, 긁다 -> 긁었나요, 듣다 -> 들었나요",
+    "irregular_르": "For 르 irregular verbs, if the last vowel is ㅏ/오, change 르 to ㄹ랐나요. For other vowels, change ㅡ to ㄹ렀나요. \\nFor example: 부르다 -> 불렀나요, 고르다 -> 골랐나요, 마르다 -> 말랐나요",
+    "irregular_ㄹ": null
   },
   {
-    "tense":"future_declarative",
+    "tense": "future_declarative",
     "formality": "formal_low",
-    "conjugation": "~ㄹ/을 거에요",
+    "conjugation": "~ㄹ/을 거예요",
     "type": "verb",
-    "explanation": "Ends in consonant - 을 거에요 \n Ends in vowel - ㄹ 거에요",
-    "example_gada": "가다 -> 가 -> 갈 거에요",
-    "example_boda": "보다 -> 보 -> 볼 거에요",
-    "example_mokda": "먹다 -> 먹 -> 먹을 거에요",
-    "example_hada": "하다 -> 하 -> 할 거에요"
+    "explanation": "Ends in consonant - 을 거예요 \n Ends in vowel - ㄹ 거예요",
+    "example_gada": "가다 -> 가 -> 갈 거예요",
+    "example_boda": "보다 -> 보 -> 볼 거예요",
+    "example_mokda": "먹다 -> 먹 -> 먹을 거예요",
+    "example_hada": "하다 -> 하 -> 할 거예요",
+    "irregular_ㅅ": "For ‘ㅅ’ irregular verbs, the ‘ㅅ’ is dropped from the stem, then adding ~울 거예요.\nFor example, 짓다> 지울 거예요",
+    "irregular_ㄷ": "For ㄷ irregular verbs, the ㄷ changes to ㄹ before adding ~ㄹ/을 거예요.\nFor example, 걷다 -> 걸을 거예요.",
+    "irregular_ㅂ": "For ㅂ irregular verbs, the ㅂ is replaced with 우 before adding ~ㄹ/을 거예요.\nFor example, 돕다 -> 도울 거예요.",
+    "irregular_ㅡ": null,
+    "irregular_르": null,
+    "irregular_ㄹ": null
   },
   {
     "tense":"future_declarative_first_person",
@@ -174,7 +197,13 @@
     "example_gada": "가다 -> 가 -> 가겠어요",
     "example_boda": "보다 -> 보 -> 보겠어요",
     "example_mokda": "먹다 -> 먹 -> 먹겠어요",
-    "example_hada": "하다 -> 하 -> 하겠어요"
+    "example_hada": "하다 -> 하 -> 하겠어요",
+    "irregular_ㅅ": null,
+    "irregular_ㄷ": null,
+    "irregular_ㅂ": null,
+    "irregular_ㅡ": null,
+    "irregular_르": null,
+    "irregular_ㄹ": null
   },
   {
     "tense":"present_declarative",
@@ -185,7 +214,13 @@
     "example_gada": "가다 -> 가 -> 가",
     "example_boda": "보다 -> 보 -> 봐",
     "example_mokda": "먹다 -> 먹 -> 먹어",
-    "example_hada": "하다 -> 하 -> 해"
+    "example_hada": "하다 -> 하 -> 해",
+    "irregular_ㅅ": "If you combine ‘ㅅ’ irregular verbs with a suffix that starts with a vowel, you drop ‘ㅅ’, then conjugate based on the last vowel.\nFor example, 짓다 -> 지어",
+    "irregular_ㄷ": "For irregular ㄷ verbs, change the ㄷ to a ㄹ and conjugate based on the vowel.\nFor example: 듣다 → 들어",
+    "irregular_ㅂ": "You drop ‘ㅂ’ from the verb stem and add 워.\nFor example:  굽다 -> 구워",
+    "irregular_ㅡ": "For 르 irregular verbs, if the last vowel is ㅏ/오, change ㅡ to 아. For other vowels, change ㅡ to 어. \\nFor example: 잠그다 -> 잠가요, 긁다 -> 긁어, 듣다 -> 들어",
+    "irregular_르": "For 르 irregular verbs, if the last vowel is ㅏ/오, change 르 to ㄹ라. For other vowels, change ㅡ to ㄹ러. \\nFor example: 부르다 -> 불러, 고르다 -> 골라, 마르다 -> 말라",
+    "irregular_ㄹ": null
   },
   {
     "tense":"present_declarative_suggestive",
@@ -196,7 +231,14 @@
     "example_gada": "가다 -> 가 -> 가자",
     "example_boda": "보다 -> 보 -> 보자",
     "example_mokda": "먹다 -> 먹 -> 먹자",
-    "example_hada": "하다 -> 하 -> 하자"
+    "example_hada": "하다 -> 하 -> 하자",
+    "irregular_ㅅ": null,
+    "irregular_ㄷ": null,
+    "irregular_ㅂ": null,
+    "irregular_ㅡ": null,
+    "irregular_르": null,
+    "irregular_ㄹ": null
+
   },
   {
     "tense":"past_declarative",
@@ -207,7 +249,13 @@
     "example_gada": "가다 -> 가 -> 갔어",
     "example_boda": "보다 -> 보 -> 봤어",
     "example_mokda": "먹다 -> 먹 -> 먹었어",
-    "example_hada": "하다 -> 하 -> 했어"
+    "example_hada": "하다 -> 하 -> 했어",
+    "irregular_ㅅ": "If you combine ‘ㅅ’ irregular verbs with a suffix that starts with a vowel, you drop ‘ㅅ’, then conjugate based on the last vowel.\nFor example, 짓다 -> 지었어\nNote: All verbs ending in ㅅ are not irregulars, just some.",
+    "irregular_ㄷ": "For irregular ㄷ verbs, change the ㄷ to ㄹ and conjugate by the ending vowel.\nFor example: 듣다 → 들었어",
+    "irregular_ㅂ": "You drop ‘ㅂ’ from the verb stem and add 웠었어.\nFor example: 굽다 -> 구웠어",
+    "irregular_ㅡ": "For 르 irregular verbs, if the last vowel is ㅏ/오, change ㅡ to 았어. For other vowels, change ㅡ to 었어. \nFor example: 잠그다 -> 잠갔어, 긁다 -> 긁었어, 듣다 -> 들었어",
+    "irregular_르": "For 르 irregular verbs, if the last vowel is ㅏ/오, change 르 to ㄹ랐아. For other vowels, change ㅡ to ㄹ렀어. \nFor example: 부르다 -> 불렀어, 고르다 -> 골랐어, 마르다 -> 말랐어",
+    "irregular_ㄹ": null
   },
   {
     "tense":"future_declarative",
@@ -218,7 +266,13 @@
     "example_gada": "가다 -> 가 -> 갈 거야",
     "example_boda": "보다 -> 보 -> 볼 거야",
     "example_mokda": "먹다 -> 먹 -> 먹을 거야",
-    "example_hada": "하다 -> 하 -> 할 거야"
+    "example_hada": "하다 -> 하 -> 할 거야",
+    "irregular_ㅅ": "For ‘ㅅ’ irregular verbs, the ‘ㅅ’ is dropped from the stem, then adding ~울 거야.\nFor example, 짓다> 지울 거야",
+    "irregular_ㄷ": "For ㄷ irregular verbs, the ㄷ changes to ㄹ before adding ~ㄹ/을 거야.\nFor example, 걷다 -> 걸을 거야.",
+    "irregular_ㅂ": "For ㅂ irregular verbs, the ㅂ is replaced with 우 before adding ~ㄹ/을 거야.\nFor example, 돕다 -> 도울 거야.",
+    "irregular_ㅡ": null,
+    "irregular_르": null,
+    "irregular_ㄹ": null
   },
   {
     "tense":"future_declarative_first_person",
@@ -229,17 +283,12 @@
     "example_gada": "가다 -> 가 -> 가겠다",
     "example_boda": "보다 -> 보 -> 보겠다",
     "example_mokda": "먹다 -> 먹 -> 먹겠다",
-    "example_hada": "하다 -> 하 -> 하겠다"
-  },
-  {
-    "tense":"future_declarative_first_person",
-    "formality": "informal_low",
-    "conjugation": "~겠다",
-    "type": "verb",
-    "explanation": "At the end, add 겠다",
-    "example_gada": "가다 -> 가 -> 가겠다",
-    "example_boda": "보다 -> 보 -> 보겠다",
-    "example_mokda": "먹다 -> 먹 -> 먹겠다",
-    "example_hada": "하다 -> 하 -> 하겠다"
+    "example_hada": "하다 -> 하 -> 하겠다",
+    "irregular_ㅅ": null,
+    "irregular_ㄷ": null,
+    "irregular_ㅂ": null,
+    "irregular_ㅡ": null,
+    "irregular_르": null,
+    "irregular_ㄹ": null
   }
 ]

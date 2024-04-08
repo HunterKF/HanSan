@@ -96,7 +96,13 @@ private val tenseModel = TenseModel(
     exampleGada = "가다 -> 가 -> 갑니다",
     exampleBoda = "보다 -> 보 -> 봅니다",
     exampleMokda = "먹다 -> 먹 -> 먹습니다",
-    exampleHada = "하다 -> 하 -> 합니다"
+    exampleHada = "하다 -> 하 -> 합니다",
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
 )
 
 private val tenseModelList = listOf(
@@ -108,7 +114,13 @@ private val tenseModelList = listOf(
         exampleGada = "가다 -> 가 -> 갑니다",
         exampleBoda = "보다 -> 보 -> 봅니다",
         exampleMokda = "먹다 -> 먹 -> 먹습니다",
-        exampleHada = "하다 -> 하 -> 합니다"
+        exampleHada = "하다 -> 하 -> 합니다",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
     ),
     TenseModel(
         tense = Tense.PRESENT_DECLARATIVE,
@@ -118,7 +130,13 @@ private val tenseModelList = listOf(
         exampleGada = "가다 -> 가 -> 갑니다",
         exampleBoda = "보다 -> 보 -> 봅니다",
         exampleMokda = "먹다 -> 먹 -> 먹습니다",
-        exampleHada = "하다 -> 하 -> 합니다"
+        exampleHada = "하다 -> 하 -> 합니다",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
     ),
     TenseModel(
         tense = Tense.PRESENT_DECLARATIVE,
@@ -128,7 +146,13 @@ private val tenseModelList = listOf(
         exampleGada = "가다 -> 가 -> 갑니다",
         exampleBoda = "보다 -> 보 -> 봅니다",
         exampleMokda = "먹다 -> 먹 -> 먹습니다",
-        exampleHada = "하다 -> 하 -> 합니다"
+        exampleHada = "하다 -> 하 -> 합니다",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
     )
 )
 
@@ -248,7 +272,13 @@ fun Preview_CurrentTenseContainer() {
                     exampleGada = "가다 -> 가 -> 갑니다",
                     exampleBoda = "보다 -> 보 -> 봅니다",
                     exampleMokda = "먹다 -> 먹 -> 먹습니다",
-                    exampleHada = "하다 -> 하 -> 합니다"
+                    exampleHada = "하다 -> 하 -> 합니다",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
                 )
             )
             Spacer(Modifier.height(36.dp))
@@ -265,7 +295,13 @@ fun Preview_CurrentTenseContainer() {
                     exampleGada = "가다 -> 가 -> 가요",
                     exampleBoda = "보다 -> 보 -> 봐요",
                     exampleMokda = "먹다 -> 먹 -> 먹어요",
-                    exampleHada = "하다 -> 하 -> 해요"
+                    exampleHada = "하다 -> 하 -> 해요",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null
                 )
             )
         }

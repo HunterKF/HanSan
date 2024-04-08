@@ -15,7 +15,19 @@ data class TenseModel(
     val exampleGada: String,
     val exampleBoda: String,
     val exampleMokda: String,
-    val exampleHada: String
+    val exampleHada: String,
+    //ㅅ
+    val irregularSieut: String?,
+    //ㄷ
+    val irregularDieut: String?,
+    //ㅂ
+    val irregularBieub: String?,
+    //ㅡ
+    val irregularEu: String?,
+    //르
+    val irregularReu: String?,
+    //ㄹ
+    val irregularRieul: String?,
 )
 
 enum class Tense {
