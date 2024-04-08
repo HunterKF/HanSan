@@ -25,7 +25,6 @@ class EnterAnswer {
         }
 
         private fun getTenseModel(targetTense: Tense,  wordModel: WordModel, formality: Formality): String {
-            Knower.e("getTenseModel", "here are the values: $targetTense, $wordModel, $formality")
             val result = listOf(
                 wordModel.fhPresentDeclarative,
                 wordModel.fhPastDeclarative,

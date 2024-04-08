@@ -85,6 +85,7 @@ fun LearnScreen(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+
                 itemsIndexed(state.tensesShow) { index, tense ->
                     Column {
                         LearnTense(

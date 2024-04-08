@@ -22,8 +22,8 @@ class LearnComponent(
     fun onEvent(event: LearnUiEvent) {
         when (event) {
             is LearnUiEvent.ChangeFormality -> {
-                _state.update {
-                    it.copy(
+                _state.update { learnUiState ->
+                    learnUiState.copy(
                         filterFormality = event.value,
                         tensesShow = tenses.filter { it.formality == event.value }
                     )
@@ -33,5 +33,9 @@ class LearnComponent(
                 onNavigate(event.route)
             }
         }
+    }
+
+    private fun createTenseHashMap() {
+
     }
 }
