@@ -15,7 +15,7 @@ enum class Formality {
     ALL
 }
 @OptIn(ExperimentalResourceApi::class)
-fun formalityToStringResource(
+fun getResStringFromFormality(
     formality: Formality,
 ): StringResource {
     return when (formality) {
@@ -25,7 +25,7 @@ fun formalityToStringResource(
         Formality.ALL -> Res.string.formality_all
     }
 }
-fun formalityToString(
+fun getStringFromFormality(
     formality: Formality,
 ): String {
     return when (formality) {

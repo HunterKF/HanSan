@@ -38,7 +38,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.jaegerapps.hansan.common.components.BottomBarIcon
-import com.jaegerapps.hansan.common.models.formalityToStringResource
+import com.jaegerapps.hansan.common.models.getResStringFromFormality
 import com.jaegerapps.hansan.common.models.typeToStringResource
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon.Companion.routeList
 import com.jaegerapps.hansan.common.util.Routes
@@ -158,9 +158,9 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                 DropDownContainer(
                     modifier = Modifier.blur(if (state.typeDropDown && !state.formalityDropDown) 10.dp else 0.dp),
 
-                    selected = stringResource(formalityToStringResource(state.selectedFormalityCategory)),
+                    selected = stringResource(getResStringFromFormality(state.selectedFormalityCategory)),
                     expanded = state.formalityDropDown,
-                    list = state.formalityList.map { stringResource(formalityToStringResource(it)) },
+                    list = state.formalityList.map { stringResource(getResStringFromFormality(it)) },
                     onExpand = {
                         onEvent(PracticeUiEvent.ToggleFormalityDropDown)
                     },

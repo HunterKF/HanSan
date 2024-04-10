@@ -14,7 +14,6 @@ actual fun HanSanTheme(
     content: @Composable () -> Unit,
 ) {
     val typography = getTypography()
-    Knower.d("typography", "It was created: ${typography.bodyLarge}")
     MaterialTheme(
         colorScheme = if(darkTheme) DarkColorScheme else LightColorScheme,
         typography = typography,

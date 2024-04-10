@@ -45,12 +45,13 @@ class PracticeComponent(
     private val scope = CoroutineScope(Dispatchers.IO)
 
     init {
+        Knower.d("onCreate", "onCreate is being called.")
+        initializePracticeComponent()
         Knower.d("init", "Initializing PracticeComponent")
         lifecycle.subscribe(
             object : Lifecycle.Callbacks {
                 override fun onCreate() {
-                    Knower.d("onCreate", "onCreate is being called.")
-                    initializePracticeComponent()
+
                 }
 
                 override fun onResume() {

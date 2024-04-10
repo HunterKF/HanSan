@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,10 +23,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.TenseModel
-import com.jaegerapps.hansan.common.models.formalityToStringResource
-import com.jaegerapps.hansan.common.models.getFormalityFromString
+import com.jaegerapps.hansan.common.models.getResStringFromFormality
 import com.jaegerapps.hansan.common.models.getTenseResString
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
@@ -57,7 +54,7 @@ fun TargetFormsContainer(
                     .padding(horizontal = 12.dp, vertical = 8.dp)
             ) {
                 Text(
-                    text = stringResource(formalityToStringResource(tense.formality)),
+                    text = stringResource(getResStringFromFormality(tense.formality)),
                     style = MaterialTheme.typography.labelMedium
                 )
             }

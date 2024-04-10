@@ -4,6 +4,7 @@ import hansan.composeapp.generated.resources.Res
 import hansan.composeapp.generated.resources.tense_future
 import hansan.composeapp.generated.resources.tense_future_first_person
 import hansan.composeapp.generated.resources.tense_past
+import hansan.composeapp.generated.resources.tense_past_inquisitive
 import hansan.composeapp.generated.resources.tense_present
 import hansan.composeapp.generated.resources.tense_present_inquisitive
 import hansan.composeapp.generated.resources.tense_present_narrative
@@ -40,6 +41,7 @@ enum class Tense {
     PRESENT_DECLARATIVE_NARRATIVE,
     PRESENT_DECLARATIVE_SUGGESTIVE,
     PAST_DECLARATIVE,
+    PAST_DECLARATIVE_INQUISITIVE,
     FUTURE_DECLARATIVE,
     FUTURE_DECLARATIVE_FIRST_PERSON,
 }
@@ -51,6 +53,7 @@ fun getTenseFromString(value: String): Tense {
         "present_declarative_narrative" -> Tense.PRESENT_DECLARATIVE_NARRATIVE
         "present_declarative_suggestive" -> Tense.PRESENT_DECLARATIVE_SUGGESTIVE
         "past_declarative" -> Tense.PAST_DECLARATIVE
+        "past_declarative_inquisitive" -> Tense.PAST_DECLARATIVE_INQUISITIVE
         "future_declarative" -> Tense.FUTURE_DECLARATIVE
         "future_declarative_first_person" -> Tense.FUTURE_DECLARATIVE_FIRST_PERSON
         else -> {
@@ -68,5 +71,20 @@ fun getTenseResString(value: Tense): StringResource {
         Tense.PRESENT_DECLARATIVE_NARRATIVE -> Res.string.tense_present_narrative
         Tense.PRESENT_DECLARATIVE_SUGGESTIVE -> Res.string.tense_present_suggestive
         Tense.FUTURE_DECLARATIVE_FIRST_PERSON -> Res.string.tense_future_first_person
+        Tense.PAST_DECLARATIVE_INQUISITIVE -> Res.string.tense_past_inquisitive
     }
 }
+
+/*@OptIn(ExperimentalResourceApi::class)
+fun getStringFromTense(value: Tense): StringResource {
+    return when (value) {
+        Tense.PRESENT_DECLARATIVE ->
+        Tense.PAST_DECLARATIVE ->
+        Tense.FUTURE_DECLARATIVE ->
+        Tense.PRESENT_DECLARATIVE_INQUISITIVE ->
+        Tense.PRESENT_DECLARATIVE_NARRATIVE ->
+        Tense.PRESENT_DECLARATIVE_SUGGESTIVE -> Res.string.tense_present_suggestive
+        Tense.FUTURE_DECLARATIVE_FIRST_PERSON -> Res.string.tense_future_first_person
+        Tense.PAST_DECLARATIVE_INQUISITIVE -> Res.string.tense_past_inquisitive
+    }
+}*/

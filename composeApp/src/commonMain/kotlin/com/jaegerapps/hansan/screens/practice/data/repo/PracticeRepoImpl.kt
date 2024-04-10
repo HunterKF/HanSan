@@ -4,7 +4,7 @@ import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.ModifierType
 import com.russhwolf.settings.Settings
 import com.jaegerapps.hansan.common.models.UserSettings
-import com.jaegerapps.hansan.common.models.formalityToString
+import com.jaegerapps.hansan.common.models.getStringFromFormality
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.stringToType
 import com.jaegerapps.hansan.common.models.typeToString
@@ -42,7 +42,7 @@ class PracticeRepoImpl(
     }
 
     override suspend fun updateUserSettingsFormality(formality: Formality) {
-        settings.putString(SettingKeys.FORMALITY, formalityToString(formality))
+        settings.putString(SettingKeys.FORMALITY, getStringFromFormality(formality))
     }
 
 

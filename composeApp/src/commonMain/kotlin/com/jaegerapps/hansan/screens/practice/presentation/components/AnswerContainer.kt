@@ -22,48 +22,51 @@ fun AnswerContainer(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            AnswerItem(
-                modifier = Modifier.weight(1f),
-                answer = answers[0],
-                onSelect = {
-                    onSelect(answers[0])
-                }
-            )
-            Spacer(Modifier.width(12.dp))
-            AnswerItem(
-                modifier = Modifier.weight(1f),
-                answer = answers[1],
-                onSelect = {
-                    onSelect(answers[1])
-                }
-            )
+        if (answers.isNotEmpty()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                AnswerItem(
+                    modifier = Modifier.weight(1f),
+                    answer = answers[0],
+                    onSelect = {
+                        onSelect(answers[0])
+                    }
+                )
+                Spacer(Modifier.width(12.dp))
+                AnswerItem(
+                    modifier = Modifier.weight(1f),
+                    answer = answers[1],
+                    onSelect = {
+                        onSelect(answers[1])
+                    }
+                )
 
-        }
-        Spacer(Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            AnswerItem(
-                modifier = Modifier.weight(1f),
-                answer = answers[2],
-                onSelect = {
-                    onSelect(answers[2])
-                }
-            )
-            Spacer(Modifier.width(12.dp))
-            AnswerItem(
-                modifier = Modifier.weight(1f),
-                answer = answers[3],
-                onSelect = {
-                    onSelect(answers[3])
-                }
-            )
+            }
+            Spacer(Modifier.height(16.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                AnswerItem(
+                    modifier = Modifier.weight(1f),
+                    answer = answers[2],
+                    onSelect = {
+                        onSelect(answers[2])
+                    }
+                )
+                Spacer(Modifier.width(12.dp))
+                AnswerItem(
+                    modifier = Modifier.weight(1f),
+                    answer = answers[3],
+                    onSelect = {
+                        onSelect(answers[3])
+                    }
+                )
 
+            }
         }
+
     }
 }

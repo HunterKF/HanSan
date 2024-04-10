@@ -12,15 +12,13 @@ import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.common.util.Routes
 import com.jaegerapps.hansan.di.AppModule
-import com.jaegerapps.hansan.screens.learn.presentation.LearnComponent
+import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseComponent
+import com.jaegerapps.hansan.screens.learn.presentation.tense_list.TensesComponent
 import com.jaegerapps.hansan.screens.loading.presentation.LoadingComponent
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeComponent
 import com.jaegerapps.hansan.screens.settings.presentation.SettingsComponent
 import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordComponent
 import com.jaegerapps.hansan.screens.words.word_list.presentation.WordsComponent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.serialization.Serializable
@@ -85,11 +83,16 @@ class RootComponent(
                 )
             }
 
-            Configuration.LearnScreen -> {
-                Child.LearnScreen(
-                    LearnComponent(
+            Configuration.TensesScreen -> {
+                Child.TensesScreen(
+                    TensesComponent(
                         componentContext = context,
                         tenses = state.value.tenses,
+                        onNavigateToTense = {
+                            Knower.d("onNavigateToTense", "Here is the string being passed in $it")
+                            navigation.pushNew(Configuration.IndividualTenseScreen(it))
+
+                        },
                         onNavigate = {
                             onNavigate(it)
                         }
@@ -135,12 +138,25 @@ class RootComponent(
                     )
                 )
             }
+
+            is Configuration.IndividualTenseScreen -> {
+                Child.IndividualTenseScreen(
+                    IndividualTenseComponent(
+                        currentTense = state.value.tenses.first { it.tense.name == config.tense },
+                        componentContext = context,
+                        onNavigate = {
+                            navigation.pop()
+                        }
+                    )
+                )
+            }
         }
     }
 
     sealed class Child {
         data class PracticeScreen(val component: PracticeComponent) : Child()
-        data class LearnScreen(val component: LearnComponent) : Child()
+        data class TensesScreen(val component: TensesComponent) : Child()
+        data class IndividualTenseScreen(val component: IndividualTenseComponent) : Child()
         data class WordsScreen(val component: WordsComponent) : Child()
         data class LoadingScreen(val component: LoadingComponent) : Child()
         data class IndividualWordScreen(val component: IndividualWordComponent) : Child()
@@ -153,7 +169,7 @@ class RootComponent(
         data object PracticeScreen : Configuration()
 
         @Serializable
-        data object LearnScreen : Configuration()
+        data object TensesScreen : Configuration()
 
         @Serializable
         data object WordsScreen : Configuration()
@@ -161,6 +177,10 @@ class RootComponent(
         @Serializable
         data object LoadingScreen : Configuration()
 
+        @Serializable
+        data class IndividualTenseScreen(
+            val tense: String,
+        ) : Configuration()
         @Serializable
         data class IndividualWordScreen(
             val word: String,
@@ -172,7 +192,7 @@ class RootComponent(
 
     private fun onNavigate(route: String) {
         when (route) {
-            Routes.LEARN -> navigation.replaceCurrent(Configuration.LearnScreen)
+            Routes.LEARN -> navigation.replaceCurrent(Configuration.TensesScreen)
             Routes.PRACTICE -> navigation.replaceAll(Configuration.PracticeScreen)
             Routes.WORDS -> navigation.replaceCurrent(Configuration.WordsScreen)
             Routes.SETTINGS -> navigation.replaceCurrent(Configuration.SettingsScreen)

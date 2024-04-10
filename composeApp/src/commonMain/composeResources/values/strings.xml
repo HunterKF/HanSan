@@ -5,8 +5,14 @@
     <string name="tense_present_narrative">Present Narrative</string>
     <string name="tense_present_suggestive">Present Suggestive</string>
     <string name="tense_past">Past</string>
+    <string name="tense_past_inquisitive">Past Inquisitive</string>
     <string name="tense_future">Future</string>
     <string name="tense_future_first_person">Future First Person</string>
+
+
+    <string name="tense_header_present">Present</string>
+    <string name="tense_header_past">Past</string>
+    <string name="tense_header_future">Future</string>
 
     <string name="formality_formal_high">Formal High</string>
     <string name="formality_formal_low">Formal Low</string>

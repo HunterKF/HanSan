@@ -6,17 +6,16 @@ import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stac
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.jaegerapps.hansan.RootComponent
 import com.jaegerapps.hansan.core.presentation.HanSanTheme
-import com.jaegerapps.hansan.screens.learn.presentation.LearnScreen
+import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseScreen
+import com.jaegerapps.hansan.screens.learn.presentation.tense_list.LearnScreen
 import com.jaegerapps.hansan.screens.loading.presentation.LoadingScreen
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeScreen
 import com.jaegerapps.hansan.screens.settings.presentation.SettingsScreen
 import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordScreen
 import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordUiEvent
 import com.jaegerapps.hansan.screens.words.word_list.presentation.WordsScreen
-import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@OptIn(ExperimentalResourceApi::class)
 @Composable
 @Preview
 fun App(
@@ -49,7 +48,7 @@ fun App(
                     LoadingScreen()
                 }
 
-                is RootComponent.Child.LearnScreen -> {
+                is RootComponent.Child.TensesScreen -> {
                     val learnState = instance.component.state.collectAsState()
                     LearnScreen(
                         state = learnState.value,
@@ -75,6 +74,15 @@ fun App(
                     SettingsScreen(
                         settingsState.value,
                         onEvent = { instance.component.onEvent(it) }
+                    )
+                }
+
+                is RootComponent.Child.IndividualTenseScreen -> {
+                    val state = instance.component.state
+                    IndividualTenseScreen(
+                        state = state, onEvent = {
+                            instance.component.onEvent(it)
+                        }
                     )
                 }
             }

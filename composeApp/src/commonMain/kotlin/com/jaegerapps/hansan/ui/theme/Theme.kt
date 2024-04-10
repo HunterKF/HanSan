@@ -6,11 +6,13 @@ import androidx.compose.material3.lightColorScheme
 val DarkColorScheme = darkColorScheme(
     background = backgroundDark,
     onBackground = foregroundDark,
-    tertiary = secondaryDark
+    tertiary = secondaryDark,
+    onTertiary = backgroundDark
 )
 
 val LightColorScheme = lightColorScheme(
     background = backgroundLight,
     onBackground = foregroundLight,
-    tertiary = secondaryLight
+    tertiary = secondaryLight,
+    onTertiary = backgroundLight
 )

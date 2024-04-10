@@ -88,15 +88,8 @@ fun SettingsScreen(
         Column(
             modifier = Modifier.fillMaxWidth().padding(paddingValues)
         ) {
-            Box(
-                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.tertiary)
-                    .padding(padding),
-                contentAlignment = Alignment.CenterStart
-            ) {
-                Text(
-                    text = "General"
-                )
-            }
+            ItemHeader(padding, "General")
+
             ToggleItem(
                 text = "Daily Reminder",
                 isEnabled = state.enableReminders,
@@ -111,15 +104,7 @@ fun SettingsScreen(
                     onEvent(SettingsUiEvent.ChangeDailyTarget(it))
                 }
             )
-            Box(
-                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.tertiary)
-                    .padding(padding),
-                contentAlignment = Alignment.CenterStart
-            ) {
-                Text(
-                    text = "Practice"
-                )
-            }
+            ItemHeader(padding, "Practice")
             ToggleItem(
                 text = "Present Tense",
                 isEnabled = state.presentTenseEnabled,
@@ -143,5 +128,21 @@ fun SettingsScreen(
             )
 
         }
+    }
+}
+
+@Composable
+private fun ItemHeader(
+    padding: PaddingValues,
+    text: String
+) {
+    Box(
+        modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.tertiary)
+            .padding(padding),
+        contentAlignment = Alignment.CenterStart
+    ) {
+        Text(
+            text = text
+        )
     }
 }

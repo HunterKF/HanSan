@@ -38,6 +38,16 @@ fun getTypography(): Typography {
             fontWeight = FontWeight.Normal,
             fontSize = 52.sp,
         ),
+        displayMedium = TextStyle(
+            fontFamily = poppingsRegular,
+            fontWeight = FontWeight.Normal,
+            fontSize = 38.sp,
+        ),
+        displaySmall = TextStyle(
+            fontFamily = poppingsRegular,
+            fontWeight = FontWeight.Normal,
+            fontSize = 26.sp,
+        ),
         bodyLarge = TextStyle(
             fontFamily = poppingsRegular,
             fontWeight = FontWeight.Normal,
@@ -52,6 +62,11 @@ fun getTypography(): Typography {
             fontFamily = poppingsRegular,
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp,
+        ),
+        labelLarge = TextStyle(
+            fontFamily = poppingsLight,
+            fontWeight = FontWeight.Light,
+            fontSize = 20.sp,
         ),
         labelMedium = TextStyle(
             fontFamily = poppingsLight,

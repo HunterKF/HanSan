@@ -14,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.models.WordTenseModel
-import com.jaegerapps.hansan.common.models.formalityToStringResource
+import com.jaegerapps.hansan.common.models.getResStringFromFormality
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
@@ -43,7 +43,7 @@ fun TenseContainer(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(formalityToStringResource(it.formality)) ,
+                    text = stringResource(getResStringFromFormality(it.formality)) ,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )

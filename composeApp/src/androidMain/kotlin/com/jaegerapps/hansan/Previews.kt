@@ -35,17 +35,22 @@ import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.WordModel
 import com.jaegerapps.hansan.common.models.WordTenseModel
-import com.jaegerapps.hansan.common.models.formalityToStringResource
+import com.jaegerapps.hansan.common.models.getResStringFromFormality
 import hansan.composeapp.generated.resources.Res
 import hansan.composeapp.generated.resources.icon_list
 import hansan.composeapp.generated.resources.icon_mountain
 import hansan.composeapp.generated.resources.icon_quotes
 import hansan.composeapp.generated.resources.icon_settings
 import com.jaegerapps.hansan.core.presentation.HanSanTheme
-import com.jaegerapps.hansan.screens.learn.presentation.LearnScreen
-import com.jaegerapps.hansan.screens.learn.presentation.LearnUiState
+import com.jaegerapps.hansan.screens.learn.presentation.tense_list.LearnScreen
+import com.jaegerapps.hansan.screens.learn.presentation.tense_list.LearnUiState
 import com.jaegerapps.hansan.screens.learn.presentation.components.FormSelectorItem
+import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.components.IrregularContainer
+import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.components.IrregularItem
 import com.jaegerapps.hansan.screens.learn.presentation.components.LearnTense
+import com.jaegerapps.hansan.screens.learn.presentation.components.TenseHeader
+import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseScreen
+import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseUiState
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeErrorMessage
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeScreen
@@ -89,20 +94,21 @@ private val hadaWordModel = WordModel(
 
     )
 private val tenseModel = TenseModel(
-    tense = Tense.PRESENT_DECLARATIVE,
+    tense = Tense.PAST_DECLARATIVE,
     formality = Formality.FORMAL_HIGH,
-    conjugation = "~ㅂ니다/습니다",
-    explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
-    exampleGada = "가다 -> 가 -> 갑니다",
-    exampleBoda = "보다 -> 보 -> 봅니다",
-    exampleMokda = "먹다 -> 먹 -> 먹습니다",
-    exampleHada = "하다 -> 하 -> 합니다",
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
+    conjugation = "었/았/였~습니다",
+    explanation = "Last vowel 아/오 - 았습니다\n" +
+            "Last vowel 어 - 었습니다",
+    exampleGada = "가다 -> 가 -> 갔습니다",
+    exampleBoda = "보다 -> 보 -> 봤습니다",
+    exampleMokda = "먹다 -> 먹 -> 먹었습니다",
+    exampleHada = "하다 -> 하 -> 했습니다",
+    irregularSieut = "If you combine ‘ㅅ’ irregular verbs with a suffix that starts with a vowel, you drop ‘ㅅ’, then conjugate based on the last vowel.\nFor example, 낫다 - 나았습니다, 짓다 -> 지었습니다",
+    irregularDieut = "For irregular ㄷ verbs, no change is made to the 받침 if it is followed by a consonant.\nFor example: 듣다 → 듣습니다\nFor irregular ㄷ verbs, the ㄷ 받침 changes to a ㄹ when followed by a vowel.\nFor example: 듣다 → 들었습니다",
+    irregularBieub = "You drop ‘ㅂ’ from the verb stem and add 웠습니다.\nFor example: 굽다 -> 구웠습니다",
+    irregularEu = "For ㅡ irregular verbs, use the last vowel and conjugate based on that.\nFor example: 잠그다 -> 잠갔습니다",
+    irregularReu = "For 르 irregular verbs, if the last vowel is ㅏ/오, change 르 to ㄹ랐습니다. For other vowels, change ㅡ to ㄹ렀습니다. \\nFor example: 부르다 -> 불렀습니다, 고르다 -> 골랐습니다, 마르다 -> 말랐습니다",
+    irregularRieul = null
 )
 
 private val tenseModelList = listOf(
@@ -123,7 +129,7 @@ private val tenseModelList = listOf(
         null
     ),
     TenseModel(
-        tense = Tense.PRESENT_DECLARATIVE,
+        tense = Tense.PAST_DECLARATIVE,
         formality = Formality.FORMAL_HIGH,
         conjugation = "~ㅂ니다/습니다",
         explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
@@ -139,7 +145,7 @@ private val tenseModelList = listOf(
         null
     ),
     TenseModel(
-        tense = Tense.PRESENT_DECLARATIVE,
+        tense = Tense.FUTURE_DECLARATIVE,
         formality = Formality.FORMAL_HIGH,
         conjugation = "~ㅂ니다/습니다",
         explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
@@ -416,6 +422,7 @@ fun Preview_PracticeScreen() {
         PracticeScreen(state, {})
     }
 }
+
 @Preview
 @Composable
 fun Preview_PracticeScreenErrorMessage() {
@@ -471,14 +478,14 @@ fun Preview_FormSelectorItem() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FormSelectorItem(
-                text = stringResource(formalityToStringResource(Formality.FORMAL_HIGH)),
+                text = stringResource(getResStringFromFormality(Formality.FORMAL_HIGH)),
                 selected = false,
                 onSelect = {
 
                 }
             )
             FormSelectorItem(
-                text = stringResource(formalityToStringResource(Formality.FORMAL_HIGH)),
+                text = stringResource(getResStringFromFormality(Formality.FORMAL_HIGH)),
                 selected = true,
                 onSelect = {
 
@@ -492,7 +499,7 @@ fun Preview_FormSelectorItem() {
                     )
                     FormSelectorItem(
                         modifier = Modifier.weight(weight),
-                        text = stringResource(formalityToStringResource(it)),
+                        text = stringResource(getResStringFromFormality(it)),
                         selected = it == select,
                         onSelect = {
                             if (select != it) {
@@ -539,11 +546,38 @@ fun Preview_LearnTense() {
 
 @Preview
 @Composable
+fun Preview_IrregularContainer() {
+    HanSanTheme(false) {
+        IrregularContainer(
+            tenseModel = tenseModel
+        )
+    }
+}
+
+@Preview
+@Composable
+fun Preview_IrregularItem() {
+    HanSanTheme(false) {
+        IrregularItem(
+            irregularCharacter = "ㅅ",
+            irregularDescription = "Drop ㅅ and conjugate from last vowel.\n" +
+                    "낫다 - 나았습니다, 짓다 -> 지었습니다"
+        )
+    }
+}
+
+@Preview
+@Composable
 fun Preview_LearnScreen() {
+    val hashMap: HashMap<TenseHeader, List<TenseModel>> = hashMapOf(
+        Pair(TenseHeader.PRESENT, tenseModelList),
+        Pair(TenseHeader.PAST, tenseModelList),
+        Pair(TenseHeader.FUTURE, tenseModelList),
+    )
     val state = LearnUiState(
         filterFormality = Formality.FORMAL_HIGH,
         tenses = tenseModelList,
-        tensesShow = tenseModelList.filter { it.formality == Formality.FORMAL_HIGH }
+        tensesShow = hashMap
     )
     HanSanTheme(false) {
         LearnScreen(
@@ -658,7 +692,7 @@ fun Preview_IndividualWordScreen() {
 @Composable
 fun Preview_KeyboardKey() {
     val size = getScreenSizeInfo().wDP
-    val width = (size - (4.dp * 10)) /10
+    val width = (size - (4.dp * 10)) / 10
     Column {
         HanSanTheme(false) {
             Row() {
@@ -774,6 +808,7 @@ fun Preview_ErrorBox() {
         }
     }
 }
+
 @Preview
 @Composable
 fun Preview_AnswerContainer() {
@@ -796,8 +831,10 @@ fun Preview_AnswerContainer() {
         Spacer(Modifier.height(25.dp))
 
         HanSanTheme(false) {
-            Row(modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
 
                 AnswerItem(answer = "했어") {
 
@@ -808,8 +845,10 @@ fun Preview_AnswerContainer() {
                 }
             }
             Spacer(Modifier.height(25.dp))
-            Row(modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
 
                 AnswerItem(answer = "걱정스러웠어요") {
 
@@ -849,6 +888,7 @@ fun Preview_ToggleItem() {
         }
     }
 }
+
 @Preview
 @Composable
 fun Preview_InputItem() {
@@ -887,6 +927,7 @@ fun Preview_InputItem() {
         }
     }
 }
+
 @Preview
 @Composable
 fun Preview_SettingsScreen() {
@@ -901,5 +942,15 @@ fun Preview_SettingsScreen() {
                 }
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun Preview_IndividualTenseScreen() {
+    HanSanTheme(false) {
+        IndividualTenseScreen(
+            state = tenseModel
+        ) {}
     }
 }

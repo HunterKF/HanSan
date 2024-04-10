@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.getTenseResString
+import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.components.IrregularContainer
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
@@ -27,7 +28,8 @@ fun LearnTense(
     onClick: () -> Unit,
 ) {
     Column(
-        modifier = modifier.clickable { onClick() }.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp),
+        modifier = modifier.clickable { onClick() }.fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center
     ) {
@@ -84,9 +86,17 @@ fun LearnTense(
                         style = MaterialTheme.typography.labelMedium
                     )
                 }
+                if (checkForIrregulars(tenseModel)) {
+                    IrregularContainer(
+                        tenseModel = tenseModel
+                    )
+                }
 
 
             }
         }
     }
 }
+
+
+
