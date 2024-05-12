@@ -187,7 +187,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                             color = MaterialTheme.colorScheme.onBackground
                         )
                         Text(
-                            text = "${state.dailyGoalMet}/${state.dailyGoalMax}",
+                            text = "${state.dailyGoalMet} / ${state.dailyGoalMax}",
                             style = MaterialTheme.typography.labelSmall,
                             color = MaterialTheme.colorScheme.onBackground
                         )
