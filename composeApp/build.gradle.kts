@@ -51,6 +51,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(compose.material3)
+                implementation(compose.materialIconsExtended)
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
@@ -61,7 +62,7 @@ kotlin {
                 implementation(libs.decompose)
                 implementation(libs.decompose.jetbrains)
 
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
 
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
 

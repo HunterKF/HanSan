@@ -65,259 +65,53 @@ class PracticeComponent(
 
     fun onEvent(event: PracticeUiEvent) {
         when (event) {
-            PracticeUiEvent.ClearAnswer -> {
-                _state.update {
-                    it.copy(answerResponse = null)
-                }
-            }
-
-            is PracticeUiEvent.ClickAnswer -> {
-                val result = _state.value.currentWord?.let {
-                    EnterAnswer.textAnswer(
-                        input = event.answer,
-                        targetTense = _state.value.targetTense!!.tense,
-                        wordModel = it,
-                        formality = _state.value.targetFormality
-                    )
-                }
-                result?.let { answer ->
-                    when (answer) {
-                        AnswerResponse.CORRECT -> {
-                            val targetFormality =
-                                returnTargetFormality(_state.value.selectedFormalityCategory)
-                            val word = WordAndTenseHandler.newWord(words)
-                            val tense = WordAndTenseHandler.newTense(
-                                filterTenses(
-                                    targetFormality,
-                                    _state.value.enabledTenses
-                                )
-                            )
-                            val answerOptions = WordAndTenseHandler.newAnswerOptions(
-                                word,
-                                tense.tense,
-                                formality = targetFormality
-                            )
-                            _state.update {
-                                it.copy(
-                                    answerResponse = answer,
-                                    textInput = "",
-                                    currentWord = word,
-                                    targetTense = tense,
-                                    answerOptions = answerOptions,
-                                    targetFormality = targetFormality,
-                                    dailyGoalMet = updateDailyTargetMet(it.dailyGoalMet!!)
-                                )
-                            }
-                        }
-
-                        AnswerResponse.WRONG -> {
-                            _state.update {
-                                it.copy(
-                                    answerResponse = answer,
-                                    textInput = "",
-                                )
-                            }
-                        }
-                    }
-
-                }
-            }
-
-            PracticeUiEvent.EnterAnswerKeyboard -> {
-                val isKorean = _state.value.textInput.split(" ").map { it.isHangul() }
-
-                if (_state.value.textInput.isEmpty()) {
-                    _state.update {
-                        it.copy(
-                            errorMessage = PracticeErrorMessage.ANSWER_BLANK
-                        )
-                    }
-                    return
-                } else if (isKorean.contains(false)) {
-                    _state.update {
-                        it.copy(
-                            textInput = "",
-                            errorMessage = PracticeErrorMessage.NOT_KOREAN
-                        )
-                    }
-                    return
-                }
-                val result = _state.value.currentWord?.let {
-                    EnterAnswer.textAnswer(
-                        input = _state.value.textInput,
-                        targetTense = _state.value.targetTense!!.tense,
-                        wordModel = it,
-                        formality = _state.value.targetFormality
-                    )
-                }
-                result?.let { answer ->
-                    when (answer) {
-                        AnswerResponse.CORRECT -> {
-                            val targetFormality =
-                                returnTargetFormality(_state.value.selectedFormalityCategory)
-                            val word = WordAndTenseHandler.newWord(words)
-                            val tense = WordAndTenseHandler.newTense(
-                                filterTenses(
-                                    targetFormality,
-                                    _state.value.enabledTenses
-                                )
-                            )
-                            val answerOptions = WordAndTenseHandler.newAnswerOptions(
-                                word,
-                                tense.tense,
-                                formality = targetFormality
-                            )
-                            _state.update {
-                                it.copy(
-                                    answerResponse = answer,
-                                    textInput = "",
-                                    currentWord = word,
-                                    targetTense = tense,
-                                    answerOptions = answerOptions,
-                                    targetFormality = targetFormality,
-                                    dailyGoalMet = updateDailyTargetMet(it.dailyGoalMet!!)
-                                )
-                            }
-                        }
-
-                        AnswerResponse.WRONG -> {
-                            Knower.e(
-                                "EnterAnswerKeyboard",
-                                "The answer was wrong. Here are the values: \n Tense: ${_state.value.targetTense} \n Word: ${_state.value.currentWord} \n Text input: ${_state.value.textInput}"
-                            )
-                            _state.update {
-                                it.copy(
-                                    answerResponse = answer,
-                                    textInput = "",
-                                )
-                            }
-                        }
-                    }
-
-                }
-            }
 
             is PracticeUiEvent.OnNavigate -> {
                 onNavigate(event.route)
             }
 
-            is PracticeUiEvent.OnValueChange -> {
-                _state.update {
-                    it.copy(
-                        textInput = event.value
-                    )
-                }
-            }
-
-            is PracticeUiEvent.SelectFormality -> {
-                val formality =
-                    getFormalityFromString(event.formality.lowercase().replace(" ", "_"))
-                val targetFormality = returnTargetFormality(formality)
-                val word = WordAndTenseHandler.newWord(words)
-                val tense = WordAndTenseHandler.newTense(
-                    filterTenses(
-                        targetFormality,
-                        _state.value.enabledTenses
-                    )
-                )
-                val answerOptions = WordAndTenseHandler.newAnswerOptions(
-                    word,
-                    tense.tense,
-                    formality = targetFormality
-                )
-                _state.update {
-                    it.copy(
-                        selectedFormalityCategory = formality,
-                        targetFormality = targetFormality,
-                        targetTense = tense,
-                        formalityDropDown = false,
-                        textInput = "",
-                        currentWord = word,
-                        answerOptions = answerOptions
-                    )
-                }
-                /*_state.update {
-                    it.copy(
-                        targetFormality = formality,
-                        targetTense = WordAndTenseHandler.newTense(filterTenses(formality)),
-                        formalityDropDown = false
-                    )
-                }*/
-            }
-
-            is PracticeUiEvent.SelectType -> {
-                val type = stringToType(event.type.lowercase())
-                _state.update {
-                    it.copy(
-                        targetType = type,
-                        typeDropDown = false
-                    )
-                }
-            }
-
-            PracticeUiEvent.ToggleFormalityDropDown -> {
-                _state.update {
-                    it.copy(
-                        formalityDropDown = !_state.value.formalityDropDown,
-
-                        typeDropDown = false
-                    )
-                }
-            }
-
-            PracticeUiEvent.ToggleKeyboardMode -> {
-                Knower.d("ToggleKeyboard", "Hah, no keyboard yet.")
-                _state.update {
-                    it.copy(
-                        keyboardEnabled = !_state.value.keyboardEnabled
-                    )
-                }
-            }
-
-            PracticeUiEvent.ToggleTypeDropDown -> {
-
-                _state.update {
-                    it.copy(
-                        typeDropDown = !_state.value.typeDropDown,
-                        formalityDropDown = false
-                    )
-                }
-            }
-
-            PracticeUiEvent.ToggleTenseExplanation -> {
-                _state.update { it.copy(tenseExplanationExpanded = !_state.value.tenseExplanationExpanded) }
-            }
-
-            PracticeUiEvent.OpenKeyboard -> {
-                _state.update {
-                    it.copy(
-                        openKeyboard = !_state.value.openKeyboard
-                    )
-                }
-                Knower.d("openkeyboard", "Current state: ${_state.value}")
-            }
 
             PracticeUiEvent.ClearErrorMessage -> {
                 _state.update {
                     it.copy(errorMessage = null)
                 }
             }
+
+            PracticeUiEvent.CheckAnswer -> {
+                _state.update {
+                    it.copy(
+                        showAnswer = true
+                    )
+                }
+                Knower.d("CheckAnswer", "This has updated: ${_state.value.showAnswer}")
+                Knower.d("CheckAnswer", "This has updated: ${state.value.showAnswer}")
+            }
+            PracticeUiEvent.ClickDon_tKnow -> {
+                /*TODO - Perform some logic here*/
+                _state.update {
+                    it.copy(
+                        showAnswer = false
+                    )
+                }
+            }
+            PracticeUiEvent.ClickGotIt -> {
+                /*TODO - Perform some logic here*/
+                _state.update {
+                    it.copy(
+                        showAnswer = false
+                    )
+                }
+            }
         }
     }
 
     private fun filterTenses(formality: Formality, tenseList: List<Tense>): List<TenseModel> {
-        if (formality == Formality.ALL) return tenses.filter { tenseList.contains(it.tense) }
         return tenses.filter { tense -> tense.formality == formality && tenseList.contains(tense.tense) }
     }
 
     private fun returnTargetFormality(formality: Formality): Formality {
-        val formalityList =
-            listOf(Formality.FORMAL_HIGH, Formality.FORMAL_LOW, Formality.INFORMAL_LOW)
-        return if (formality == Formality.ALL) {
-            formalityList.random()
-        } else {
-            _state.value.selectedFormalityCategory
-        }
+        return _state.value.selectedFormalityCategory
+
     }
 
     private fun initializePracticeComponent() {
@@ -343,12 +137,6 @@ class PracticeComponent(
                 enabledTenses
             )
         )
-        //Returns a list of 4 answers to be used for the clickable section
-        val answerOptions = WordAndTenseHandler.newAnswerOptions(
-            word,
-            tense.tense,
-            formality = _state.value.selectedFormalityCategory
-        )
 
         _state.update {
             it.copy(
@@ -358,8 +146,7 @@ class PracticeComponent(
                 enabledTenses = enabledTenses,
                 currentWord = word,
                 targetTense = tense,
-                answerOptions = answerOptions,
-                dailyGoalMax = userSettings.value?.dailyTargetMax ?: 50 ,
+                dailyGoalMax = userSettings.value?.dailyTargetMax ?: 50,
                 dailyGoalMet = userSettings.value?.dailyTargetMet ?: 0
 
             )

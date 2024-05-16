@@ -12,7 +12,6 @@ enum class Formality {
     FORMAL_HIGH,
     FORMAL_LOW,
     INFORMAL_LOW,
-    ALL
 }
 @OptIn(ExperimentalResourceApi::class)
 fun getResStringFromFormality(
@@ -22,7 +21,6 @@ fun getResStringFromFormality(
         Formality.FORMAL_HIGH -> Res.string.formality_formal_high
         Formality.FORMAL_LOW -> Res.string.formality_formal_low
         Formality.INFORMAL_LOW -> Res.string.formality_informal_low
-        Formality.ALL -> Res.string.formality_all
     }
 }
 fun getStringFromFormality(
@@ -32,7 +30,6 @@ fun getStringFromFormality(
         Formality.FORMAL_HIGH -> "formal_high"
         Formality.FORMAL_LOW ->  "formal_low"
         Formality.INFORMAL_LOW -> "informal_low"
-        Formality.ALL -> "all"
     }
 }
 
@@ -43,7 +40,6 @@ fun getFormalityFromString(
         "formal_high" -> Formality.FORMAL_HIGH
         "formal_low" -> Formality.FORMAL_LOW
         "informal_low" -> Formality.INFORMAL_LOW
-        "all" -> Formality.ALL
         else -> Formality.FORMAL_HIGH
     }
 }

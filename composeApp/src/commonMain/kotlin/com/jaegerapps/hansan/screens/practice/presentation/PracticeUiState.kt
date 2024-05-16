@@ -17,17 +17,11 @@ data class PracticeUiState(
     val targetType: ModifierType = ModifierType.VERBS,
     val formalityList: List<Formality> = formalityDefaultList,
     val typeList: List<ModifierType> = modifierTypeList,
-    val answerOptions: List<String> = emptyList(),
-    val keyboardEnabled: Boolean = false,
-    val openKeyboard: Boolean = false,
-    val formalityDropDown: Boolean = false,
-    val tenseExplanationExpanded: Boolean = false,
-    val typeDropDown: Boolean = false,
-    val answerResponse: AnswerResponse? = null,
 
     val dailyGoalMax: Int = 50,
     val dailyGoalMet: Int? = null,
     val errorMessage: PracticeErrorMessage? = null,
+    val showAnswer: Boolean = false
 )
 
 private val modifierTypeList = listOf(
@@ -40,7 +34,6 @@ private val formalityDefaultList = listOf(
     Formality.FORMAL_HIGH,
     Formality.FORMAL_LOW,
     Formality.INFORMAL_LOW,
-    Formality.ALL
 )
 enum class PracticeErrorMessage {
     NOT_KOREAN,

@@ -1,5 +1,6 @@
 package com.jaegerapps.hansan
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -55,15 +56,9 @@ import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeErrorMessage
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeScreen
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeUiState
-import com.jaegerapps.hansan.screens.practice.presentation.components.AnswerItem
+import com.jaegerapps.hansan.screens.practice.presentation.components.AnswerCard
+import com.jaegerapps.hansan.screens.practice.presentation.components.FormalityContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.TargetFormsContainer
-import com.jaegerapps.hansan.screens.practice.presentation.components.DropDownContainer
-import com.jaegerapps.hansan.screens.practice.presentation.components.ErrorBox
-import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardContainer
-import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardEnabledIcon
-import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardIconButton
-import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardInputContainer
-import com.jaegerapps.hansan.screens.practice.presentation.components.KeyboardKey
 import com.jaegerapps.hansan.screens.practice.presentation.components.WordContainer
 import com.jaegerapps.hansan.screens.settings.presentation.SettingsScreen
 import com.jaegerapps.hansan.screens.settings.presentation.SettingsUiState
@@ -177,8 +172,6 @@ fun Preview_WordContainer() {
             WordContainer(
                 word = word,
                 definition = "to do",
-                answerResponse = null,
-                onEvent = {}
             )
             TextButton(onClick = {
                 word = if (word == "하다") "가다" else "하다"
@@ -191,10 +184,6 @@ fun Preview_WordContainer() {
 
                 word = "하다",
                 definition = "to do",
-                answerResponse = wrongAnswer,
-                onEvent = {
-                    wrongAnswer = null
-                }
             )
             TextButton(onClick = {
                 wrongAnswer = if (wrongAnswer == null) AnswerResponse.WRONG else null
@@ -205,56 +194,6 @@ fun Preview_WordContainer() {
     }
 }
 
-@Preview
-@Composable
-fun Preview_TargetContainer() {
-    var expanded by remember {
-        mutableStateOf(false)
-    }
-    HanSanTheme(false) {
-        Column(modifier = Modifier.padding(12.dp)) {
-            DropDownContainer(
-                list = listOf("Verbs", "Adjectives", "Adverbs"),
-                selected = "Verbs",
-                expanded = false,
-                onSelect = {
-
-                },
-                onExpand = {
-                    expanded = !expanded
-                }
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-
-                DropDownContainer(
-                    list = listOf("Verbs", "Adjectives", "Adverbs"),
-                    selected = "Verbs",
-                    expanded = false,
-                    onSelect = {
-
-                    },
-                    onExpand = {
-                        expanded = !expanded
-                    }
-                )
-                DropDownContainer(
-                    list = listOf("Informal", "Formal low", "Formal High"),
-                    selected = "Formal low",
-                    expanded = expanded,
-                    onSelect = {
-
-                    },
-                    onExpand = {
-                        expanded = !expanded
-                    }
-                )
-            }
-        }
-    }
-}
 
 @Preview
 @Composable
@@ -314,48 +253,6 @@ fun Preview_CurrentTenseContainer() {
     }
 }
 
-@Preview
-@Composable
-fun Preview_KeyboardInputContainer() {
-    var value by remember {
-        mutableStateOf("")
-    }
-    HanSanTheme(false) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            KeyboardInputContainer(
-                modifier = Modifier.fillMaxWidth(0.6f),
-                input = value,
-                onEvent = {
-                    value = "it"
-                }
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun Preview_KeyboardEnabledIcon() {
-    var value by remember {
-        mutableStateOf(false)
-    }
-    HanSanTheme(false) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            KeyboardEnabledIcon(
-                enabled = value,
-                onClick = {
-                    value = !value
-                }
-            )
-        }
-    }
-}
 
 @OptIn(ExperimentalResourceApi::class)
 @Preview
@@ -455,9 +352,7 @@ fun Preview_PracticeScreenDark() {
     HanSanTheme(true) {
         PracticeScreen(state.value) {
             expanded = !expanded
-            state.value = state.value.copy(
-                tenseExplanationExpanded = expanded
-            )
+
         }
     }
 }
@@ -688,179 +583,6 @@ fun Preview_IndividualWordScreen() {
     }
 }
 
-@Preview
-@Composable
-fun Preview_KeyboardKey() {
-    val size = getScreenSizeInfo().wDP
-    val width = (size - (4.dp * 10)) / 10
-    Column {
-        HanSanTheme(false) {
-            Row() {
-                KeyboardKey(
-                    key = "ㅎ",
-                    isShift = false,
-                    onClick = {}
-                )
-                Spacer(Modifier.width(12.dp))
-                KeyboardKey(
-                    key = "ㄲ",
-                    isShift = false,
-                    onClick = {}
-                )
-                Spacer(Modifier.width(12.dp))
-                KeyboardKey(
-                    width = size / 10,
-                    key = "ㄲ",
-                    isShift = false,
-                    onClick = {}
-                )
-            }
-            Text("Width: $width")
-            Text("Size: ${size}")
-            Row {
-                for (i in 1..10) {
-                    KeyboardKey(
-                        width = width,
-                        key = "$i",
-                        isShift = false,
-                        onClick = {}
-                    )
-                }
-            }
-            KeyboardKey(
-                key = "ㅎ",
-                isShift = false,
-                onClick = {}
-            )
-            Spacer(Modifier.height(12.dp))
-            KeyboardKey(
-                key = "ㄲ",
-                isShift = false,
-                onClick = {}
-            )
-        }
-        HanSanTheme(true) {
-            Spacer(Modifier.height(12.dp))
-
-            KeyboardKey(
-                key = "ㅎ",
-                isShift = false,
-                onClick = {}
-            )
-        }
-    }
-
-}
-
-@Preview
-@Composable
-fun Preview_KeyboardContainer() {
-    Column {
-        HanSanTheme(false) {
-            KeyboardContainer(
-                input = "",
-                onEvent = {}
-            )
-        }
-        Spacer(Modifier.height(12.dp))
-        HanSanTheme(true) {
-            KeyboardContainer(
-                input = "",
-                onEvent = {}
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun Preview_KeyboardIconButton() {
-    Column {
-        HanSanTheme(false) {
-            KeyboardIconButton(
-                icon = Icons.Sharp.KeyboardArrowUp,
-                contentDescription = "shift",
-                onClick = {}
-            )
-        }
-        Spacer(Modifier.height(12.dp))
-        HanSanTheme(true) {
-            KeyboardIconButton(
-                icon = Icons.Sharp.KeyboardArrowUp,
-                contentDescription = "shift",
-                onClick = {}
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun Preview_ErrorBox() {
-    Column {
-
-        HanSanTheme(false) {
-            ErrorBox(message = "Please use Korean.")
-        }
-        Spacer(Modifier.height(25.dp))
-        HanSanTheme(true) {
-            ErrorBox(message = "Please use Korean.")
-        }
-    }
-}
-
-@Preview
-@Composable
-fun Preview_AnswerContainer() {
-    Column {
-
-        HanSanTheme(false) {
-            AnswerItem(answer = "했어") {
-
-            }
-        }
-        Spacer(Modifier.height(25.dp))
-        HanSanTheme(true) {
-            Box(
-                modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)
-            ) {
-
-                AnswerItem(answer = "했어") {}
-            }
-        }
-        Spacer(Modifier.height(25.dp))
-
-        HanSanTheme(false) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-
-                AnswerItem(answer = "했어") {
-
-                }
-
-                AnswerItem(answer = "했어요") {
-
-                }
-            }
-            Spacer(Modifier.height(25.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-
-                AnswerItem(answer = "걱정스러웠어요") {
-
-                }
-
-                AnswerItem(answer = "걱정스러웠겠네요") {
-
-                }
-            }
-        }
-    }
-}
 
 @Preview
 @Composable
@@ -952,5 +674,106 @@ fun Preview_IndividualTenseScreen() {
         IndividualTenseScreen(
             state = tenseModel
         ) {}
+    }
+}
+
+@Preview
+@Composable
+private fun Preview_AnswerContainer() {
+
+    var showAnswer by remember { mutableStateOf(false) }
+    HanSanTheme(false) {
+        Column(
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
+                .padding(12.dp)
+        ) {
+            Spacer(Modifier.height(24.dp))
+            AnswerCard(
+                formality = Formality.FORMAL_HIGH,
+                tenseTarget = tenseModel.tense,
+                onClick = {
+                    showAnswer = !showAnswer
+
+                },
+                showAnswer = showAnswer,
+                answer = "하고 있습니다"
+            )
+            Spacer(Modifier.height(24.dp))
+            AnswerCard(
+                formality = Formality.FORMAL_HIGH,
+                tenseTarget = tenseModel.tense,
+                onClick = {
+                          showAnswer = !showAnswer
+                },
+                showAnswer = !showAnswer,
+                answer = "하고 있습니다"
+            )
+            Spacer(Modifier.height(24.dp))
+
+
+        }
+    }
+}
+
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun Preview_AnswerContainerDark() {
+
+    var showAnswer by remember { mutableStateOf(false) }
+    HanSanTheme(true) {
+        Column(
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)
+                .padding(12.dp)
+        ) {
+            Spacer(Modifier.height(24.dp))
+            AnswerCard(
+                formality = Formality.FORMAL_HIGH,
+                tenseTarget = tenseModel.tense,
+                onClick = {
+                    showAnswer = !showAnswer
+
+                },
+                showAnswer = showAnswer,
+                answer = "하고 있습니다"
+            )
+            Spacer(Modifier.height(24.dp))
+            AnswerCard(
+                formality = Formality.FORMAL_HIGH,
+                tenseTarget = tenseModel.tense,
+                onClick = {
+                          showAnswer = !showAnswer
+                },
+                showAnswer = !showAnswer,
+                answer = "하고 있습니다"
+            )
+            Spacer(Modifier.height(24.dp))
+
+
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview_FormalityContainer() {
+
+    HanSanTheme(true) {
+        Column(
+            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.background)
+                .padding(12.dp)
+        ) {
+
+            FormalityContainer(
+                formality = Formality.FORMAL_HIGH,
+            )
+
+            FormalityContainer(
+                formality = Formality.FORMAL_LOW,
+            )
+
+            FormalityContainer(
+                formality = Formality.INFORMAL_LOW,
+            )
+        }
     }
 }

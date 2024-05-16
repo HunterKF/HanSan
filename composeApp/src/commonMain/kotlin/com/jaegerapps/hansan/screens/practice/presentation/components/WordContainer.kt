@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
@@ -31,61 +32,31 @@ import kotlinx.coroutines.delay
 @Composable
 fun WordContainer(
     modifier: Modifier = Modifier,
-    answerResponse: AnswerResponse?,
     word: String,
     definition: String,
-    onEvent: () -> Unit
 ) {
-    var itemVisible by remember { mutableStateOf(false) }
-    LaunchedEffect(
-        key1 = word,
-        block = {
-            // Animate the item when it changes or first appears
-            itemVisible = false
-            delay(200) // Delay for visibility change to take effect
-            itemVisible = true
-        }
-    )
-    var wrongAnswer by remember { mutableStateOf(false) }
-    LaunchedEffect(answerResponse) {
-        if (answerResponse == AnswerResponse.WRONG) {
-            println("Response started")
-            wrongAnswer = true
-            delay(375) // Delay for visibility change to take effect
-            println("Response ended")
-            wrongAnswer = false
-            onEvent()
-        }
+
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+
+        Text(
+            text = definition,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+        Text(
+            text = word,
+            style = MaterialTheme.typography.displayLarge.copy(
+                fontSize = 64.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            color = MaterialTheme.colorScheme.onBackground
+
+        )
     }
-    val animateOffset by animateDpAsState(
-        targetValue = if (wrongAnswer) 6.dp else 0.dp,
-        animationSpec = spring(Spring.DampingRatioHighBouncy, Spring.StiffnessLow)
-    )
-    FadeAnimation(
-        modifier = modifier,
-        visible = itemVisible,
-        content = {
-            Column(
-                modifier = modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    modifier = Modifier.offset(x = animateOffset),
-                    text = word,
-                    style = MaterialTheme.typography.displayLarge.copy(
-                        fontSize = 64.sp
-                    )
-                )
-                Text(
-                    text = definition,
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
-            }
-        },
-        animationDuration = 500
-    )
 
 }
 
