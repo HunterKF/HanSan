@@ -1,9 +1,8 @@
 package com.jaegerapps.hansan.screens.loading.presentation
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.essenty.lifecycle.doOnCreate
 import com.jaegerapps.hansan.common.models.TenseModel
-import com.jaegerapps.hansan.common.models.WordModel
+import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.common.util.Knower.e
@@ -17,7 +16,7 @@ import kotlinx.coroutines.withContext
 class LoadingComponent(
     componentContext: ComponentContext,
     repo: LoadingRepo,
-    private val onStart: (List<WordModel>, List<TenseModel>) -> Unit,
+    private val onStart: (List<VerbModel>, List<TenseModel>) -> Unit,
 ) : ComponentContext by componentContext {
 
     private val scope = CoroutineScope(Dispatchers.IO)

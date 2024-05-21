@@ -1,6 +1,6 @@
 package com.jaegerapps.hansan.screens.practice.data.repo
 
-import com.jaegerapps.hansan.common.models.Formality
+import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.ModifierType
 import com.russhwolf.settings.Settings
 import com.jaegerapps.hansan.common.models.UserSettings
@@ -25,7 +25,7 @@ class PracticeRepoImpl(
         val dailyTargetMet = settings.getInt(SettingKeys.DAILY_TARGET_MET, 0)
         val dailyTargetMax = settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
         return UserSettings(
-            targetFormality = getFormalityFromString(formality),
+            targetFormalityType = getFormalityFromString(formality),
             targetType = stringToType(type),
             keyboardEnabled = keyboardEnabled,
             presentTenseEnabled = presentTenseEnabled,
@@ -41,8 +41,8 @@ class PracticeRepoImpl(
         settings.putString(SettingKeys.TYPE, typeToString(type))
     }
 
-    override suspend fun updateUserSettingsFormality(formality: Formality) {
-        settings.putString(SettingKeys.FORMALITY, getStringFromFormality(formality))
+    override suspend fun updateUserSettingsFormality(formalityType: FormalityType) {
+        settings.putString(SettingKeys.FORMALITY, getStringFromFormality(formalityType))
     }
 
 

@@ -14,7 +14,7 @@ import org.jetbrains.compose.resources.StringResource
 
 data class TenseModel(
     val tense: Tense,
-    val formality: Formality,
+    val formalityType: FormalityType,
     val conjugation: String,
     val explanation: String,
     val exampleGada: String,

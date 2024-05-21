@@ -3,20 +3,14 @@ package com.jaegerapps.hansan.screens.practice.presentation
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.jaegerapps.hansan.common.models.Formality
+import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.UserSettings
-import com.jaegerapps.hansan.common.models.WordModel
-import com.jaegerapps.hansan.common.models.getFormalityFromString
-import com.jaegerapps.hansan.common.models.stringToType
+import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.d
-import com.jaegerapps.hansan.common.util.Knower.e
-import com.jaegerapps.hansan.screens.practice.domain.hangul.isHangul
-import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
-import com.jaegerapps.hansan.screens.practice.domain.usecases.EnterAnswer
 import com.jaegerapps.hansan.screens.practice.domain.usecases.WordAndTenseHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,12 +20,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PracticeComponent(
     componentContext: ComponentContext,
     private val tenses: List<TenseModel>,
-    private val words: List<WordModel>,
+    private val words: List<VerbModel>,
     private val onNavigate: (String) -> Unit,
     private val repo: PracticeRepo,
 ) : ComponentContext by componentContext {
@@ -83,8 +76,6 @@ class PracticeComponent(
                         showAnswer = true
                     )
                 }
-                Knower.d("CheckAnswer", "This has updated: ${_state.value.showAnswer}")
-                Knower.d("CheckAnswer", "This has updated: ${state.value.showAnswer}")
             }
             PracticeUiEvent.ClickDon_tKnow -> {
                 /*TODO - Perform some logic here*/
@@ -105,12 +96,12 @@ class PracticeComponent(
         }
     }
 
-    private fun filterTenses(formality: Formality, tenseList: List<Tense>): List<TenseModel> {
-        return tenses.filter { tense -> tense.formality == formality && tenseList.contains(tense.tense) }
+    private fun filterTenses(formalityType: FormalityType, tenseList: List<Tense>): List<TenseModel> {
+        return tenses.filter { tense -> tense.formalityType == formalityType && tenseList.contains(tense.tense) }
     }
 
-    private fun returnTargetFormality(formality: Formality): Formality {
-        return _state.value.selectedFormalityCategory
+    private fun returnTargetFormality(formalityType: FormalityType): FormalityType {
+        return _state.value.selectedFormalityCategoryType
 
     }
 
@@ -119,8 +110,8 @@ class PracticeComponent(
             userSettings.value = async { repo.getUserSettings() }.await()
         }
         //The target is going to be the current one displayed
-        val targetFormality = returnTargetFormality(
-            userSettings.value?.targetFormality ?: Formality.FORMAL_HIGH
+        val targetFormalityType = returnTargetFormality(
+            userSettings.value?.targetFormalityType ?: FormalityType.FORMAL_HIGH
         )
         //This takes the enabled tenses from the user's settings and creates a list of Tenses to be used to filter
         val enabledTenses = filterTensesByUserSettings(
@@ -128,23 +119,32 @@ class PracticeComponent(
             pastTense = userSettings.value?.pastTenseEnabled ?: true,
             futureTense = userSettings.value?.futureTenseEnabled ?: true,
         )
+
+        //Select a verb
+        val verb = WordAndTenseHandler.selectVerb(words)
         //Gets a random word
-        val word = WordAndTenseHandler.newWord(words)
+        val word = WordAndTenseHandler.newWord(
+            verb,
+            targetFormalityType,
+            targetTenses = listOf(Tense.PRESENT_DECLARATIVE)
+        )
         //Gets a random tense. It will filter based on formality and enabled tenses
         val tense = WordAndTenseHandler.newTense(
             filterTenses(
-                targetFormality,
+                targetFormalityType,
                 enabledTenses
             )
         )
 
         _state.update {
             it.copy(
-                selectedFormalityCategory = userSettings.value?.targetFormality
-                    ?: Formality.FORMAL_HIGH,
-                targetFormality = targetFormality,
+                selectedFormalityCategoryType = userSettings.value?.targetFormalityType
+                    ?: FormalityType.FORMAL_HIGH,
+                targetFormalityType = targetFormalityType,
                 enabledTenses = enabledTenses,
-                currentWord = word,
+
+                currentVerb = verb,
+                targetWord = word,
                 targetTense = tense,
                 dailyGoalMax = userSettings.value?.dailyTargetMax ?: 50,
                 dailyGoalMet = userSettings.value?.dailyTargetMet ?: 0

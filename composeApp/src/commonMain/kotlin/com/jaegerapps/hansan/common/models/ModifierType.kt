@@ -11,7 +11,6 @@ import org.jetbrains.compose.resources.StringResource
 enum class ModifierType {
     VERBS,
     ADJECTIVES,
-    ADVERBS
 }
 
 @OptIn(ExperimentalResourceApi::class)
@@ -21,7 +20,6 @@ fun typeToStringResource(
     return when (type) {
         ModifierType.VERBS ->  Res.string.type_verb
         ModifierType.ADJECTIVES -> Res.string.type_adjective
-        ModifierType.ADVERBS -> Res.string.type_adverb
     }
 }
 fun typeToString(
@@ -30,7 +28,6 @@ fun typeToString(
     return when (type) {
         ModifierType.VERBS -> "verbs"
         ModifierType.ADJECTIVES -> "adjectives"
-        ModifierType.ADVERBS -> "adverbs"
     }
 }
 
@@ -40,7 +37,6 @@ fun stringToType(
     return when (type) {
         "verb" -> ModifierType.VERBS
         "adjective" -> ModifierType.ADJECTIVES
-        "adverb" -> ModifierType.ADVERBS
         else -> ModifierType.VERBS
     }
 }

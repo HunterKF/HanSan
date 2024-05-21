@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
     kotlin("plugin.serialization") version "1.9.22"
 }
 
@@ -33,15 +35,15 @@ kotlin {
             dependencies {
                 implementation(libs.compose.ui.tooling.preview)
                 implementation(libs.androidx.activity.compose)
-//                val billing_version = "6.2.0"
+                implementation(libs.androidx.room.paging)
+
 
                 implementation(libs.billing.ktx)
                 implementation("com.google.guava:guava:24.1-jre")
                 implementation ("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
-                val lifecycleVersion = "2.6.1"
-                implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
-                implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
-                implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+                implementation(libs.androidx.lifecycle.viewmodel.compose)
+                implementation(libs.androidx.lifecycle.runtime.compose)
+                implementation(libs.androidx.lifecycle.runtime.ktx)
 
 
             }
@@ -62,9 +64,12 @@ kotlin {
                 implementation(libs.decompose)
                 implementation(libs.decompose.jetbrains)
 
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.1")
+                implementation(libs.androidx.room.runtime)
+                implementation(libs.sqlite.bundled)
 
-                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
+                implementation(libs.kotlinx.serialization.json)
+
+                implementation(libs.kotlinx.datetime)
 
             }
         }
@@ -123,6 +128,16 @@ android {
     }
 }
 
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
+
 dependencies {
-    implementation("androidx.core:core:1.10.1")
+    implementation("androidx.core:core:1.13.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
 }

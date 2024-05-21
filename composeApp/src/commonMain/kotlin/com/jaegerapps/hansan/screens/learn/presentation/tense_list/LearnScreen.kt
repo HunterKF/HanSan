@@ -25,10 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.components.BottomBarIcon
-import com.jaegerapps.hansan.common.models.Formality
+import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.getResStringFromFormality
-import com.jaegerapps.hansan.common.models.getTenseResString
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon
 import com.jaegerapps.hansan.common.util.Routes
 import com.jaegerapps.hansan.screens.learn.presentation.components.FormSelectorItem
@@ -68,16 +67,16 @@ fun LearnScreen(
             modifier = Modifier.fillMaxWidth().padding(paddingValues).padding(top = 12.dp)
         ) {
             val list = listOf(
-                Formality.FORMAL_HIGH,
-                Formality.FORMAL_LOW,
-                Formality.INFORMAL_LOW
+                FormalityType.FORMAL_HIGH,
+                FormalityType.FORMAL_LOW,
+                FormalityType.INFORMAL_LOW
             )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 list.forEach {
                     FormSelectorItem(
                         modifier = Modifier.weight(1.0f),
                         text = stringResource(getResStringFromFormality(it)),
-                        selected = it == state.filterFormality,
+                        selected = it == state.filterFormalityType,
                         onSelect = {
                             onEvent(LearnUiEvent.ChangeFormality(it))
                         }

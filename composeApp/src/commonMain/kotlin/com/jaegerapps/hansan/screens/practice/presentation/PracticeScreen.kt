@@ -1,11 +1,6 @@
 package com.jaegerapps.hansan.screens.practice.presentation
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -39,19 +32,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.jaegerapps.hansan.common.components.BottomBarIcon
-import com.jaegerapps.hansan.common.models.getResStringFromFormality
-import com.jaegerapps.hansan.common.models.typeToStringResource
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon.Companion.routeList
 import com.jaegerapps.hansan.common.util.Routes
 import com.jaegerapps.hansan.screens.practice.presentation.components.AnswerCard
-import com.jaegerapps.hansan.screens.practice.presentation.components.TargetFormsContainer
 import com.jaegerapps.hansan.screens.practice.presentation.components.WordContainer
 import hansan.composeapp.generated.resources.Res
 import hansan.composeapp.generated.resources.error_answer_blank
@@ -60,7 +47,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.getString
-import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -130,8 +116,8 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                 ) {
                     WordContainer(
                         modifier = Modifier.fillMaxWidth(),
-                        word = state.currentWord?.dictionaryWord ?: "고장",
-                        definition = state.currentWord?.definition ?: "error",
+                        word = state.currentVerb?.baseWord ?: "고장",
+                        definition = state.currentVerb?.definitionTranslations?.english ?: "error",
                     )
                 }
 
@@ -140,7 +126,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                 ) {
                     state.targetTense?.let { tenseModel ->
                         AnswerCard(
-                            formality = state.targetFormality,
+                            formalityType = state.targetFormalityType,
                             tenseTarget = tenseModel.tense,
                             showAnswer = state.showAnswer,
                             answer = "Hello",

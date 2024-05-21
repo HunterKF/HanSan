@@ -79,8 +79,8 @@ fun IndividualWordScreen(
                 item {
                     ExamineWordContainer(
                         modifier = Modifier.padding(12.dp),
-                        word = state.currentWord.dictionaryWord,
-                        def = state.currentWord.definition
+                        word = state.currentWord.baseWord,
+                        def = state.currentWord.definitionTranslations.english /*TODO - Set it according to the local language */
                     )
                 }
                 item {

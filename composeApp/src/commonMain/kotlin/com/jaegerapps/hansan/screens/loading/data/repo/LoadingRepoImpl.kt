@@ -1,7 +1,7 @@
 package com.jaegerapps.hansan.screens.loading.data.repo
 
 import com.jaegerapps.hansan.common.mappers.toTenseModel
-import com.jaegerapps.hansan.common.mappers.toWordModel
+import com.jaegerapps.hansan.common.mappers.toVerbModel
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.e
 import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceJson
@@ -21,7 +21,7 @@ class LoadingRepoImpl(
             if (!words.isNullOrEmpty() && !tenses.isNullOrEmpty()) {
                 Result.success(
                     LoadingResult(
-                        words.map { it.toWordModel() },
+                        words.map { it.toVerbModel() },
                         tenses.map { it.toTenseModel() })
                 )
             } else {

@@ -18,7 +18,7 @@ class SettingsLocalDataSourceImpl(val settings: Settings) : SettingsLocalDataSou
         val dailyTargetMet = settings.getInt(SettingKeys.DAILY_TARGET_MET, 50)
         val dailyTargetMax = settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
         return UserSettings(
-            targetFormality = getFormalityFromString(formality),
+            targetFormalityType = getFormalityFromString(formality),
             targetType = stringToType(type),
             keyboardEnabled = keyboardEnabled,
             presentTenseEnabled = presentTenseEnabled,

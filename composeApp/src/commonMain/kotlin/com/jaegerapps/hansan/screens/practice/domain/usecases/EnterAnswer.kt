@@ -1,22 +1,19 @@
 package com.jaegerapps.hansan.screens.practice.domain.usecases
 
-import com.jaegerapps.hansan.common.models.Formality
+import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.Tense
-import com.jaegerapps.hansan.common.models.WordModel
-import com.jaegerapps.hansan.common.util.Knower
-import com.jaegerapps.hansan.common.util.Knower.d
-import com.jaegerapps.hansan.common.util.Knower.e
+import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 
 class EnterAnswer {
     companion object {
-        fun textAnswer(
+        /*fun textAnswer(
             input: String,
             targetTense: Tense,
-            formality: Formality,
-            wordModel: WordModel,
+            formalityType: FormalityType,
+            wordModel: VerbModel,
         ): AnswerResponse {
-            val answer = getTenseModel(targetTense, wordModel, formality)
+            val answer = getTenseModel(targetTense, wordModel, formalityType)
             return if (input == answer) {
                 AnswerResponse.CORRECT
             } else {
@@ -24,7 +21,7 @@ class EnterAnswer {
             }
         }
 
-        private fun getTenseModel(targetTense: Tense,  wordModel: WordModel, formality: Formality): String {
+        private fun getTenseModel(targetTense: Tense, wordModel: VerbModel, formalityType: FormalityType): String {
             val result = listOf(
                 wordModel.fhPresentDeclarative,
                 wordModel.fhPastDeclarative,
@@ -35,9 +32,9 @@ class EnterAnswer {
                 wordModel.ilPresentDeclarative,
                 wordModel.ilPastDeclarative,
                 wordModel.ilFutureDeclarative,
-            ).filter { it.tense == targetTense && it.formality == formality }
+            ).filter { it.tense == targetTense && it.formalityType == formalityType }
             return result.first().string
-        }
+        }*/
     }
 
 }

@@ -1,4 +1,4 @@
-package com.jaegerapps.hansan
+package com.jaegerapps.hansan.root
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.ExperimentalDecomposeApi
@@ -75,7 +75,10 @@ class RootComponent(
                                     tenses = tenses,
                                 )
                             }
-                            Knower.d("RootComponent", "Navigation is being called, moving to PracticeComponent")
+                            Knower.d(
+                                "RootComponent",
+                                "Navigation is being called, moving to PracticeComponent"
+                            )
 
                             navigation.replaceAll(Configuration.PracticeScreen)
                         }
@@ -118,7 +121,7 @@ class RootComponent(
             is Configuration.IndividualWordScreen -> {
                 Child.IndividualWordScreen(
                     IndividualWordComponent(
-                        currentWord = state.value.words.first { it.dictionaryWord == config.word },
+                        currentWord = state.value.words.first { it.baseWord == config.word },
                         componentContext = context,
                         onNavigate = {
                             navigation.pop()

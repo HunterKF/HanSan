@@ -2,7 +2,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.window.ComposeUIViewController
 import com.arkivanov.decompose.DefaultComponentContext
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
-import com.jaegerapps.hansan.RootComponent
+import com.jaegerapps.hansan.root.RootComponent
 import com.jaegerapps.hansan.di.AppModule
 import platform.UIKit.UIScreen
 import platform.UIKit.UIUserInterfaceStyle

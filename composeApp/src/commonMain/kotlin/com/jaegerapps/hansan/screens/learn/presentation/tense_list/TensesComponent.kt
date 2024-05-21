@@ -1,7 +1,7 @@
 package com.jaegerapps.hansan.screens.learn.presentation.tense_list
 
 import com.arkivanov.decompose.ComponentContext
-import com.jaegerapps.hansan.common.models.Formality
+import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.screens.learn.presentation.components.TenseHeader
@@ -17,9 +17,9 @@ class TensesComponent(
 ) : ComponentContext by componentContext {
     private val _state = MutableStateFlow(
         LearnUiState(
-            filterFormality = Formality.FORMAL_HIGH,
+            filterFormalityType = FormalityType.FORMAL_HIGH,
             tenses = tenses,
-            tensesShow = createTenseHashMap(tenses.filter { it.formality == Formality.FORMAL_HIGH })
+            tensesShow = createTenseHashMap(tenses.filter { it.formalityType == FormalityType.FORMAL_HIGH })
         )
     )
     val state = _state.asStateFlow()
@@ -29,8 +29,8 @@ class TensesComponent(
             is LearnUiEvent.ChangeFormality -> {
                 _state.update { learnUiState ->
                     learnUiState.copy(
-                        filterFormality = event.value,
-                        tensesShow = createTenseHashMap(tenses.filter { it.formality == event.value })
+                        filterFormalityType = event.value,
+                        tensesShow = createTenseHashMap(tenses.filter { it.formalityType == event.value })
                     )
                 }
             }

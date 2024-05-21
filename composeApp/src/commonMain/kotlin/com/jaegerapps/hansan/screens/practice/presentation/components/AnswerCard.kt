@@ -11,22 +11,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbDown
 import androidx.compose.material.icons.filled.ThumbUp
-import androidx.compose.material.icons.filled.ThumbsUpDown
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -35,14 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.jaegerapps.hansan.common.models.Formality
+import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.Tense
-import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.getResStringFromFormality
-import com.jaegerapps.hansan.common.models.getTenseFromString
 import com.jaegerapps.hansan.common.models.getTenseResString
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeUiEvent
 import com.jaegerapps.hansan.ui.theme.blue
@@ -55,7 +45,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun AnswerCard(
     modifier: Modifier = Modifier,
-    formality: Formality,
+    formalityType: FormalityType,
     answer: String,
     tenseTarget: Tense,
     showAnswer: Boolean,
@@ -70,7 +60,7 @@ fun AnswerCard(
                 .zIndex(2f)
                 .align(Alignment.CenterHorizontally)
                 .offset(y = 32.dp),
-            formality = formality
+            formalityType = formalityType
         )
         Column(
             modifier = Modifier.fillMaxWidth()
@@ -160,26 +150,26 @@ fun AnswerCard(
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
-fun FormalityContainer(modifier: Modifier = Modifier, formality: Formality) {
+fun FormalityContainer(modifier: Modifier = Modifier, formalityType: FormalityType) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(50.dp))
             .border(8.dp, shape = RoundedCornerShape(50.dp), color = MaterialTheme.colorScheme.surfaceContainer)
             .padding(8.dp)
-            .background(getFormalityColor(formality = formality))
+            .background(getFormalityColor(formalityType = formalityType))
             .padding(horizontal = 34.dp, vertical = 8.dp)
     ) {
         Text(
-            text = stringResource(getResStringFromFormality(formality)),
+            text = stringResource(getResStringFromFormality(formalityType)),
             color = Color.White
         )
     }
 }
 
-private fun getFormalityColor(formality: Formality): Color {
-    return when (formality) {
-        Formality.FORMAL_HIGH -> orange
-        Formality.FORMAL_LOW -> teal
-        Formality.INFORMAL_LOW -> blue
+private fun getFormalityColor(formalityType: FormalityType): Color {
+    return when (formalityType) {
+        FormalityType.FORMAL_HIGH -> orange
+        FormalityType.FORMAL_LOW -> teal
+        FormalityType.INFORMAL_LOW -> blue
     }
 }

@@ -1,10 +1,11 @@
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.fade
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.slide
 import com.arkivanov.decompose.extensions.compose.jetbrains.stack.animation.stackAnimation
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.jaegerapps.hansan.RootComponent
+import com.jaegerapps.hansan.root.RootComponent
 import com.jaegerapps.hansan.core.presentation.HanSanTheme
 import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseScreen
 import com.jaegerapps.hansan.screens.learn.presentation.tense_list.LearnScreen
@@ -61,12 +62,13 @@ fun App(
                 }
 
                 is RootComponent.Child.IndividualWordScreen -> {
-                    val wordState = instance.component.state
+                    Text("Individual word screen")
+                    /*val wordState = instance.component.state
                     IndividualWordScreen(wordState, onNavigate = {
                         instance.component.onEvent(
                             IndividualWordUiEvent.OnNavigateBack
                         )
-                    })
+                    })*/
                 }
 
                 is RootComponent.Child.SettingsScreen -> {

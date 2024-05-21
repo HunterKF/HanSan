@@ -54,7 +54,7 @@ fun TargetFormsContainer(
                     .padding(horizontal = 12.dp, vertical = 8.dp)
             ) {
                 Text(
-                    text = stringResource(getResStringFromFormality(tense.formality)),
+                    text = stringResource(getResStringFromFormality(tense.formalityType)),
                     style = MaterialTheme.typography.labelMedium
                 )
             }

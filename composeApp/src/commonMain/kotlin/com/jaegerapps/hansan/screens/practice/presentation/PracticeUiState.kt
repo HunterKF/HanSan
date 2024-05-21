@@ -1,21 +1,22 @@
 package com.jaegerapps.hansan.screens.practice.presentation
 
-import com.jaegerapps.hansan.common.models.Formality
+import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.ModifierType
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
-import com.jaegerapps.hansan.common.models.WordModel
-import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
+import com.jaegerapps.hansan.common.models.VerbModel
+import com.jaegerapps.hansan.common.models.Word
 
 data class PracticeUiState(
     val textInput: String = "",
-    val currentWord: WordModel? = null,
+    val currentVerb: VerbModel? = null,
+    val targetWord: Word? = null,
     val targetTense: TenseModel? = null,
-    val selectedFormalityCategory: Formality = Formality.FORMAL_HIGH,
+    val selectedFormalityCategoryType: FormalityType = FormalityType.FORMAL_HIGH,
     val enabledTenses: List<Tense> = emptyList(),
-    val targetFormality: Formality = Formality.FORMAL_HIGH,
+    val targetFormalityType: FormalityType = FormalityType.FORMAL_HIGH,
     val targetType: ModifierType = ModifierType.VERBS,
-    val formalityList: List<Formality> = formalityDefaultList,
+    val formalityTypeList: List<FormalityType> = formalityTypeDefaultLists,
     val typeList: List<ModifierType> = modifierTypeList,
 
     val dailyGoalMax: Int = 50,
@@ -26,14 +27,13 @@ data class PracticeUiState(
 
 private val modifierTypeList = listOf(
     ModifierType.VERBS,
-    ModifierType.ADVERBS,
     ModifierType.ADJECTIVES
 )
 
-private val formalityDefaultList = listOf(
-    Formality.FORMAL_HIGH,
-    Formality.FORMAL_LOW,
-    Formality.INFORMAL_LOW,
+private val formalityTypeDefaultLists = listOf(
+    FormalityType.FORMAL_HIGH,
+    FormalityType.FORMAL_LOW,
+    FormalityType.INFORMAL_LOW,
 )
 enum class PracticeErrorMessage {
     NOT_KOREAN,

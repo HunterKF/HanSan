@@ -43,7 +43,7 @@ fun TenseContainer(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(getResStringFromFormality(it.formality)) ,
+                    text = stringResource(getResStringFromFormality(it.formalityType)) ,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )

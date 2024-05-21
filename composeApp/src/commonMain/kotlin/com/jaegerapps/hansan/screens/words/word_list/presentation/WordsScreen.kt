@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.components.BottomBarIcon
 import com.jaegerapps.hansan.common.models.ModifierType
-import com.jaegerapps.hansan.common.models.WordModel
+import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.models.typeToStringResource
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon
 import com.jaegerapps.hansan.common.util.Routes
@@ -59,7 +59,6 @@ fun WordsScreen(
             val list = listOf(
                 ModifierType.VERBS,
                 ModifierType.ADJECTIVES,
-                ModifierType.ADVERBS
             )
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
                 list.forEach {
@@ -81,7 +80,7 @@ fun WordsScreen(
                 itemsIndexed(state.wordList) { index, word ->
                     Column {
                         WordContainer(word) {
-                            onEvent(WordsUiEvent.OnWordNavigate(word.dictionaryWord))
+                            onEvent(WordsUiEvent.OnWordNavigate(word.baseWord))
                         }
                         if (state.wordList.lastIndex != index) {
                             HorizontalDivider(Modifier.fillMaxWidth())
@@ -97,7 +96,7 @@ fun WordsScreen(
 
 @Composable
 fun WordContainer(
-    word: WordModel,
+    word: VerbModel,
     onEvent: () -> Unit,
 ) {
     Row(
@@ -107,11 +106,11 @@ fun WordContainer(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = word.dictionaryWord,
+            text = word.baseWord,
             style = MaterialTheme.typography.bodyMedium
         )
         Text(
-            text = word.definition,
+            text = word.definitionTranslations.english /*TODO - Get translation based on locality*/,
             style = MaterialTheme.typography.bodyMedium
         )
     }

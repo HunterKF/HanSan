@@ -13,9 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.sharp.KeyboardArrowUp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -29,13 +26,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.components.BottomBarIcon
-import com.jaegerapps.hansan.common.components.getScreenSizeInfo
+import com.jaegerapps.hansan.common.models.DefinitionTranslations
+import com.jaegerapps.hansan.common.models.Formalities
 import com.jaegerapps.hansan.common.models.Formality
-import com.jaegerapps.hansan.common.models.ModifierType
+import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
-import com.jaegerapps.hansan.common.models.WordModel
-import com.jaegerapps.hansan.common.models.WordTenseModel
+import com.jaegerapps.hansan.common.models.VerbModel
+import com.jaegerapps.hansan.common.models.Word
 import com.jaegerapps.hansan.common.models.getResStringFromFormality
 import hansan.composeapp.generated.resources.Res
 import hansan.composeapp.generated.resources.icon_list
@@ -51,7 +49,6 @@ import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.compone
 import com.jaegerapps.hansan.screens.learn.presentation.components.LearnTense
 import com.jaegerapps.hansan.screens.learn.presentation.components.TenseHeader
 import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseScreen
-import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseUiState
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeErrorMessage
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeScreen
@@ -64,33 +61,44 @@ import com.jaegerapps.hansan.screens.settings.presentation.SettingsScreen
 import com.jaegerapps.hansan.screens.settings.presentation.SettingsUiState
 import com.jaegerapps.hansan.screens.settings.presentation.components.InputItem
 import com.jaegerapps.hansan.screens.settings.presentation.components.ToggleItem
-import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordScreen
-import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordUiState
 import com.jaegerapps.hansan.screens.words.word_individual.component.ExamineWordContainer
-import com.jaegerapps.hansan.screens.words.word_individual.component.TenseContainer
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
 
-private val hadaWordModel = WordModel(
-    dictionaryWord = "하다",
-    definition = "to do",
-    type = ModifierType.VERBS,
-    irregular = false,
-    fhPresentDeclarative = WordTenseModel("합니다", Tense.PRESENT_DECLARATIVE, Formality.FORMAL_HIGH),
-    fhPastDeclarative = WordTenseModel("했습니다", Tense.PAST_DECLARATIVE, Formality.FORMAL_HIGH),
-    fhFutureDeclarative = WordTenseModel("할 겁니다", Tense.FUTURE_DECLARATIVE, Formality.FORMAL_HIGH),
-    flPresentDeclarative = WordTenseModel("해요", Tense.PRESENT_DECLARATIVE, Formality.FORMAL_LOW),
-    flPastDeclarative = WordTenseModel("했어요", Tense.PAST_DECLARATIVE, Formality.FORMAL_LOW),
-    flFutureDeclarative = WordTenseModel("할 거에요", Tense.FUTURE_DECLARATIVE, Formality.FORMAL_LOW),
-    ilPresentDeclarative = WordTenseModel("해", Tense.PRESENT_DECLARATIVE, Formality.INFORMAL_LOW),
-    ilPastDeclarative = WordTenseModel("했어", Tense.PAST_DECLARATIVE, Formality.INFORMAL_LOW),
-    ilFutureDeclarative = WordTenseModel("할 거야", Tense.FUTURE_DECLARATIVE, Formality.INFORMAL_LOW),
-
+private val hadaWordModel = VerbModel(
+    baseWord = "말하다",
+    definitionTranslations = DefinitionTranslations(english = "to speak"),
+    formalities = Formalities(
+        formalHigh = Formality(
+            type = FormalityType.FORMAL_HIGH,
+            conjugation = listOf(
+                Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말합니다", irregular = false),
+                Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했습니다", irregular = false),
+                Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 것입니다", irregular = false)
+            )
+        ),
+        formalLow = Formality(
+            type = FormalityType.FORMAL_LOW,
+            conjugation = listOf(
+                Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해요", irregular = false),
+                Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어요", irregular = false),
+                Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거예요", irregular = false)
+            )
+        ),
+        informalLow = Formality(
+            type = FormalityType.INFORMAL_LOW,
+            conjugation = listOf(
+                Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해", irregular = false),
+                Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어", irregular = false),
+                Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거야", irregular = false)
+            )
+        )
     )
+)
 private val tenseModel = TenseModel(
     tense = Tense.PAST_DECLARATIVE,
-    formality = Formality.FORMAL_HIGH,
+    formalityType = FormalityType.FORMAL_HIGH,
     conjugation = "었/았/였~습니다",
     explanation = "Last vowel 아/오 - 았습니다\n" +
             "Last vowel 어 - 었습니다",
@@ -109,7 +117,7 @@ private val tenseModel = TenseModel(
 private val tenseModelList = listOf(
     TenseModel(
         tense = Tense.PRESENT_DECLARATIVE,
-        formality = Formality.FORMAL_HIGH,
+        formalityType = FormalityType.FORMAL_HIGH,
         conjugation = "~ㅂ니다/습니다",
         explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
         exampleGada = "가다 -> 가 -> 갑니다",
@@ -125,7 +133,7 @@ private val tenseModelList = listOf(
     ),
     TenseModel(
         tense = Tense.PAST_DECLARATIVE,
-        formality = Formality.FORMAL_HIGH,
+        formalityType = FormalityType.FORMAL_HIGH,
         conjugation = "~ㅂ니다/습니다",
         explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
         exampleGada = "가다 -> 가 -> 갑니다",
@@ -141,7 +149,7 @@ private val tenseModelList = listOf(
     ),
     TenseModel(
         tense = Tense.FUTURE_DECLARATIVE,
-        formality = Formality.FORMAL_HIGH,
+        formalityType = FormalityType.FORMAL_HIGH,
         conjugation = "~ㅂ니다/습니다",
         explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
         exampleGada = "가다 -> 가 -> 갑니다",
@@ -211,7 +219,7 @@ fun Preview_CurrentTenseContainer() {
                 onClick = { expanded = !expanded },
                 tense = TenseModel(
                     tense = Tense.PRESENT_DECLARATIVE,
-                    formality = Formality.FORMAL_HIGH,
+                    formalityType = FormalityType.FORMAL_HIGH,
                     conjugation = "~ㅂ니다/습니다",
                     explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
                     exampleGada = "가다 -> 가 -> 갑니다",
@@ -232,7 +240,7 @@ fun Preview_CurrentTenseContainer() {
                 onClick = {},
                 tense = TenseModel(
                     tense = Tense.PRESENT_DECLARATIVE,
-                    formality = Formality.FORMAL_LOW,
+                    formalityType = FormalityType.FORMAL_LOW,
                     conjugation = "아/어/여~요",
                     explanation = "Last vowel ㅗ/ㅏ - 아요 \n" +
                             "Last letter NOT ㅗ/ㅏ - 어요 \n" +
@@ -312,7 +320,7 @@ fun Preview_BottomBarIcon() {
 @Composable
 fun Preview_PracticeScreen() {
     val state = PracticeUiState(
-        currentWord = hadaWordModel,
+        currentVerb = hadaWordModel,
         targetTense = tenseModel,
     )
     HanSanTheme(false) {
@@ -325,7 +333,7 @@ fun Preview_PracticeScreen() {
 fun Preview_PracticeScreenErrorMessage() {
     var errorMessage: PracticeErrorMessage? by remember { mutableStateOf(null) }
     val state = PracticeUiState(
-        currentWord = hadaWordModel,
+        currentVerb = hadaWordModel,
         targetTense = tenseModel,
         errorMessage = errorMessage
     )
@@ -343,7 +351,7 @@ fun Preview_PracticeScreenDark() {
     var state = remember {
         mutableStateOf(
             PracticeUiState(
-                currentWord = hadaWordModel,
+                currentVerb = hadaWordModel,
                 targetTense = tenseModel,
             )
         )
@@ -362,25 +370,25 @@ fun Preview_PracticeScreenDark() {
 @Composable
 fun Preview_FormSelectorItem() {
     val list = listOf(
-        Formality.FORMAL_HIGH,
-        Formality.FORMAL_LOW,
-        Formality.INFORMAL_LOW
+        FormalityType.FORMAL_HIGH,
+        FormalityType.FORMAL_LOW,
+        FormalityType.INFORMAL_LOW
     )
-    var select by remember { mutableStateOf(Formality.FORMAL_HIGH) }
+    var select by remember { mutableStateOf(FormalityType.FORMAL_HIGH) }
     HanSanTheme(false) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             FormSelectorItem(
-                text = stringResource(getResStringFromFormality(Formality.FORMAL_HIGH)),
+                text = stringResource(getResStringFromFormality(FormalityType.FORMAL_HIGH)),
                 selected = false,
                 onSelect = {
 
                 }
             )
             FormSelectorItem(
-                text = stringResource(getResStringFromFormality(Formality.FORMAL_HIGH)),
+                text = stringResource(getResStringFromFormality(FormalityType.FORMAL_HIGH)),
                 selected = true,
                 onSelect = {
 
@@ -470,7 +478,7 @@ fun Preview_LearnScreen() {
         Pair(TenseHeader.FUTURE, tenseModelList),
     )
     val state = LearnUiState(
-        filterFormality = Formality.FORMAL_HIGH,
+        filterFormalityType = FormalityType.FORMAL_HIGH,
         tenses = tenseModelList,
         tensesShow = hashMap
     )
@@ -513,7 +521,7 @@ fun Preview_ExamineWordContainer() {
         }
     }
 }
-
+/*
 @Preview
 @Composable
 fun Preview_TenseContainer() {
@@ -528,9 +536,6 @@ fun Preview_TenseContainer() {
                 TenseContainer(
                     tenseTitle = "Present",
                     tenses = listOf(
-                        hadaWordModel.fhPresentDeclarative,
-                        hadaWordModel.flPresentDeclarative,
-                        hadaWordModel.ilPresentDeclarative
                     )
                 )
             }
@@ -581,7 +586,7 @@ fun Preview_IndividualWordScreen() {
             onNavigate = {}
         )
     }
-}
+}*/
 
 
 @Preview
@@ -689,7 +694,7 @@ private fun Preview_AnswerContainer() {
         ) {
             Spacer(Modifier.height(24.dp))
             AnswerCard(
-                formality = Formality.FORMAL_HIGH,
+                formalityType = FormalityType.FORMAL_HIGH,
                 tenseTarget = tenseModel.tense,
                 onClick = {
                     showAnswer = !showAnswer
@@ -700,7 +705,7 @@ private fun Preview_AnswerContainer() {
             )
             Spacer(Modifier.height(24.dp))
             AnswerCard(
-                formality = Formality.FORMAL_HIGH,
+                formalityType = FormalityType.FORMAL_HIGH,
                 tenseTarget = tenseModel.tense,
                 onClick = {
                           showAnswer = !showAnswer
@@ -727,7 +732,7 @@ private fun Preview_AnswerContainerDark() {
         ) {
             Spacer(Modifier.height(24.dp))
             AnswerCard(
-                formality = Formality.FORMAL_HIGH,
+                formalityType = FormalityType.FORMAL_HIGH,
                 tenseTarget = tenseModel.tense,
                 onClick = {
                     showAnswer = !showAnswer
@@ -738,7 +743,7 @@ private fun Preview_AnswerContainerDark() {
             )
             Spacer(Modifier.height(24.dp))
             AnswerCard(
-                formality = Formality.FORMAL_HIGH,
+                formalityType = FormalityType.FORMAL_HIGH,
                 tenseTarget = tenseModel.tense,
                 onClick = {
                           showAnswer = !showAnswer
@@ -764,15 +769,15 @@ private fun Preview_FormalityContainer() {
         ) {
 
             FormalityContainer(
-                formality = Formality.FORMAL_HIGH,
+                formalityType = FormalityType.FORMAL_HIGH,
             )
 
             FormalityContainer(
-                formality = Formality.FORMAL_LOW,
+                formalityType = FormalityType.FORMAL_LOW,
             )
 
             FormalityContainer(
-                formality = Formality.INFORMAL_LOW,
+                formalityType = FormalityType.INFORMAL_LOW,
             )
         }
     }
