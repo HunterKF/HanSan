@@ -1,5 +1,7 @@
 package com.jaegerapps.hansan.common.models
 
+import com.jaegerapps.hansan.screens.practice.domain.models.Level
+
 data class VerbModel(
     val baseWord: String,
     val definitionTranslations: DefinitionTranslations,
@@ -19,7 +21,10 @@ data class Formality(
 )
 
 data class Word(
+    val level: Level = Level.LEVEL_ONE,
+    val dateExpire: Long?,
     val tense: Tense,
+    val formality: FormalityType,
     val conjugatedWord: String,
     val irregular: Boolean
 )

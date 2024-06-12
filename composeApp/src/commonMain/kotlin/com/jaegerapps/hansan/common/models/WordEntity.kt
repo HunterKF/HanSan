@@ -1,34 +1,22 @@
 package com.jaegerapps.hansan.common.models
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class WordEntity(
-    val id: Int,
-    val dictionary_form: String,
-    val dictionary_definition: String,
-    val type: String,
-    val irregular: Boolean,
-    val formal_high_present_declarative: String,
-    val formal_high_past_declarative: String,
-    val formal_high_future_declarative: String,
-    val formal_low_present_declarative: String,
-    val formal_low_past_declarative: String,
-    val formal_low_future_declarative: String,
-    val informal_low_present_declarative: String,
-    val informal_low_past_declarative: String,
-    val informal_low_future_declarative: String,
-)
-@Serializable
 data class VerbEntity(
     val id: Int,
+    @SerialName("base")
     val base: String,
+    @SerialName("translations")
     val translationsEntity: TranslationsEntity,
+    @SerialName("formalities")
     val formalitiesEntity: FormalitiesEntity
 )
 
 @Serializable
 data class TranslationsEntity(
+    @SerialName("english")
     val english: String
 )
 
@@ -41,7 +29,7 @@ data class FormalitiesEntity(
 
 @Serializable
 data class FormalityContainerDto(
-    val conjugation: ConjugationDto
+    val conjugations: ConjugationDto
 )
 
 

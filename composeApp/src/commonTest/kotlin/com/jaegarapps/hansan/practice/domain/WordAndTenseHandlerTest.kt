@@ -23,25 +23,25 @@ class WordAndTenseHandlerTest {
                 formalHigh = Formality(
                     type = FormalityType.FORMAL_HIGH,
                     conjugation = listOf(
-                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "먹습니다", irregular = false),
-                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "먹었습니다", irregular = false),
-                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "먹을 것입니다", irregular = false)
+                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "먹습니다", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "먹었습니다", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "먹을 것입니다", irregular = false, dateExpire = 0)
                     )
                 ),
                 formalLow = Formality(
                     type = FormalityType.FORMAL_LOW,
                     conjugation = listOf(
-                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "먹어요", irregular = false),
-                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "먹었어요", irregular = false),
-                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "먹을 거예요", irregular = false)
+                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "먹어요", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "먹었어요", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "먹을 거예요", irregular = false, dateExpire = 0)
                     )
                 ),
                 informalLow = Formality(
                     type = FormalityType.INFORMAL_LOW,
                     conjugation = listOf(
-                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "먹어", irregular = false),
-                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "먹었어", irregular = false),
-                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "먹을 거야", irregular = false)
+                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "먹어", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "먹었어", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "먹을 거야", irregular = false, dateExpire = 0)
                     )
                 )
             )
@@ -53,25 +53,25 @@ class WordAndTenseHandlerTest {
                 formalHigh = Formality(
                     type = FormalityType.FORMAL_HIGH,
                     conjugation = listOf(
-                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말합니다", irregular = false),
-                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했습니다", irregular = false),
-                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 것입니다", irregular = false)
+                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말합니다", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했습니다", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 것입니다", irregular = false, dateExpire = 0)
                     )
                 ),
                 formalLow = Formality(
                     type = FormalityType.FORMAL_LOW,
                     conjugation = listOf(
-                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해요", irregular = false),
-                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어요", irregular = false),
-                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거예요", irregular = false)
+                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해요", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어요", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거예요", irregular = false, dateExpire = 0)
                     )
                 ),
                 informalLow = Formality(
                     type = FormalityType.INFORMAL_LOW,
                     conjugation = listOf(
-                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해", irregular = false),
-                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어", irregular = false),
-                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거야", irregular = false)
+                        Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어", irregular = false, dateExpire = 0),
+                        Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거야", irregular = false, dateExpire = 0)
                     )
                 )
             )
@@ -85,25 +85,25 @@ class WordAndTenseHandlerTest {
             formalHigh = Formality(
                 type = FormalityType.FORMAL_HIGH,
                 conjugation = listOf(
-                    Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말합니다", irregular = false),
-                    Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했습니다", irregular = false),
-                    Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 것입니다", irregular = false)
+                    Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말합니다", irregular = false, dateExpire = 0),
+                    Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했습니다", irregular = false, dateExpire = 0),
+                    Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 것입니다", irregular = false, dateExpire = 0)
                 )
             ),
             formalLow = Formality(
                 type = FormalityType.FORMAL_LOW,
                 conjugation = listOf(
-                    Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해요", irregular = false),
-                    Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어요", irregular = false),
-                    Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거예요", irregular = false)
+                    Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해요", irregular = false, dateExpire = 0),
+                    Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어요", irregular = false, dateExpire = 0),
+                    Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거예요", irregular = false, dateExpire = 0)
                 )
             ),
             informalLow = Formality(
                 type = FormalityType.INFORMAL_LOW,
                 conjugation = listOf(
-                    Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해", irregular = false),
-                    Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어", irregular = false),
-                    Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거야", irregular = false)
+                    Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해", irregular = false, dateExpire = 0),
+                    Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어", irregular = false, dateExpire = 0),
+                    Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거야", irregular = false, dateExpire = 0)
                 )
             )
         )

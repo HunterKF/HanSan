@@ -1,6 +1,10 @@
 package com.jaegerapps.hansan.di
 
+import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
+import androidx.room.RoomDatabase
+import com.jaegerapps.hansan.data.HanSanDataBase
 import com.russhwolf.settings.SharedPreferencesSettings
 
 import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceJson
@@ -18,6 +22,8 @@ import com.jaegerapps.hansan.screens.settings.domain.repo.SettingsRepo
 
 actual class AppModule(
     private val sharedPreferences: SharedPreferences,
+    private val context: Context
+
 ) {
 
     private val settings = SharedPreferencesSettings(sharedPreferences)
@@ -33,7 +39,8 @@ actual class AppModule(
 
     actual val practiceRepo: PracticeRepo by lazy {
         PracticeRepoImpl(
-            settings
+            settings,
+            dataBase
         )
     }
 
@@ -51,6 +58,18 @@ actual class AppModule(
     actual val settingsRepo: SettingsRepo by lazy {
         SettingsRepoImpl(
             settingsLocalDataSource
+        )
+    }
+    actual val dataBase: HanSanDataBase by lazy {
+        getDatabaseBuilder(context).build()
+    }
+
+    private fun getDatabaseBuilder(ctx: Context): RoomDatabase.Builder<HanSanDataBase> {
+        val appContext = ctx.applicationContext
+        val dbFile = appContext.getDatabasePath("my_room.db")
+        return Room.databaseBuilder<HanSanDataBase>(
+            context = appContext,
+            name = dbFile.absolutePath
         )
     }
 }

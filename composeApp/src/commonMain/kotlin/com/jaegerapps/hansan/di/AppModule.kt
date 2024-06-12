@@ -1,5 +1,6 @@
 package com.jaegerapps.hansan.di
 
+import com.jaegerapps.hansan.data.HanSanDataBase
 import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceJson
 import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceSettings
 import com.jaegerapps.hansan.screens.loading.domain.repo.LoadingRepo
@@ -11,6 +12,7 @@ expect class AppModule {
     val loadingLocalDataSourceJson: LoadingLocalDataSourceJson
     val loadingLocalDataSourceSetting: LoadingLocalDataSourceSettings
     val settingsLocalDataSource: SettingsLocalDataSource
+    val dataBase: HanSanDataBase
 
     val loadingRepo: LoadingRepo
     val practiceRepo: PracticeRepo

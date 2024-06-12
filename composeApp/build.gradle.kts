@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -26,6 +25,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -57,10 +57,7 @@ kotlin {
                 implementation(compose.ui)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
-
                 implementation(libs.multiplatform.settings)
-                implementation(libs.multiplatform.settings.no.arg)
-
                 implementation(libs.decompose)
                 implementation(libs.decompose.jetbrains)
 
@@ -68,7 +65,6 @@ kotlin {
                 implementation(libs.sqlite.bundled)
 
                 implementation(libs.kotlinx.serialization.json)
-
                 implementation(libs.kotlinx.datetime)
 
             }
@@ -87,11 +83,12 @@ kotlin {
         }
         val iosMain by creating {
             dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
+//            iosX64Main.dependsOn(this)
+//            iosArm64Main.dependsOn(this)
+//            iosSimulatorArm64Main.dependsOn(this)
         }
     }
+    task("testClasses")
 }
 
 android {
@@ -136,8 +133,5 @@ room {
 dependencies {
     implementation("androidx.core:core:1.13.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
-    add("kspAndroid", libs.androidx.room.compiler)
-    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
-    add("kspIosX64", libs.androidx.room.compiler)
-    add("kspIosArm64", libs.androidx.room.compiler)
+    ksp(libs.androidx.room.compiler)
 }

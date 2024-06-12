@@ -1,19 +1,25 @@
 package com.jaegerapps.hansan.screens.practice.data.repo
 
-import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.ModifierType
 import com.russhwolf.settings.Settings
 import com.jaegerapps.hansan.common.models.UserSettings
-import com.jaegerapps.hansan.common.models.getStringFromFormality
+import com.jaegerapps.hansan.common.models.Word
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.stringToType
-import com.jaegerapps.hansan.common.models.typeToString
 import com.jaegerapps.hansan.common.util.SettingKeys
+import com.jaegerapps.hansan.data.HanSanDataBase
+import com.jaegerapps.hansan.screens.practice.data.local.room.entity.WordEntity
+import com.jaegerapps.hansan.screens.practice.domain.mappers.toWord
+import com.jaegerapps.hansan.screens.practice.domain.mappers.toWordEntity
 import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
+import kotlinx.datetime.Clock
 
 class PracticeRepoImpl(
     private val settings: Settings,
+    private val database: HanSanDataBase,
 ) : PracticeRepo {
+    private val wordDao = database.wordDao()
+    private val translationDao = database.translationDao()
+    private val grammarDao = database.grammarDao()
     override suspend fun getUserSettings(): UserSettings {
         val formality = settings.getString(SettingKeys.FORMALITY, "formal_high")
         val type = settings.getString(SettingKeys.TYPE, "verb")
@@ -37,21 +43,25 @@ class PracticeRepoImpl(
         )
     }
 
-    override suspend fun updateUserSettingsType(type: ModifierType) {
-        settings.putString(SettingKeys.TYPE, typeToString(type))
-    }
-
-    override suspend fun updateUserSettingsFormality(formalityType: FormalityType) {
-        settings.putString(SettingKeys.FORMALITY, getStringFromFormality(formalityType))
-    }
-
-
-    override suspend fun updateUserSettingsKeyboard(enabled: Boolean): Boolean {
-        settings.putBoolean(SettingKeys.KEYBOARD_ENABLED, enabled)
-        return settings.getBoolean(SettingKeys.KEYBOARD_ENABLED, false)
-    }
 
     override suspend fun updateDailyGoalMet(newValue: Int) {
         settings.putInt(SettingKeys.DAILY_TARGET_MET, newValue)
+    }
+
+    override suspend fun insertWord(wordModel: Word) {
+        wordDao.insertWord(wordModel.toWordEntity())
+    }
+
+    override suspend fun updateWord(wordModel: Word) {
+        wordDao.updateWord(wordModel.toWordEntity())
+    }
+
+    override suspend fun getWords(): List<Word> {
+        val selectedGrammar = grammarDao.getSelectedGrammar()
+        val currentTime = Clock.System.now().epochSeconds
+        val words = selectedGrammar.flatMap { grammar ->
+            wordDao.getWords(grammar.tense, grammar.formality, currentTime)
+        }
+        return words.map { it.toWord() }
     }
 }

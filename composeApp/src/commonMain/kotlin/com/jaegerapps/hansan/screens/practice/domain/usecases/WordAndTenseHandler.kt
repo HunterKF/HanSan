@@ -35,4 +35,5 @@ class WordAndTenseHandler {
             return list.random()
         }
     }
+
 }

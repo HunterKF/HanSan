@@ -1,6 +1,7 @@
 package com.jaegerapps.hansan
 
 import App
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val sharedPreferences = getSharedPreferences("prefs", Context.MODE_PRIVATE)
-        val appModule = AppModule(sharedPreferences)
+        val appModule = AppModule(sharedPreferences, context = applicationContext)
         val root = retainedComponent {
             RootComponent(it, appModule)
         }

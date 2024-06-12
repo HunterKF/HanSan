@@ -17,10 +17,8 @@ import com.jaegerapps.hansan.common.models.VerbEntity
 import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.models.Word
 import com.jaegerapps.hansan.common.models.WordDto
-import com.jaegerapps.hansan.common.models.WordTenseModel
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.getTenseFromString
-import com.jaegerapps.hansan.common.models.stringToType
 import kotlinx.serialization.json.Json
 
 fun VerbEntity.toVerbModel(): VerbModel {
@@ -49,31 +47,34 @@ fun FormalityContainerDto.toFormality(type: FormalityType): Formality {
     return Formality(
         type = type,
         conjugation = listOf(
-            this.conjugation.present.toWord(),
-            this.conjugation.past.toWord(),
-            this.conjugation.future.toWord()
+            this.conjugations.present.toWord(type),
+            this.conjugations.past.toWord(type),
+            this.conjugations.future.toWord(type)
         )
     )
 }
 
 
-fun PresentDto.toWord(): Word {
-    return declarative.toWord(Tense.PRESENT_DECLARATIVE)
+fun PresentDto.toWord(type: FormalityType): Word {
+    return declarative.toWord(Tense.PRESENT_DECLARATIVE, type)
 }
 
-fun PastDto.toWord(): Word {
-    return declarative.toWord(Tense.PAST_DECLARATIVE)
+fun PastDto.toWord(type: FormalityType): Word {
+    return declarative.toWord(Tense.PRESENT_DECLARATIVE, type)
 }
 
-fun FutureDto.toWord(): Word {
-    return declarative.toWord(Tense.FUTURE_DECLARATIVE)
+fun FutureDto.toWord(type: FormalityType): Word {
+    return declarative.toWord(Tense.PRESENT_DECLARATIVE, type)
 }
 
-fun WordDto.toWord(tense: Tense): Word {
+fun WordDto.toWord(tense: Tense, formality: FormalityType): Word {
     return Word(
         tense = tense,
         conjugatedWord = conjugated,
-        irregular = irregular
+        irregular = irregular,
+        dateExpire = null,
+        formality = formality
+        /*TODO - Figure out if I have to set the time here*/
     )
 }
 
