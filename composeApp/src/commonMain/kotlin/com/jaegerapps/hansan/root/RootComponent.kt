@@ -1,5 +1,6 @@
 package com.jaegerapps.hansan.root
 
+import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.ExperimentalDecomposeApi
 import com.arkivanov.decompose.router.stack.StackNavigation
@@ -15,14 +16,19 @@ import com.jaegerapps.hansan.di.AppModule
 import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseComponent
 import com.jaegerapps.hansan.screens.learn.presentation.tense_list.TensesComponent
 import com.jaegerapps.hansan.screens.loading.presentation.LoadingComponent
+import com.jaegerapps.hansan.screens.onboarding.presentation.OnboardingComponent
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeComponent
 import com.jaegerapps.hansan.screens.settings.presentation.SettingsComponent
 import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordComponent
 import com.jaegerapps.hansan.screens.words.word_list.presentation.WordsComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-
 class RootComponent(
     componentContext: ComponentContext,
     private val appModule: AppModule,
@@ -32,11 +38,20 @@ class RootComponent(
 
     private val state = MutableStateFlow(RootState())
 
+    private val scope = CoroutineScope(Dispatchers.IO)
+    private var showOnboarding = mutableStateOf(false)
+    init {
+        scope.launch {
+            showOnboarding.value = async { appModule.rootRepo.getOnboarding() }.await()
+        }
+    }
+
+
 
     val childStack = childStack(
         source = navigation,
         serializer = Configuration.serializer(),
-        initialConfiguration = Configuration.LoadingScreen,
+        initialConfiguration = if (showOnboarding.value) Configuration.OnboardingScreen else Configuration.PracticeScreen,
         handleBackButton = true,
         childFactory = ::createChild
     )
@@ -58,29 +73,6 @@ class RootComponent(
                         repo = appModule.practiceRepo,
                         onNavigate = {
                             onNavigate(it)
-                        }
-                    )
-                )
-            }
-
-            Configuration.LoadingScreen -> {
-                Child.LoadingScreen(
-                    LoadingComponent(
-                        componentContext = context,
-                        repo = appModule.loadingRepo,
-                        onStart = { words, tenses ->
-                            state.update {
-                                it.copy(
-                                    words = words,
-                                    tenses = tenses,
-                                )
-                            }
-                            Knower.d(
-                                "RootComponent",
-                                "Navigation is being called, moving to PracticeComponent"
-                            )
-
-                            navigation.replaceAll(Configuration.PracticeScreen)
                         }
                     )
                 )
@@ -153,6 +145,18 @@ class RootComponent(
                     )
                 )
             }
+
+            Configuration.OnboardingScreen -> {
+                Child.OnboardingScreen(
+                    OnboardingComponent(
+                        componentContext = context,
+                        onboardingRepo = appModule.onboardingRepo,
+                        onComplete = {
+                            navigation.replaceAll(Configuration.PracticeScreen)
+                        }
+                    )
+                )
+            }
         }
     }
 
@@ -161,7 +165,7 @@ class RootComponent(
         data class TensesScreen(val component: TensesComponent) : Child()
         data class IndividualTenseScreen(val component: IndividualTenseComponent) : Child()
         data class WordsScreen(val component: WordsComponent) : Child()
-        data class LoadingScreen(val component: LoadingComponent) : Child()
+        data class OnboardingScreen(val component: OnboardingComponent) : Child()
         data class IndividualWordScreen(val component: IndividualWordComponent) : Child()
         data class SettingsScreen(val component: SettingsComponent) : Child()
     }
@@ -178,16 +182,18 @@ class RootComponent(
         data object WordsScreen : Configuration()
 
         @Serializable
-        data object LoadingScreen : Configuration()
+        data object OnboardingScreen : Configuration()
 
         @Serializable
         data class IndividualTenseScreen(
             val tense: String,
         ) : Configuration()
+
         @Serializable
         data class IndividualWordScreen(
             val word: String,
         ) : Configuration()
+
         @Serializable
         data object SettingsScreen : Configuration()
 
@@ -203,3 +209,4 @@ class RootComponent(
         }
     }
 }
+

@@ -1,4 +1,4 @@
-package com.jaegerapps.hansan.screens.practice.data.local.room.entity
+package com.jaegerapps.hansan.common.data.local.room.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,10 +8,11 @@ import androidx.room.PrimaryKey
 )
 data class WordEntity(
     @PrimaryKey
+    val id: Int,
     val word: String,
     val level: Int,
     val tense: String,
     val formality: String,
     val irregular: Boolean,
-    val date_expiration: Long
+    val date_expiration: Long?
 )

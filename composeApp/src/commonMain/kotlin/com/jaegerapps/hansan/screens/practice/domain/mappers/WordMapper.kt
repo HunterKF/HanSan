@@ -3,7 +3,7 @@ package com.jaegerapps.hansan.screens.practice.domain.mappers
 import com.jaegerapps.hansan.common.models.Word
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.getTenseFromString
-import com.jaegerapps.hansan.screens.practice.data.local.room.entity.WordEntity
+import com.jaegerapps.hansan.common.data.local.room.entity.WordEntity
 import com.jaegerapps.hansan.screens.practice.domain.models.toInt
 import com.jaegerapps.hansan.screens.practice.domain.models.toLevel
 

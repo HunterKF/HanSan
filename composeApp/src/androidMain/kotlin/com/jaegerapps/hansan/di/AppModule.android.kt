@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.jaegerapps.hansan.data.HanSanDataBase
+import com.jaegerapps.hansan.root.data.repo.RootRepoImpl
+import com.jaegerapps.hansan.root.domain.repo.RootRepo
 import com.russhwolf.settings.SharedPreferencesSettings
 
 import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceJson
@@ -13,6 +15,11 @@ import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceSe
 import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceSettingsImpl
 import com.jaegerapps.hansan.screens.loading.data.repo.LoadingRepoImpl
 import com.jaegerapps.hansan.screens.loading.domain.repo.LoadingRepo
+import com.jaegerapps.hansan.screens.onboarding.data.local.json.LocalJsonDataSourceImpl
+import com.jaegerapps.hansan.screens.onboarding.data.local.room.LocalRoomDataSourceImpl
+import com.jaegerapps.hansan.screens.onboarding.data.local.shared_preferences.LocalSharedPrefDataSourceImpl
+import com.jaegerapps.hansan.screens.onboarding.data.repo.OnboardingRepoImpl
+import com.jaegerapps.hansan.screens.onboarding.domain.repo.OnboardingRepo
 import com.jaegerapps.hansan.screens.practice.data.repo.PracticeRepoImpl
 import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
 import com.jaegerapps.hansan.screens.settings.data.local.SettingsLocalDataSource
@@ -71,5 +78,16 @@ actual class AppModule(
             context = appContext,
             name = dbFile.absolutePath
         )
+    }
+
+    actual val onboardingRepo: OnboardingRepo by lazy {
+        OnboardingRepoImpl(
+            localSharedPrefDataSource = LocalSharedPrefDataSourceImpl(settings),
+            localJsonDataSource = LocalJsonDataSourceImpl(),
+            localRoomDataSource = LocalRoomDataSourceImpl(dataBase)
+        )
+    }
+    actual val rootRepo: RootRepo by lazy {
+        RootRepoImpl(settings)
     }
 }

@@ -9,7 +9,6 @@ import com.jaegerapps.hansan.common.models.Word
 interface PracticeRepo {
     suspend fun getUserSettings(): UserSettings
     suspend fun updateDailyGoalMet(newValue: Int)
-    suspend fun insertWord(wordModel: Word)
     suspend fun updateWord(wordModel: Word)
     suspend fun getWords(): List<Word>
 

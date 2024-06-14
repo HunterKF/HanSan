@@ -1,4 +1,4 @@
-package com.jaegerapps.hansan.screens.practice.data.local.room.entity
+package com.jaegerapps.hansan.common.data.local.room.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 )
 data class GrammarEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: String,
+    val id: Int,
     val tense: String,
     val formality: String,
     val selected: Boolean

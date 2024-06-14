@@ -5,9 +5,10 @@ import com.jaegerapps.hansan.common.models.UserSettings
 import com.jaegerapps.hansan.common.models.Word
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.stringToType
+import com.jaegerapps.hansan.common.util.Knower
+import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.common.util.SettingKeys
 import com.jaegerapps.hansan.data.HanSanDataBase
-import com.jaegerapps.hansan.screens.practice.data.local.room.entity.WordEntity
 import com.jaegerapps.hansan.screens.practice.domain.mappers.toWord
 import com.jaegerapps.hansan.screens.practice.domain.mappers.toWordEntity
 import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
@@ -48,9 +49,6 @@ class PracticeRepoImpl(
         settings.putInt(SettingKeys.DAILY_TARGET_MET, newValue)
     }
 
-    override suspend fun insertWord(wordModel: Word) {
-        wordDao.insertWord(wordModel.toWordEntity())
-    }
 
     override suspend fun updateWord(wordModel: Word) {
         wordDao.updateWord(wordModel.toWordEntity())
@@ -58,10 +56,18 @@ class PracticeRepoImpl(
 
     override suspend fun getWords(): List<Word> {
         val selectedGrammar = grammarDao.getSelectedGrammar()
+        Knower.d("PracticeRepoImpl", "Checked selected grammar. $selectedGrammar")
         val currentTime = Clock.System.now().epochSeconds
-        val words = selectedGrammar.flatMap { grammar ->
-            wordDao.getWords(grammar.tense, grammar.formality, currentTime)
+        Knower.d("PracticeRepoImpl", "Got current time. $currentTime")
+        val wordEntities = selectedGrammar.flatMap { grammar ->
+            wordDao.getWordsByTime(grammar.tense, grammar.formality, currentTime)
         }
-        return words.map { it.toWord() }
+        val words = if (wordEntities.isEmpty()) wordDao.getWords().map { it.toWord() } else {
+            wordEntities.map { it.toWord() }
+
+        }
+        Knower.d("PracticeRepoImpl", "Attempting to return words. $words")
+
+        return words
     }
 }

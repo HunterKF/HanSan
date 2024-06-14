@@ -1,4 +1,4 @@
-package com.jaegerapps.hansan.screens.practice.data.local.room.entity
+package com.jaegerapps.hansan.common.data.local.room.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

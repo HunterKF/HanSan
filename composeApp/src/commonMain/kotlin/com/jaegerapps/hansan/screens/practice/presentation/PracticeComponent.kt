@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 class PracticeComponent(
     componentContext: ComponentContext,
     private val tenses: List<TenseModel>,
-    private val words: List<VerbModel>,
     private val onNavigate: (String) -> Unit,
     private val repo: PracticeRepo,
 ) : ComponentContext by componentContext {
@@ -44,7 +43,6 @@ class PracticeComponent(
         lifecycle.subscribe(
             object : Lifecycle.Callbacks {
                 override fun onCreate() {
-
                 }
 
                 override fun onResume() {
@@ -77,6 +75,7 @@ class PracticeComponent(
                     )
                 }
             }
+
             PracticeUiEvent.ClickDon_tKnow -> {
                 /*TODO - Perform some logic here*/
                 _state.update {
@@ -85,6 +84,7 @@ class PracticeComponent(
                     )
                 }
             }
+
             PracticeUiEvent.ClickGotIt -> {
                 /*TODO - Perform some logic here*/
                 _state.update {
@@ -96,62 +96,27 @@ class PracticeComponent(
         }
     }
 
-    private fun filterTenses(formalityType: FormalityType, tenseList: List<Tense>): List<TenseModel> {
-        return tenses.filter { tense -> tense.formalityType == formalityType && tenseList.contains(tense.tense) }
+    private fun filterTenses(
+        formalityType: FormalityType,
+        tenseList: List<Tense>,
+    ): List<TenseModel> {
+        return tenses.filter { tense ->
+            tense.formalityType == formalityType && tenseList.contains(
+                tense.tense
+            )
+        }
     }
-
-    private fun returnTargetFormality(formalityType: FormalityType): FormalityType {
-        return _state.value.selectedFormalityCategoryType
-
-    }
-
     private fun initializePracticeComponent() {
         scope.launch {
             userSettings.value = async { repo.getUserSettings() }.await()
+            val words = async { repo.getWords().first() }.await()
+            _state.update {
+                it.copy(
+                    targetWord = words
+                )
+            }
+
         }
-        //The target is going to be the current one displayed
-        val targetFormalityType = returnTargetFormality(
-            userSettings.value?.targetFormalityType ?: FormalityType.FORMAL_HIGH
-        )
-        //This takes the enabled tenses from the user's settings and creates a list of Tenses to be used to filter
-        val enabledTenses = filterTensesByUserSettings(
-            presentTense = userSettings.value?.presentTenseEnabled ?: true,
-            pastTense = userSettings.value?.pastTenseEnabled ?: true,
-            futureTense = userSettings.value?.futureTenseEnabled ?: true,
-        )
-
-        //Select a verb
-        val verb = WordAndTenseHandler.selectVerb(words)
-        //Gets a random word
-        val word = WordAndTenseHandler.newWord(
-            verb,
-            targetFormalityType,
-            targetTenses = listOf(Tense.PRESENT_DECLARATIVE)
-        )
-        //Gets a random tense. It will filter based on formality and enabled tenses
-        val tense = WordAndTenseHandler.newTense(
-            filterTenses(
-                targetFormalityType,
-                enabledTenses
-            )
-        )
-
-        _state.update {
-            it.copy(
-                selectedFormalityCategoryType = userSettings.value?.targetFormalityType
-                    ?: FormalityType.FORMAL_HIGH,
-                targetFormalityType = targetFormalityType,
-                enabledTenses = enabledTenses,
-
-                currentVerb = verb,
-                targetWord = word,
-                targetTense = tense,
-                dailyGoalMax = userSettings.value?.dailyTargetMax ?: 50,
-                dailyGoalMet = userSettings.value?.dailyTargetMet ?: 0
-
-            )
-        }
-        Knower.d("PracticeComponent - init", "Here are the values: $words \n $tenses")
     }
 
 

@@ -11,4 +11,5 @@ object SettingKeys {
     const val DAILY_TARGET_MET = "daily_target_met"
     const val DAILY_TARGET_MAX = "daily_target_max"
     const val LAST_DATE = "last_date"
+    const val ONBOARDING = "onboarding"
 }
