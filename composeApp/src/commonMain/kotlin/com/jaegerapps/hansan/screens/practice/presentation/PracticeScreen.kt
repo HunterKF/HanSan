@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -76,6 +77,8 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
         }
     }
 
+
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         modifier = Modifier,
@@ -110,38 +113,50 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
             ) {
                 Spacer(Modifier.height(16.dp))
                 DailyGoalsContainer(state)
+                //This box contains the word used for practice. Aka, the base word and the def above
                 Box(
                     modifier = Modifier.fillMaxWidth().weight(0.7f),
                     contentAlignment = Alignment.Center
                 ) {
-                    WordContainer(
-                        modifier = Modifier.fillMaxWidth(),
-                        word = state.currentVerb?.baseWord ?: "고장",
-                        definition = state.currentVerb?.definitionTranslations?.english ?: "error",
-                    )
-                }
+                    if (state.isLoading) {
+                        CircularProgressIndicator()
+                    } else {
 
+                        WordContainer(
+                            modifier = Modifier.fillMaxWidth(),
+                            word = state.targetWord?.baseWord ?: "고장",
+                            definition = state.targetWord?.translations?.firstOrNull()?.translation
+                                ?: "error",
+                        )
+                    }
+                }
+                //Displays the practice card.
+                //Formality is above, in the middle is the tense, bottom is a prompt to display the answer.
                 Column(
                     modifier = Modifier.fillMaxWidth().weight(1f)
                 ) {
                     state.targetTense?.let { tenseModel ->
-                        AnswerCard(
-                            formalityType = state.targetFormalityType,
-                            tenseTarget = tenseModel.tense,
-                            showAnswer = state.showAnswer,
-                            answer = "Hello",
-                            onClick = {
-                                onEvent(it)
-                            }
-                        )
+                        state.targetFormalityType?.let { formality ->
+                            AnswerCard(
+                                formalityType = formality,
+                                tenseTarget = tenseModel,
+                                showAnswer = state.showAnswer,
+                                answer = state.targetWord?.conjugatedWord ?: "Error",
+                                onClick = {
+                                    onEvent(it)
+                                }
+                            )
+                        }
                     }
                 }
+                //This will eventually be used to click and display the word and all of the bases for it.
+                //Basically a pop up with the words by tenses.
                 Box(
                     modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer)
                         .clip(RoundedCornerShape(25.dp))
                         .padding(12.dp).clickable {
 
-                    }
+                        }
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Clear,

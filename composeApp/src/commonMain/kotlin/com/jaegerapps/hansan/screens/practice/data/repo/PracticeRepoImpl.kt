@@ -2,44 +2,39 @@ package com.jaegerapps.hansan.screens.practice.data.repo
 
 import com.russhwolf.settings.Settings
 import com.jaegerapps.hansan.common.models.UserSettings
-import com.jaegerapps.hansan.common.models.Word
 import com.jaegerapps.hansan.common.models.getFormalityFromString
-import com.jaegerapps.hansan.common.models.stringToType
+import com.jaegerapps.hansan.common.models.getTenseFromString
+import com.jaegerapps.hansan.common.use_case.SettingsStringUseCase
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.common.util.SettingKeys
-import com.jaegerapps.hansan.data.HanSanDataBase
-import com.jaegerapps.hansan.screens.practice.domain.mappers.toWord
+import com.jaegerapps.hansan.screens.practice.data.local.LocalWordRoomDataSource
 import com.jaegerapps.hansan.screens.practice.domain.mappers.toWordEntity
+import com.jaegerapps.hansan.screens.practice.domain.models.PracticeWordModel
 import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
-import kotlinx.datetime.Clock
+import com.jaegerapps.hansan.screens.practice.domain.usecases.GetWordsByIdUseCase
+import com.jaegerapps.hansan.screens.practice.domain.usecases.GetWordsByTimeUseCase
+import com.jaegerapps.hansan.screens.practice.domain.usecases.GetWordsNoCursor
+import com.jaegerapps.hansan.screens.practice.domain.usecases.UpdateWordUseCase
 
 class PracticeRepoImpl(
     private val settings: Settings,
-    private val database: HanSanDataBase,
+    private val localWordRoomDataSource: LocalWordRoomDataSource,
 ) : PracticeRepo {
-    private val wordDao = database.wordDao()
-    private val translationDao = database.translationDao()
-    private val grammarDao = database.grammarDao()
+
+    /*TODO - Move all of this setting data into the local data source. It shouldn't be done in here*/
     override suspend fun getUserSettings(): UserSettings {
-        val formality = settings.getString(SettingKeys.FORMALITY, "formal_high")
-        val type = settings.getString(SettingKeys.TYPE, "verb")
-        val keyboardEnabled = settings.getBoolean(SettingKeys.KEYBOARD_ENABLED, false)
-        val presentTenseEnabled = settings.getBoolean(SettingKeys.PRESENT_TENSE_ENABLED, true)
-        val pastTenseEnabled = settings.getBoolean(SettingKeys.PAST_TENSE_ENABLED, true)
-        val futureTenseEnabled = settings.getBoolean(SettingKeys.FUTURE_TENSE_ENABLED, true)
+        val enabledFormalities = SettingsStringUseCase.convertToList(settings.getString(SettingKeys.FORMALITIES, "formal_high"))
+        val enabledTenses = SettingsStringUseCase.convertToList(settings.getString(SettingKeys.TENSES, "present_declarative"))
+
         val enableReminders = settings.getBoolean(SettingKeys.DAILY_REMINDERS_ENABLED, false)
         val dailyTargetMet = settings.getInt(SettingKeys.DAILY_TARGET_MET, 0)
         val dailyTargetMax = settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
         return UserSettings(
-            targetFormalityType = getFormalityFromString(formality),
-            targetType = stringToType(type),
-            keyboardEnabled = keyboardEnabled,
-            presentTenseEnabled = presentTenseEnabled,
-            pastTenseEnabled = pastTenseEnabled,
-            futureTenseEnabled = futureTenseEnabled,
+            enabledFormality = enabledFormalities.map { getFormalityFromString(it) },
+            enabledTenses = enabledTenses.map { getTenseFromString(it) },
             enableReminders = enableReminders,
-            dailyTargetMet = dailyTargetMet,
+            currentPracticeDone = dailyTargetMet,
             dailyTargetMax = dailyTargetMax
         )
     }
@@ -50,24 +45,48 @@ class PracticeRepoImpl(
     }
 
 
-    override suspend fun updateWord(wordModel: Word) {
-        wordDao.updateWord(wordModel.toWordEntity())
+    override suspend fun updateWord(wordModel: PracticeWordModel) {
+        UpdateWordUseCase(localWordRoomDataSource).invoke(wordModel.toWordEntity())
     }
 
-    override suspend fun getWords(): List<Word> {
-        val selectedGrammar = grammarDao.getSelectedGrammar()
+    override suspend fun getWordsByTime(time: Long): List<PracticeWordModel> {
+        val selectedGrammar = localWordRoomDataSource.getGrammar()
         Knower.d("PracticeRepoImpl", "Checked selected grammar. $selectedGrammar")
-        val currentTime = Clock.System.now().epochSeconds
-        Knower.d("PracticeRepoImpl", "Got current time. $currentTime")
-        val wordEntities = selectedGrammar.flatMap { grammar ->
-            wordDao.getWordsByTime(grammar.tense, grammar.formality, currentTime)
-        }
-        val words = if (wordEntities.isEmpty()) wordDao.getWords().map { it.toWord() } else {
-            wordEntities.map { it.toWord() }
 
-        }
-        Knower.d("PracticeRepoImpl", "Attempting to return words. $words")
+        val words = GetWordsByTimeUseCase(localWordRoomDataSource).invoke(
+            time = time,
+            formality = selectedGrammar.map { it.formality },
+            tense = selectedGrammar.map { it.tense }
+        )
+        Knower.d("PracticeRepoImpl", "Here are the words found by time. $words")
 
-        return words
+        return words.shuffled()
+    }
+
+    override suspend fun getWordsById(id: Int): List<PracticeWordModel> {
+        val selectedGrammar = localWordRoomDataSource.getGrammar()
+        Knower.d("PracticeRepoImpl", "Checked selected grammar. $selectedGrammar")
+
+        val words = GetWordsByIdUseCase(localWordRoomDataSource).invoke(
+            id = id,
+            formality = selectedGrammar.map { it.formality },
+            tense = selectedGrammar.map { it.tense }
+        )
+
+        Knower.d("PracticeRepoImpl", "Here are the words found by id. $words")
+        return words.shuffled()
+    }
+
+    override suspend fun getWords(): List<PracticeWordModel> {
+        val selectedGrammar = localWordRoomDataSource.getGrammar()
+        Knower.d("PracticeRepoImpl", "Checked selected grammar. $selectedGrammar")
+
+        val words = GetWordsNoCursor(localWordRoomDataSource).invoke(
+            formality = selectedGrammar.map { it.formality },
+            tense = selectedGrammar.map { it.tense }
+        )
+        Knower.d("PracticeRepoImpl", "Here are the words with no cursor. ${words}")
+
+        return words.shuffled()
     }
 }

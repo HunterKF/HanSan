@@ -1,15 +1,5 @@
 package com.jaegarapps.hansan.practice.domain
 
-import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.ModifierType
-import com.jaegerapps.hansan.common.models.Tense
-import com.jaegerapps.hansan.common.models.VerbModel
-import com.jaegerapps.hansan.common.models.WordTenseModel
-import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
-import com.jaegerapps.hansan.screens.practice.domain.usecases.EnterAnswer
-import kotlin.test.Test
-import kotlin.test.assertEquals
-
 class EnterAnswerTest {
 
    /* @Test

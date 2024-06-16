@@ -30,7 +30,7 @@ class SettingsComponent(
                     scope.launch {
                         val result = async { repo.getUserSettings() }.await()
                         withContext(Dispatchers.Main) {
-                            _state.update {
+                            /*_state.update {
                                 it.copy(
                                     presentTenseEnabled = result.presentTenseEnabled,
                                     pastTenseEnabled = result.pastTenseEnabled,
@@ -39,7 +39,7 @@ class SettingsComponent(
                                     dailyTarget = result.dailyTargetMax,
                                     loading = false
                                 )
-                            }
+                            }*/
                         }
                     }
                 }
@@ -59,7 +59,8 @@ class SettingsComponent(
                     return
                 }
                 scope.launch {
-                    val result = async { repo.updateDailyTarget(returnNumbers(event.number)) }.await()
+                    val result =
+                        async { repo.updateDailyTarget(returnNumbers(event.number)) }.await()
                     withContext(Dispatchers.Main) {
                         _state.update {
                             it.copy(
@@ -161,13 +162,25 @@ class SettingsComponent(
     private fun returnNumbers(value: String): Int {
         return value.take(3).filter { it.isDigit() }.toInt()
     }
+
     private fun atLeastOneTenseEnabled(
         presentTense: Boolean,
         pastTense: Boolean,
-        futureTense: Boolean
+        futureTense: Boolean,
     ): Boolean {
         //true, false, false
         //false, false, false
         return presentTense || pastTense || futureTense
+    }
+
+    private fun initializeComponent() {
+        scope.launch {
+            val enabled = async { repo.getEnabled() }.await()
+            _state.update {
+                it.copy(
+
+                )
+            }
+        }
     }
 }

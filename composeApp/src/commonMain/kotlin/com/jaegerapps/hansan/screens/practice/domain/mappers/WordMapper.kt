@@ -1,15 +1,19 @@
 package com.jaegerapps.hansan.screens.practice.domain.mappers
 
-import com.jaegerapps.hansan.common.models.Word
+import com.jaegerapps.hansan.common.data.local.room.entity.TranslationEntity
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.getTenseFromString
 import com.jaegerapps.hansan.common.data.local.room.entity.WordEntity
+import com.jaegerapps.hansan.screens.practice.domain.models.PracticeTranslation
+import com.jaegerapps.hansan.screens.practice.domain.models.PracticeWordModel
 import com.jaegerapps.hansan.screens.practice.domain.models.toInt
 import com.jaegerapps.hansan.screens.practice.domain.models.toLevel
 
-fun Word.toWordEntity(): WordEntity {
+fun PracticeWordModel.toWordEntity(): WordEntity {
     return WordEntity(
-        word = conjugatedWord,
+        id = id,
+        base_word = baseWord,
+        conjugated_word = conjugatedWord,
         level = level.toInt(),
         tense = tense.toString(),
         formality = formality.toString(),
@@ -18,14 +22,25 @@ fun Word.toWordEntity(): WordEntity {
     )
 }
 
-fun WordEntity.toWord(): Word {
-    return Word(
+fun WordEntity.toPracticeWordModel(translations: List<PracticeTranslation>?): PracticeWordModel {
+    return PracticeWordModel(
+        id = id,
+        baseWord = base_word,
+        translations = translations ?: emptyList(),
         level = level.toLevel(),
         dateExpire = date_expiration,
         tense = getTenseFromString(tense),
         formality = getFormalityFromString(formality),
-        conjugatedWord = word,
+        conjugatedWord = conjugated_word,
         irregular = irregular
     )
 }
+
+fun TranslationEntity.toPracticeTranslation(): PracticeTranslation {
+    return PracticeTranslation(
+        languageCode = this.language_code,
+        translation = this.translation
+    )
+}
+
 

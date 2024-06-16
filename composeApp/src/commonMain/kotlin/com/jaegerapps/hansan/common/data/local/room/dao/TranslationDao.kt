@@ -11,7 +11,7 @@ interface TranslationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTranslationList(list: List<TranslationEntity>)
 
-    @Query("SELECT * FROM translations WHERE reference_word = :referenceWord")
-    suspend fun getTranslationsByReferenceWord(referenceWord: String): List<TranslationEntity>
+    @Query("SELECT * FROM translations WHERE reference_word IN (:referenceWordList)")
+    suspend fun getTranslationsByReferenceWord(referenceWordList: List<String>): List<TranslationEntity>
 
 }

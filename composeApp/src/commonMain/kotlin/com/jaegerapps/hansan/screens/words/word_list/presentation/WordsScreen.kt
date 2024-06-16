@@ -110,7 +110,7 @@ fun WordContainer(
             style = MaterialTheme.typography.bodyMedium
         )
         Text(
-            text = word.definitionTranslations.english /*TODO - Get translation based on locality*/,
+            text = word.definitionTranslations.first().translation /*TODO - Get translation based on locality*/,
             style = MaterialTheme.typography.bodyMedium
         )
     }

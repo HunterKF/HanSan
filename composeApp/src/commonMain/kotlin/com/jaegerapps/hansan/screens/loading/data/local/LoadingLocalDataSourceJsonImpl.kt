@@ -2,7 +2,7 @@ package com.jaegerapps.hansan.screens.loading.data.local
 
 import com.jaegerapps.hansan.common.mappers.parseJsonWord
 import com.jaegerapps.hansan.common.models.TenseEntity
-import com.jaegerapps.hansan.common.models.VerbEntity
+import com.jaegerapps.hansan.common.models.VerbDto
 import com.jaegerapps.hansan.common.models.parseJsonTense
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.e
@@ -11,7 +11,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 
 @OptIn(ExperimentalResourceApi::class)
 class LoadingLocalDataSourceJsonImpl : LoadingLocalDataSourceJson {
-    override suspend fun getWords(): List<VerbEntity>? {
+    override suspend fun getWords(): List<VerbDto>? {
         return try {
             val jsonWords = Res.readBytes("files/new_words.json").decodeToString()
             parseJsonWord(jsonWords)

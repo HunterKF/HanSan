@@ -2,9 +2,10 @@ package com.jaegerapps.hansan.common.models
 
 import com.jaegerapps.hansan.screens.practice.domain.models.Level
 
+//Verb model will be used to display words on the word screen.
 data class VerbModel(
     val baseWord: String,
-    val definitionTranslations: DefinitionTranslations,
+    val definitionTranslations: List<DefinitionTranslation>,
 //    val type: ModifierType,
     val formalities: Formalities,
 )
@@ -29,8 +30,9 @@ data class Word(
     val irregular: Boolean
 )
 
-data class DefinitionTranslations(
-    val english: String
+data class DefinitionTranslation(
+    val languageCode: String,
+    val translation: String
 )
 
 data class WordTenseModel(

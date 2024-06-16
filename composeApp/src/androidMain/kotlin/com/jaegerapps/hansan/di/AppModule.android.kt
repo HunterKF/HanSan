@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.jaegerapps.hansan.data.HanSanDataBase
+import com.jaegerapps.hansan.common.data.HanSanDataBase
 import com.jaegerapps.hansan.root.data.repo.RootRepoImpl
 import com.jaegerapps.hansan.root.domain.repo.RootRepo
 import com.russhwolf.settings.SharedPreferencesSettings
@@ -20,6 +20,8 @@ import com.jaegerapps.hansan.screens.onboarding.data.local.room.LocalRoomDataSou
 import com.jaegerapps.hansan.screens.onboarding.data.local.shared_preferences.LocalSharedPrefDataSourceImpl
 import com.jaegerapps.hansan.screens.onboarding.data.repo.OnboardingRepoImpl
 import com.jaegerapps.hansan.screens.onboarding.domain.repo.OnboardingRepo
+import com.jaegerapps.hansan.screens.practice.data.local.LocalWordRoomDataSource
+import com.jaegerapps.hansan.screens.practice.data.local.LocalWordRoomDataSourceImpl
 import com.jaegerapps.hansan.screens.practice.data.repo.PracticeRepoImpl
 import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
 import com.jaegerapps.hansan.screens.settings.data.local.SettingsLocalDataSource
@@ -44,10 +46,18 @@ actual class AppModule(
         )
     }
 
+    actual val localWordRoomDataSource: LocalWordRoomDataSource by lazy {
+        LocalWordRoomDataSourceImpl(
+            wordDao = dataBase.wordDao(),
+            translationDao = dataBase.translationDao(),
+            grammarDao = dataBase.grammarDao()
+        )
+    }
+
     actual val practiceRepo: PracticeRepo by lazy {
         PracticeRepoImpl(
             settings,
-            dataBase
+            localWordRoomDataSource
         )
     }
 
@@ -68,7 +78,7 @@ actual class AppModule(
         )
     }
     actual val dataBase: HanSanDataBase by lazy {
-        getDatabaseBuilder(context).build()
+        getDatabaseBuilder(context).fallbackToDestructiveMigration(true).build()
     }
 
     private fun getDatabaseBuilder(ctx: Context): RoomDatabase.Builder<HanSanDataBase> {

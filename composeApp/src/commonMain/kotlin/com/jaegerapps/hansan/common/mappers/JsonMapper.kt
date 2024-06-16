@@ -1,8 +1,8 @@
 package com.jaegerapps.hansan.common.mappers
 
-import com.jaegerapps.hansan.common.models.DefinitionTranslations
+import com.jaegerapps.hansan.common.models.DefinitionTranslation
 import com.jaegerapps.hansan.common.models.Formalities
-import com.jaegerapps.hansan.common.models.FormalitiesEntity
+import com.jaegerapps.hansan.common.models.FormalitiesDto
 import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.FormalityContainerDto
 import com.jaegerapps.hansan.common.models.FormalityType
@@ -12,8 +12,8 @@ import com.jaegerapps.hansan.common.models.PresentDto
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseEntity
 import com.jaegerapps.hansan.common.models.TenseModel
-import com.jaegerapps.hansan.common.models.TranslationsEntity
-import com.jaegerapps.hansan.common.models.VerbEntity
+import com.jaegerapps.hansan.common.models.TranslationDto
+import com.jaegerapps.hansan.common.models.VerbDto
 import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.models.Word
 import com.jaegerapps.hansan.common.models.WordDto
@@ -21,21 +21,22 @@ import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.getTenseFromString
 import kotlinx.serialization.json.Json
 
-fun VerbEntity.toVerbModel(): VerbModel {
+fun VerbDto.toVerbModel(): VerbModel {
     return VerbModel(
         baseWord = base,
-        definitionTranslations = translationsEntity.toDefinitionTranslation(),
-        formalities = formalitiesEntity.toFormalities()
+        definitionTranslations = translationDto.map { it.toDefinitionTranslation() },
+        formalities = formalitiesDto.toFormalities()
     )
 }
 
-fun TranslationsEntity.toDefinitionTranslation(): DefinitionTranslations {
-    return DefinitionTranslations(
-        english = this.english
+fun TranslationDto.toDefinitionTranslation(): DefinitionTranslation {
+    return DefinitionTranslation(
+        languageCode = language_code,
+        translation = language_translation
     )
 }
 
-fun FormalitiesEntity.toFormalities(): Formalities {
+fun FormalitiesDto.toFormalities(): Formalities {
     return Formalities(
         formalHigh = formal_high.toFormality(FormalityType.FORMAL_HIGH),
         formalLow = formal_low.toFormality(FormalityType.FORMAL_LOW),
@@ -97,6 +98,6 @@ fun TenseEntity.toTenseModel(): TenseModel {
     )
 }
 
-fun parseJsonWord(jsonString: String): List<VerbEntity> {
-    return Json.decodeFromString<List<VerbEntity>>(jsonString)
+fun parseJsonWord(jsonString: String): List<VerbDto> {
+    return Json.decodeFromString<List<VerbDto>>(jsonString)
 }

@@ -1,7 +1,6 @@
 package com.jaegerapps.hansan.screens.onboarding.data.repo
 
-import com.jaegerapps.hansan.common.mappers.toVerbModel
-import com.jaegerapps.hansan.common.models.VerbEntity
+import com.jaegerapps.hansan.common.models.VerbDto
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.common.util.Knower.e
@@ -40,7 +39,7 @@ class OnboardingRepoImpl(
        localSharedPrefDataSource.toggleOnboarding()
     }
 
-    private suspend fun insertGrammarLists(entity: VerbEntity) {
+    private suspend fun insertGrammarLists(entity: VerbDto) {
         localRoomDataSource.addGrammar(entity.toGrammarEntities())
     }
 }

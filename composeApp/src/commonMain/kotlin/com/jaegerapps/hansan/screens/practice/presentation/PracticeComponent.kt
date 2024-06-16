@@ -3,15 +3,15 @@ package com.jaegerapps.hansan.screens.practice.presentation
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.UserSettings
-import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.d
+import com.jaegerapps.hansan.screens.practice.domain.models.PracticeWordModel
 import com.jaegerapps.hansan.screens.practice.domain.repo.PracticeRepo
-import com.jaegerapps.hansan.screens.practice.domain.usecases.WordAndTenseHandler
+import com.jaegerapps.hansan.screens.practice.domain.usecases.LevelUseCase
+import com.jaegerapps.hansan.screens.practice.domain.usecases.TimeUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -20,6 +20,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Clock
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 class PracticeComponent(
     componentContext: ComponentContext,
@@ -40,17 +44,6 @@ class PracticeComponent(
         Knower.d("onCreate", "onCreate is being called.")
         initializePracticeComponent()
         Knower.d("init", "Initializing PracticeComponent")
-        lifecycle.subscribe(
-            object : Lifecycle.Callbacks {
-                override fun onCreate() {
-                }
-
-                override fun onResume() {
-                    Knower.d("onResume", "onResume is being called.")
-                    initializePracticeComponent()
-                }
-            }
-        )
     }
 
 
@@ -77,61 +70,32 @@ class PracticeComponent(
             }
 
             PracticeUiEvent.ClickDon_tKnow -> {
-                /*TODO - Perform some logic here*/
-                _state.update {
-                    it.copy(
-                        showAnswer = false
-                    )
-                }
+                onDontKnow()
             }
 
             PracticeUiEvent.ClickGotIt -> {
-                /*TODO - Perform some logic here*/
+                onGotIt()
+            }
+        }
+    }
+
+    private fun initializePracticeComponent() {
+        _state.update {
+            it.copy(
+                isLoading = true
+            )
+        }
+        scope.launch {
+            userSettings.value = async { repo.getUserSettings() }.await()
+            async {getNewWords()  }.invokeOnCompletion {
                 _state.update {
                     it.copy(
-                        showAnswer = false
+                        isLoading = false
                     )
                 }
             }
         }
     }
-
-    private fun filterTenses(
-        formalityType: FormalityType,
-        tenseList: List<Tense>,
-    ): List<TenseModel> {
-        return tenses.filter { tense ->
-            tense.formalityType == formalityType && tenseList.contains(
-                tense.tense
-            )
-        }
-    }
-    private fun initializePracticeComponent() {
-        scope.launch {
-            userSettings.value = async { repo.getUserSettings() }.await()
-            val words = async { repo.getWords().first() }.await()
-            _state.update {
-                it.copy(
-                    targetWord = words
-                )
-            }
-
-        }
-    }
-
-
-    private fun filterTensesByUserSettings(
-        presentTense: Boolean,
-        pastTense: Boolean,
-        futureTense: Boolean,
-    ): List<Tense> {
-        var list = emptyList<Tense>()
-        if (presentTense) list = list.plus(Tense.PRESENT_DECLARATIVE)
-        if (pastTense) list = list.plus(Tense.PAST_DECLARATIVE)
-        if (futureTense) list = list.plus(Tense.FUTURE_DECLARATIVE)
-        return list
-    }
-
     private fun updateDailyTargetMet(newValue: Int): Int {
 
         if (newValue + 1 == _state.value.dailyGoalMax) return newValue
@@ -140,6 +104,119 @@ class PracticeComponent(
         }
         return newValue + 1
 
+    }
+
+    private fun onGotIt() {
+        scope.launch {
+            repo.updateWord(updateWordLevelUp(word = _state.value.targetWord!!))
+            removeAndSetNewTargetWord()
+            _state.update {
+                it.copy(
+                    showAnswer = false,
+                    dailyGoalMet = updateDailyTargetMet(it.dailyGoalMet ?: 0)
+                )
+            }
+            if (_state.value.wordList.size < 5) {
+                getNewWords()
+            }
+        }
+    }
+
+    private fun onDontKnow() {
+        scope.launch {
+            repo.updateWord(updateWordLevelDown(word = _state.value.targetWord!!))
+            removeAndSetNewTargetWord()
+            _state.update {
+                it.copy(
+                    showAnswer = false,
+                    dailyGoalMet = updateDailyTargetMet(it.dailyGoalMet ?: 0)
+                )
+            }
+            if (_state.value.wordList.size < 5) {
+                getNewWords()
+            }
+        }
+    }
+
+    private fun updateWordLevelUp(word: PracticeWordModel): PracticeWordModel {
+        val level = LevelUseCase.updateLevelUp(word.level)
+        return word.copy(
+            level = level,
+            dateExpire = TimeUseCase.setTime(level, getTime())
+        )
+    }
+
+    private fun getTime(): LocalDateTime {
+        val now = Clock.System.now()
+        val currentDateTime: LocalDateTime = now.toLocalDateTime(TimeZone.currentSystemDefault())
+        return currentDateTime
+    }
+
+    private fun updateWordLevelDown(word: PracticeWordModel): PracticeWordModel {
+        val level = LevelUseCase.updateLevelDown(word.level)
+        return word.copy(
+            level = level,
+            dateExpire = TimeUseCase.setTime(level, getTime())
+        )
+    }
+
+    private fun removeAndSetNewTargetWord() {
+        _state.update {
+            it.copy(
+                wordList = it.wordList.drop(1),
+                targetWord = it.wordList[1],
+                targetTense = it.wordList[1].tense,
+                targetFormalityType = it.wordList[1].formality
+            )
+        }
+    }
+
+    private suspend fun getNewWords() {
+        scope.launch {
+            var words = async {
+                getWordsByTime()
+            }.await()
+            if (words.isEmpty()) {
+                Knower.d("PracticeComponent", "Words by time was empty. Attempting to get by id.")
+
+                words = async {
+                    getWordsById()
+                }.await()
+            }
+            if (words.isEmpty()) {
+                Knower.d("PracticeComponent", "Words by id was empty. Attempting to get by no cursor.")
+                words = async {
+                    getWordsNoCursor()
+                }.await()
+            }
+            if (words.isEmpty()) {
+                Knower.d("PracticeComponent", "No luck, still empty.")
+
+            }
+            _state.update {
+                it.copy(
+                    wordList = it.wordList + words,
+                    targetWord = words.firstOrNull(),
+                    targetTense = words.firstOrNull()?.tense,
+                    targetFormalityType = words.firstOrNull()?.formality
+                )
+            }
+            Knower.d("PracticeComponent", "Got words. Here is the updated state \n ${_state.value}")
+        }
+    }
+
+    private suspend fun getWordsByTime(): List<PracticeWordModel> {
+        return repo.getWordsByTime(
+            _state.value.timeCursor ?: Clock.System.now().toEpochMilliseconds()
+        )
+    }
+
+    private suspend fun getWordsById(): List<PracticeWordModel> {
+        return repo.getWordsById(_state.value.idCursor)
+    }
+
+    private suspend fun getWordsNoCursor(): List<PracticeWordModel> {
+        return repo.getWords()
     }
 
 

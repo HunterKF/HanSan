@@ -1,7 +1,14 @@
 package com.jaegerapps.hansan.screens.settings.data.repo
 
+import com.jaegerapps.hansan.common.models.FormalityType
+import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.UserSettings
+import com.jaegerapps.hansan.common.models.getStringFromFormality
+import com.jaegerapps.hansan.common.models.getStringFromTense
+import com.jaegerapps.hansan.common.models.getTenseFromString
 import com.jaegerapps.hansan.screens.settings.data.local.SettingsLocalDataSource
+import com.jaegerapps.hansan.screens.settings.domain.mapper.toSettingsGrammarModel
+import com.jaegerapps.hansan.screens.settings.domain.models.SettingsGrammarModel
 import com.jaegerapps.hansan.screens.settings.domain.repo.SettingsRepo
 
 class SettingsRepoImpl(
@@ -19,16 +26,16 @@ class SettingsRepoImpl(
         return local.updateDailyTarget(value)
     }
 
-    override suspend fun updatePresentTense(value: Boolean): Boolean {
-       return local.updatePresentTense(value)
+    override suspend fun toggleFormality(formalityType: FormalityType, isSelected: Boolean) {
+        local.toggleFormality(formality = getStringFromFormality(formalityType), isSelected)
     }
 
-    override suspend fun updatePastTense(value: Boolean): Boolean {
-        return local.updatePastTense(value)
+    override suspend fun toggleTense(tense: Tense, isSelected: Boolean) {
+        local.toggleTense(getStringFromTense(tense), isSelected)
     }
 
-    override suspend fun updateFutureTense(value: Boolean): Boolean {
-        return local.updateFutureTense(value)
+    override suspend fun getEnabled(): List<SettingsGrammarModel> {
+       return local.getEnabled().map { it.toSettingsGrammarModel() }
     }
 
 }

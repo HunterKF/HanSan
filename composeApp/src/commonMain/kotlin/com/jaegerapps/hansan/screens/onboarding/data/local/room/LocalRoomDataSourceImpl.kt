@@ -2,7 +2,7 @@ package com.jaegerapps.hansan.screens.onboarding.data.local.room
 
 import com.jaegerapps.hansan.common.data.local.room.entity.GrammarEntity
 import com.jaegerapps.hansan.common.data.local.room.entity.TranslationEntity
-import com.jaegerapps.hansan.data.HanSanDataBase
+import com.jaegerapps.hansan.common.data.HanSanDataBase
 import com.jaegerapps.hansan.common.data.local.room.entity.WordEntity
 import com.jaegerapps.hansan.common.util.Knower
 import com.jaegerapps.hansan.common.util.Knower.d

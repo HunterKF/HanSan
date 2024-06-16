@@ -26,14 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.components.BottomBarIcon
-import com.jaegerapps.hansan.common.models.DefinitionTranslations
+import com.jaegerapps.hansan.common.models.DefinitionTranslation
 import com.jaegerapps.hansan.common.models.Formalities
 import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.VerbModel
-import com.jaegerapps.hansan.common.models.Word
 import com.jaegerapps.hansan.common.models.getResStringFromFormality
 import hansan.composeapp.generated.resources.Res
 import hansan.composeapp.generated.resources.icon_list
@@ -50,6 +49,9 @@ import com.jaegerapps.hansan.screens.learn.presentation.components.LearnTense
 import com.jaegerapps.hansan.screens.learn.presentation.components.TenseHeader
 import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseScreen
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
+import com.jaegerapps.hansan.screens.practice.domain.models.Level
+import com.jaegerapps.hansan.screens.practice.domain.models.PracticeTranslation
+import com.jaegerapps.hansan.screens.practice.domain.models.PracticeWordModel
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeErrorMessage
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeScreen
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeUiState
@@ -66,9 +68,9 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
 
-private val hadaWordModel = VerbModel(
+private val verbModel = VerbModel(
     baseWord = "말하다",
-    definitionTranslations = DefinitionTranslations(english = "to speak"),
+    definitionTranslations = listOf(DefinitionTranslation(languageCode = "en", "to talk")),
     formalities = Formalities(
         formalHigh = Formality(
             type = FormalityType.FORMAL_HIGH,
@@ -89,12 +91,33 @@ private val hadaWordModel = VerbModel(
         informalLow = Formality(
             type = FormalityType.INFORMAL_LOW,
             conjugation = listOf(
-               /* Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해", irregular = false),
-                Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어", irregular = false),
-                Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거야", irregular = false)*/
+                /* Word(tense = Tense.PRESENT_DECLARATIVE, conjugatedWord = "말해", irregular = false),
+                 Word(tense = Tense.PAST_DECLARATIVE, conjugatedWord = "말했어", irregular = false),
+                 Word(tense = Tense.FUTURE_DECLARATIVE, conjugatedWord = "말할 거야", irregular = false)*/
             )
         )
     )
+)
+
+private val hadaWordModel = PracticeWordModel(
+    id = 1,
+    baseWord = "하다",
+    translations = listOf(
+        PracticeTranslation(
+            languageCode = "en",
+            translation = "to do"
+        ),
+        PracticeTranslation(
+            languageCode = "fr",
+            translation = "aller"
+        )
+    ),
+    level = Level.LEVEL_ONE,
+    dateExpire = 12L,
+    tense = Tense.PRESENT_DECLARATIVE,
+    formality = FormalityType.FORMAL_HIGH,
+    conjugatedWord = "합니다",
+    irregular = false
 )
 private val tenseModel = TenseModel(
     tense = Tense.PAST_DECLARATIVE,
@@ -320,8 +343,8 @@ fun Preview_BottomBarIcon() {
 @Composable
 fun Preview_PracticeScreen() {
     val state = PracticeUiState(
-        currentVerb = hadaWordModel,
-        targetTense = tenseModel,
+        targetWord = hadaWordModel,
+        targetTense = tenseModel.tense,
     )
     HanSanTheme(false) {
         PracticeScreen(state, {})
@@ -333,8 +356,8 @@ fun Preview_PracticeScreen() {
 fun Preview_PracticeScreenErrorMessage() {
     var errorMessage: PracticeErrorMessage? by remember { mutableStateOf(null) }
     val state = PracticeUiState(
-        currentVerb = hadaWordModel,
-        targetTense = tenseModel,
+        targetWord = hadaWordModel,
+        targetTense = tenseModel.tense,
         errorMessage = errorMessage
     )
 
@@ -351,8 +374,8 @@ fun Preview_PracticeScreenDark() {
     var state = remember {
         mutableStateOf(
             PracticeUiState(
-                currentVerb = hadaWordModel,
-                targetTense = tenseModel,
+                targetWord = hadaWordModel,
+                targetTense = tenseModel.tense,
             )
         )
     }
@@ -708,7 +731,7 @@ private fun Preview_AnswerContainer() {
                 formalityType = FormalityType.FORMAL_HIGH,
                 tenseTarget = tenseModel.tense,
                 onClick = {
-                          showAnswer = !showAnswer
+                    showAnswer = !showAnswer
                 },
                 showAnswer = !showAnswer,
                 answer = "하고 있습니다"
@@ -746,7 +769,7 @@ private fun Preview_AnswerContainerDark() {
                 formalityType = FormalityType.FORMAL_HIGH,
                 tenseTarget = tenseModel.tense,
                 onClick = {
-                          showAnswer = !showAnswer
+                    showAnswer = !showAnswer
                 },
                 showAnswer = !showAnswer,
                 answer = "하고 있습니다"

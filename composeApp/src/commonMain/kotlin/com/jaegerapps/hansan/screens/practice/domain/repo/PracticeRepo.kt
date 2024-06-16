@@ -1,15 +1,15 @@
 package com.jaegerapps.hansan.screens.practice.domain.repo
 
-import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.ModifierType
 import com.jaegerapps.hansan.common.models.UserSettings
-import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.models.Word
+import com.jaegerapps.hansan.screens.practice.domain.models.PracticeWordModel
 
 interface PracticeRepo {
     suspend fun getUserSettings(): UserSettings
     suspend fun updateDailyGoalMet(newValue: Int)
-    suspend fun updateWord(wordModel: Word)
-    suspend fun getWords(): List<Word>
+    suspend fun updateWord(wordModel: PracticeWordModel)
+    suspend fun getWordsByTime(time: Long): List<PracticeWordModel>
+    suspend fun getWordsById(id: Int): List<PracticeWordModel>
+    suspend fun getWords(): List<PracticeWordModel>
 
 }

@@ -61,6 +61,18 @@ fun getTenseFromString(value: String): Tense {
         }
     }
 }
+fun getStringFromTense(tense: Tense): String {
+    return when (tense) {
+        Tense.PRESENT_DECLARATIVE -> "present_declarative"
+        Tense.PRESENT_DECLARATIVE_INQUISITIVE -> "present_declarative_inquisitive"
+        Tense.PRESENT_DECLARATIVE_NARRATIVE -> "present_declarative_narrative"
+        Tense.PRESENT_DECLARATIVE_SUGGESTIVE -> "present_declarative_suggestive"
+        Tense.PAST_DECLARATIVE -> "past_declarative"
+        Tense.PAST_DECLARATIVE_INQUISITIVE -> "past_declarative_inquisitive"
+        Tense.FUTURE_DECLARATIVE -> "future_declarative"
+        Tense.FUTURE_DECLARATIVE_FIRST_PERSON -> "future_declarative_first_person"
+    }
+}
 @OptIn(ExperimentalResourceApi::class)
 fun getTenseResString(value: Tense): StringResource {
     return when (value) {

@@ -69,7 +69,6 @@ class RootComponent(
                     PracticeComponent(
                         componentContext = context,
                         tenses = state.value.tenses,
-                        words = state.value.words,
                         repo = appModule.practiceRepo,
                         onNavigate = {
                             onNavigate(it)

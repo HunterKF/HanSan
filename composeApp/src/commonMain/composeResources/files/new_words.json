@@ -2,9 +2,24 @@
     {
       "id": 1,
       "base": "가다",
-      "translations": {
-        "english": "to go"
-      },
+      "translations": [
+        {
+          "language_code": "en",
+          "language_translation": "to go"
+        },
+        {
+          "language_code": "es",
+          "language_translation": "ir"
+        },
+        {
+          "language_code": "fr",
+          "language_translation": "aller"
+        },
+        {
+          "language_code": "de",
+          "language_translation": "gehen"
+        }
+      ],
       "formalities": {
         "formal_high": {
           "conjugations": {
@@ -77,9 +92,24 @@
     {
       "id": 2,
       "base": "가르치다",
-      "translations": {
-        "english": "to teach"
-      },
+      "translations": [
+        {
+          "language_code": "en",
+          "language_translation": "to teach"
+        },
+        {
+          "language_code": "es",
+          "language_translation": "enseñar"
+        },
+        {
+          "language_code": "fr",
+          "language_translation": "enseigner"
+        },
+        {
+          "language_code": "de",
+          "language_translation": "Lehren"
+        }
+      ],
       "formalities": {
         "formal_high": {
           "conjugations": {

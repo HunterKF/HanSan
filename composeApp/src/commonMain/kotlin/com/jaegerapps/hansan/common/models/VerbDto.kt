@@ -9,24 +9,24 @@ import kotlinx.serialization.Serializable
 //Onboarding: Takes the JSON data and stores it into the Room database as words for the user to practice
 //Learn: This will be used to display the data in learn for the user to click on a word and then check out its grammar properties
 @Serializable
-data class VerbEntity(
+data class VerbDto(
     val id: Int,
     @SerialName("base")
     val base: String,
     @SerialName("translations")
-    val translationsEntity: TranslationsEntity,
+    val translationDto: List<TranslationDto>,
     @SerialName("formalities")
-    val formalitiesEntity: FormalitiesEntity
+    val formalitiesDto: FormalitiesDto
 )
 
 @Serializable
-data class TranslationsEntity(
-    @SerialName("english")
-    val english: String
+data class TranslationDto(
+    val language_code: String,
+    val language_translation: String
 )
 
 @Serializable
-data class FormalitiesEntity(
+data class FormalitiesDto(
     val formal_high: FormalityContainerDto,
     val formal_low: FormalityContainerDto,
     val informal_low: FormalityContainerDto

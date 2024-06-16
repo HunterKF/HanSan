@@ -7,9 +7,10 @@ import androidx.room.PrimaryKey
     tableName = "words"
 )
 data class WordEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val word: String,
+    val base_word: String,
+    val conjugated_word: String,
     val level: Int,
     val tense: String,
     val formality: String,

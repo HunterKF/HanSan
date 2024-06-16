@@ -80,7 +80,7 @@ fun IndividualWordScreen(
                     ExamineWordContainer(
                         modifier = Modifier.padding(12.dp),
                         word = state.currentWord.baseWord,
-                        def = state.currentWord.definitionTranslations.english /*TODO - Set it according to the local language */
+                        def = state.currentWord.definitionTranslations.first().translation /*TODO - Set it according to the local language */
                     )
                 }
                 item {
