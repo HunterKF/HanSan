@@ -2,7 +2,13 @@ package com.jaegerapps.hansan.screens.settings.presentation
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
+import com.jaegerapps.hansan.common.models.FormalityType
+import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.screens.settings.domain.models.SettingsFormalityModel
+import com.jaegerapps.hansan.screens.settings.domain.models.SettingsTenseModel
 import com.jaegerapps.hansan.screens.settings.domain.repo.SettingsRepo
+import com.jaegerapps.hansan.screens.settings.domain.use_cases.CheckEnabledUseCase.Companion.checkFormalitiesAtLeastOneEnabled
+import com.jaegerapps.hansan.screens.settings.domain.use_cases.CheckEnabledUseCase.Companion.checkTensesAtLeastOneEnabled
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -24,6 +30,8 @@ class SettingsComponent(
     private val scope = CoroutineScope(Dispatchers.Main)
 
     init {
+        initializeComponent()
+
         lifecycle.subscribe(
             object : Lifecycle.Callbacks {
                 override fun onCreate() {
@@ -86,76 +94,25 @@ class SettingsComponent(
                 }
             }
 
-            is SettingsUiEvent.ToggleFutureTense -> {
-                if (
-                    !atLeastOneTenseEnabled(
-                        _state.value.presentTenseEnabled,
-                        _state.value.pastTenseEnabled,
-                        event.value
-                    )
-                ) {
-                    _state.update { it.copy(errorMessage = SettingsErrorMessage.TENSE_BLANK) }
-                    return
-                }
-                scope.launch {
-                    val result = async { repo.updateFutureTense(event.value) }.await()
-                    withContext(Dispatchers.Main) {
-                        _state.update {
-                            it.copy(
-                                futureTenseEnabled = result
-                            )
-                        }
-                    }
-                }
-            }
-
-            is SettingsUiEvent.TogglePastTense -> {
-                if (
-                    !atLeastOneTenseEnabled(
-                        _state.value.presentTenseEnabled,
-                        event.value,
-                        _state.value.futureTenseEnabled
-                    )
-                ) {
-                    _state.update { it.copy(errorMessage = SettingsErrorMessage.TENSE_BLANK) }
-                    return
-                }
-                scope.launch {
-                    val result = async { repo.updatePastTense(event.value) }.await()
-                    withContext(Dispatchers.Main) {
-                        _state.update {
-                            it.copy(
-                                pastTenseEnabled = result
-                            )
-                        }
-                    }
-                }
-            }
-
-            is SettingsUiEvent.TogglePresentTense -> {
-                if (
-                    !atLeastOneTenseEnabled(
-                        event.value,
-                        _state.value.pastTenseEnabled,
-                        _state.value.futureTenseEnabled
-                    )
-                ) {
-                    _state.update { it.copy(errorMessage = SettingsErrorMessage.TENSE_BLANK) }
-                    return
-                }
-                scope.launch {
-                    val result = async { repo.updatePresentTense(event.value) }.await()
-                    withContext(Dispatchers.Main) {
-                        _state.update {
-                            it.copy(
-                                presentTenseEnabled = result
-                            )
-                        }
-                    }
-                }
-            }
 
             SettingsUiEvent.ClearErrorMessage -> _state.update { it.copy(errorMessage = null) }
+            is SettingsUiEvent.ToggleFormality -> {
+                if (!checkFormalitiesAtLeastOneEnabled(_state.value.formalities, _state.value.formalities.size) && !event.value) {
+                    _state.update { it.copy(errorMessage = SettingsErrorMessage.TENSE_BLANK) }
+                    return
+                } else {
+                    updateFormality(event.formality, event.value)
+                }
+            }
+
+            is SettingsUiEvent.ToggleTense -> {
+                if (!checkTensesAtLeastOneEnabled(_state.value.tenses, _state.value.tenses.size)  && !event.value) {
+                    _state.update { it.copy(errorMessage = SettingsErrorMessage.TENSE_BLANK) }
+                    return
+                } else {
+                    updateTense(event.tense, event.value)
+                }
+            }
         }
     }
 
@@ -163,22 +120,65 @@ class SettingsComponent(
         return value.take(3).filter { it.isDigit() }.toInt()
     }
 
-    private fun atLeastOneTenseEnabled(
-        presentTense: Boolean,
-        pastTense: Boolean,
-        futureTense: Boolean,
-    ): Boolean {
-        //true, false, false
-        //false, false, false
-        return presentTense || pastTense || futureTense
+
+    private fun updateFormality(formality: FormalityType, isSelected: Boolean) {
+        scope.launch {
+            repo.toggleFormality(formality, tenses = _state.value.tenses.filter { it.isSelected }, isSelected)
+            _state.update {
+                it.copy(
+                    formalities = updateSingleFormality(
+                        _state.value.formalities,
+                        target = formality,
+                        isSelected = isSelected
+                    )
+                )
+            }
+        }
     }
+
+
+    private fun updateSingleFormality(
+        list: List<SettingsFormalityModel>,
+        target: FormalityType,
+        isSelected: Boolean,
+    ): List<SettingsFormalityModel> {
+        return list.map { if (it.formalityType == target) it.copy(isSelected = isSelected) else it }
+    }
+
+
+
+    private fun updateTense(tense: Tense, isSelected: Boolean) {
+        scope.launch {
+            repo.toggleTense(tense = tense, formalities = _state.value.formalities.filter { it.isSelected }, isSelected = isSelected)
+            _state.update {
+                it.copy(
+                    tenses = updateSingleTense(
+                        _state.value.tenses,
+                        target = tense,
+                        isSelected = isSelected,
+                    )
+                )
+            }
+        }
+    }
+
+
+    private fun updateSingleTense(
+        list: List<SettingsTenseModel>,
+        target: Tense,
+        isSelected: Boolean,
+    ): List<SettingsTenseModel> {
+        return list.map { if (it.tense == target) it.copy(isSelected = isSelected) else it }
+    }
+
 
     private fun initializeComponent() {
         scope.launch {
             val enabled = async { repo.getEnabled() }.await()
             _state.update {
                 it.copy(
-
+                    formalities = enabled.first,
+                    tenses = enabled.second
                 )
             }
         }

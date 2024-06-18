@@ -23,6 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.common.components.BottomBarIcon
+import com.jaegerapps.hansan.common.models.getResStringFromFormality
+import com.jaegerapps.hansan.common.models.getTenseResString
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon
 import com.jaegerapps.hansan.common.util.Routes
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeErrorMessage
@@ -38,6 +40,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.getString
+import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalResourceApi::class)
 @Composable
@@ -89,7 +92,6 @@ fun SettingsScreen(
             modifier = Modifier.fillMaxWidth().padding(paddingValues)
         ) {
             ItemHeader(padding, "General")
-
             ToggleItem(
                 text = "Daily Reminder",
                 isEnabled = state.enableReminders,
@@ -104,28 +106,26 @@ fun SettingsScreen(
                     onEvent(SettingsUiEvent.ChangeDailyTarget(it))
                 }
             )
-            ItemHeader(padding, "Practice")
-            ToggleItem(
-                text = "Present Tense",
-                isEnabled = state.presentTenseEnabled,
-                onClick = {
-                    onEvent(SettingsUiEvent.TogglePresentTense(it))
-                }
-            )
-            ToggleItem(
-                text = "Past Tense",
-                isEnabled = state.pastTenseEnabled,
-                onClick = {
-                    onEvent(SettingsUiEvent.TogglePastTense(it))
-                }
-            )
-            ToggleItem(
-                text = "Future Tense",
-                isEnabled = state.futureTenseEnabled,
-                onClick = {
-                    onEvent(SettingsUiEvent.ToggleFutureTense(it))
-                }
-            )
+            ItemHeader(padding, "Formalities")
+            state.formalities.forEach { formality ->
+                ToggleItem(
+                    text = stringResource(getResStringFromFormality(formality.formalityType)),
+                    isEnabled = formality.isSelected,
+                    onClick = {
+                        onEvent(SettingsUiEvent.ToggleFormality(it, formality = formality.formalityType))
+                    }
+                )
+            }
+            ItemHeader(padding, "Tenses")
+            state.tenses.forEach { tense ->
+                ToggleItem(
+                    text = stringResource(getTenseResString(tense.tense)),
+                    isEnabled = tense.isSelected,
+                    onClick = {
+                        onEvent(SettingsUiEvent.ToggleTense(it, tense = tense.tense))
+                    }
+                )
+            }
 
         }
     }
@@ -134,7 +134,7 @@ fun SettingsScreen(
 @Composable
 private fun ItemHeader(
     padding: PaddingValues,
-    text: String
+    text: String,
 ) {
     Box(
         modifier = Modifier.fillMaxWidth().background(MaterialTheme.colorScheme.tertiary)

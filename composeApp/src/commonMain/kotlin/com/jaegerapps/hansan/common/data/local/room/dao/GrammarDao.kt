@@ -13,9 +13,9 @@ interface GrammarDao {
 
     @Query("SELECT * FROM grammar WHERE selected = true")
     suspend fun getSelectedGrammar(): List<GrammarEntity>
-    @Query("UPDATE grammar SET selected = :isSelected WHERE formality = :formality")
-    suspend fun updateFormality(formality: String, isSelected: Boolean)
+    @Query("UPDATE grammar SET selected = :isSelected WHERE formality = :formality AND tense IN (:tenses)")
+    suspend fun updateFormality(formality: String, tenses: List<String>, isSelected: Boolean)
 
-    @Query("UPDATE grammar SET selected = :isSlected WHERE tense = :tense")
-    suspend fun updateTense(tense: String, isSelected: Boolean)
+    @Query("UPDATE grammar SET selected = :isSelected WHERE tense = :tense AND formality IN (:formalities)")
+    suspend fun updateTense(tense: String, formalities: List<String>, isSelected: Boolean)
 }

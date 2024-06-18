@@ -5,7 +5,6 @@ import com.jaegerapps.hansan.common.data.local.room.entity.GrammarEntity
 import com.jaegerapps.hansan.common.models.UserSettings
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.getTenseFromString
-import com.jaegerapps.hansan.common.models.stringToType
 import com.jaegerapps.hansan.common.use_case.SettingsStringUseCase
 import com.jaegerapps.hansan.common.util.SettingKeys
 import com.russhwolf.settings.Settings
@@ -50,12 +49,20 @@ class SettingsLocalDataSourceImpl(
         return settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
     }
 
-    override suspend fun toggleFormality(formality: String, isSelected: Boolean) {
-        grammarDao.updateFormality(formality, isSelected)
+    override suspend fun toggleFormality(
+        formality: String,
+        tenses: List<String>,
+        isSelected: Boolean,
+    ) {
+        grammarDao.updateFormality(formality, tenses, isSelected)
     }
 
-    override suspend fun toggleTense(tense: String, isSelected: Boolean) {
-        grammarDao.updateTense(tense, isSelected)
+    override suspend fun toggleTense(
+        tense: String,
+        formalityList: List<String>,
+        isSelected: Boolean,
+    ) {
+        grammarDao.updateTense(tense, formalityList, isSelected)
     }
 
     override suspend fun getEnabled(): List<GrammarEntity> {

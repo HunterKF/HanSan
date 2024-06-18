@@ -69,7 +69,8 @@ actual class AppModule(
     }
     actual val settingsLocalDataSource: SettingsLocalDataSource by lazy {
         SettingsLocalDataSourceImpl(
-            settings
+            settings,
+            dataBase.grammarDao()
         )
     }
     actual val settingsRepo: SettingsRepo by lazy {

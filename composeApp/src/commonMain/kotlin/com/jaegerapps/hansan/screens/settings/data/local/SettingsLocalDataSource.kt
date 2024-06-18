@@ -7,7 +7,7 @@ interface SettingsLocalDataSource {
     suspend fun getUserSettings(): UserSettings
     suspend fun enableDailyReminders(value: Boolean): Boolean
     suspend fun updateDailyTarget(value: Int): Int
-    suspend fun toggleFormality(formality: String, isSelected: Boolean)
-    suspend fun toggleTense(tense: String, isSelected: Boolean)
+    suspend fun toggleFormality(formality: String, tenses: List<String>, isSelected: Boolean)
+    suspend fun toggleTense(tense: String, formalityList: List<String>,isSelected: Boolean)
     suspend fun getEnabled(): List<GrammarEntity>
 }
