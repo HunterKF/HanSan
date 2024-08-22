@@ -8,6 +8,6 @@ class LocalSharedPrefDataSourceImpl(
     private val settings: Settings
 ): LocalSharedPrefDataSource {
     override suspend fun toggleOnboarding() {
-        settings[ONBOARDING] = false
+//        settings[ONBOARDING] = false
     }
 }

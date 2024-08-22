@@ -4,6 +4,8 @@ import com.jaegerapps.hansan.common.data.local.room.entity.TranslationEntity
 import com.jaegerapps.hansan.common.models.getFormalityFromString
 import com.jaegerapps.hansan.common.models.getTenseFromString
 import com.jaegerapps.hansan.common.data.local.room.entity.WordEntity
+import com.jaegerapps.hansan.common.models.getStringFromFormality
+import com.jaegerapps.hansan.common.models.getStringFromTense
 import com.jaegerapps.hansan.screens.practice.domain.models.PracticeTranslation
 import com.jaegerapps.hansan.screens.practice.domain.models.PracticeWordModel
 import com.jaegerapps.hansan.screens.practice.domain.models.toInt
@@ -15,8 +17,8 @@ fun PracticeWordModel.toWordEntity(): WordEntity {
         base_word = baseWord,
         conjugated_word = conjugatedWord,
         level = level.toInt(),
-        tense = tense.toString(),
-        formality = formality.toString(),
+        tense = getStringFromTense(tense),
+        formality = getStringFromFormality(formality),
         irregular = irregular,
         date_expiration = dateExpire ?: 0
     )

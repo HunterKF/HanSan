@@ -36,7 +36,6 @@ class SettingsComponent(
             object : Lifecycle.Callbacks {
                 override fun onCreate() {
                     scope.launch {
-                        val result = async { repo.getUserSettings() }.await()
                         withContext(Dispatchers.Main) {
                             /*_state.update {
                                 it.copy(
@@ -174,9 +173,12 @@ class SettingsComponent(
 
     private fun initializeComponent() {
         scope.launch {
-            val enabled = async { repo.getEnabled() }.await()
+            val enabled = async { repo.getGrammar() }.await()
+            val userSettings = async { repo.getUserSettings()}.await()
             _state.update {
                 it.copy(
+                    dailyTarget = userSettings.dailyTargetMax,
+                    enableReminders = userSettings.enableReminders,
                     formalities = enabled.first,
                     tenses = enabled.second
                 )

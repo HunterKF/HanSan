@@ -1,6 +1,9 @@
 package com.jaegerapps.hansan.di
 
 import com.jaegerapps.hansan.common.data.HanSanDataBase
+import com.jaegerapps.hansan.common.data.local.LocalSettings
+import com.jaegerapps.hansan.common.notification.KMPNotificationManager
+import com.jaegerapps.hansan.common.notification.PermissionChecker
 import com.jaegerapps.hansan.root.domain.repo.RootRepo
 import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceJson
 import com.jaegerapps.hansan.screens.loading.data.local.LoadingLocalDataSourceSettings
@@ -23,4 +26,8 @@ expect class AppModule {
     val settingsRepo: SettingsRepo
     val onboardingRepo: OnboardingRepo
     val rootRepo: RootRepo
+
+    val kmpNotificationManager: KMPNotificationManager
+    val permissionChecker: PermissionChecker
+    val localSettings: LocalSettings
 }

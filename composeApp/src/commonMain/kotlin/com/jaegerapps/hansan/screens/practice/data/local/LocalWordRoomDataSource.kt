@@ -11,4 +11,6 @@ interface LocalWordRoomDataSource {
     suspend fun getWords(tense: List<String>, formality: List<String>): List<WordEntity>
     suspend fun getTranslation(baseWordList: List<String>): List<TranslationEntity>
     suspend fun updateWord(wordEntity: WordEntity)
+    suspend fun getDailyValue(): Pair<Int, Int>
+    suspend fun updateDailyValue(value: Int): Int
 }

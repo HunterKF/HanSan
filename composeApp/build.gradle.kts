@@ -36,15 +36,18 @@ kotlin {
                 implementation(libs.compose.ui.tooling.preview)
                 implementation(libs.androidx.activity.compose)
                 implementation(libs.androidx.room.paging)
-
+                implementation(libs.androidx.core.ktx.v190)
 
                 implementation(libs.billing.ktx)
-                implementation("com.google.guava:guava:24.1-jre")
-                implementation ("com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava")
+                implementation(libs.guava)
+                implementation (libs.listenablefuture)
                 implementation(libs.androidx.lifecycle.viewmodel.compose)
                 implementation(libs.androidx.lifecycle.runtime.compose)
                 implementation(libs.androidx.lifecycle.runtime.ktx)
 
+                implementation(libs.accompanist.permissions)
+
+                implementation(libs.androidx.work.runtime.ktx)
 
             }
         }

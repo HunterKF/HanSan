@@ -84,10 +84,11 @@ fun App(
                 }
 
                 is RootComponent.Child.OnboardingScreen -> {
+                    val state = instance.component.state.collectAsState()
                     OnboardingScreen(
-                        isLoading = instance.component.loading,
+                        state = state.value,
                         onComplete = {
-                            instance.component.onNavigate()
+                            instance.component.onNext()
                         }
                     )
                 }

@@ -11,8 +11,10 @@ interface GrammarDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGrammarForm(list: List<GrammarEntity>)
 
-    @Query("SELECT * FROM grammar WHERE selected = true")
+    @Query("SELECT * FROM grammar WHERE selected = 1")
     suspend fun getSelectedGrammar(): List<GrammarEntity>
+    @Query("SELECT * FROM grammar")
+    suspend fun getAllGrammar(): List<GrammarEntity>
     @Query("UPDATE grammar SET selected = :isSelected WHERE formality = :formality AND tense IN (:tenses)")
     suspend fun updateFormality(formality: String, tenses: List<String>, isSelected: Boolean)
 

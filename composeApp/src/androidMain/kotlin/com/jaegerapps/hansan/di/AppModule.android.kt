@@ -1,10 +1,14 @@
 package com.jaegerapps.hansan.di
 
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.jaegerapps.hansan.common.data.HanSanDataBase
+import com.jaegerapps.hansan.common.data.local.LocalSettings
+import com.jaegerapps.hansan.common.notification.KMPNotificationManager
+import com.jaegerapps.hansan.common.notification.PermissionChecker
 import com.jaegerapps.hansan.root.data.repo.RootRepoImpl
 import com.jaegerapps.hansan.root.domain.repo.RootRepo
 import com.russhwolf.settings.SharedPreferencesSettings
@@ -30,8 +34,9 @@ import com.jaegerapps.hansan.screens.settings.data.repo.SettingsRepoImpl
 import com.jaegerapps.hansan.screens.settings.domain.repo.SettingsRepo
 
 actual class AppModule(
-    private val sharedPreferences: SharedPreferences,
-    private val context: Context
+   sharedPreferences: SharedPreferences,
+    private val context: Context,
+    private val activity: Activity
 
 ) {
 
@@ -50,7 +55,8 @@ actual class AppModule(
         LocalWordRoomDataSourceImpl(
             wordDao = dataBase.wordDao(),
             translationDao = dataBase.translationDao(),
-            grammarDao = dataBase.grammarDao()
+            grammarDao = dataBase.grammarDao(),
+            settings = settings
         )
     }
 
@@ -100,5 +106,14 @@ actual class AppModule(
     }
     actual val rootRepo: RootRepo by lazy {
         RootRepoImpl(settings)
+    }
+    actual val kmpNotificationManager: KMPNotificationManager by lazy {
+        KMPNotificationManager(context)
+    }
+    actual val permissionChecker: PermissionChecker by lazy {
+        PermissionChecker(activity = activity)
+    }
+    actual val localSettings: LocalSettings by lazy {
+        LocalSettings(settings)
     }
 }

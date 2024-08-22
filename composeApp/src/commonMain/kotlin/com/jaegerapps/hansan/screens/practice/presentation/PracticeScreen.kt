@@ -174,7 +174,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
 @Composable
 private fun DailyGoalsContainer(state: PracticeUiState) {
     val progress by animateFloatAsState(
-        targetValue = (state.dailyGoalMet ?: (0 + 1)) / state.dailyGoalMax.toFloat()
+        targetValue = (state.goal?.current ?: (0 + 1)) / (state.goal?.target?.toFloat() ?: 1f)
     )
     Column(
         modifier = Modifier.fillMaxWidth()
@@ -199,7 +199,7 @@ private fun DailyGoalsContainer(state: PracticeUiState) {
                 color = MaterialTheme.colorScheme.onBackground
             )
             Text(
-                text = "${state.dailyGoalMet} / ${state.dailyGoalMax}",
+                text = "${state.goal?.current} / ${state.goal?.target}",
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onBackground
             )

@@ -3,9 +3,8 @@ package com.jaegerapps.hansan.screens.settings.data.local
 import com.jaegerapps.hansan.common.data.local.room.dao.GrammarDao
 import com.jaegerapps.hansan.common.data.local.room.entity.GrammarEntity
 import com.jaegerapps.hansan.common.models.UserSettings
-import com.jaegerapps.hansan.common.models.getFormalityFromString
-import com.jaegerapps.hansan.common.models.getTenseFromString
-import com.jaegerapps.hansan.common.use_case.SettingsStringUseCase
+import com.jaegerapps.hansan.common.util.Knower
+import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.common.util.SettingKeys
 import com.russhwolf.settings.Settings
 
@@ -14,25 +13,12 @@ class SettingsLocalDataSourceImpl(
     private val grammarDao: GrammarDao,
 ) : SettingsLocalDataSource {
     override suspend fun getUserSettings(): UserSettings {
-        val enabledFormalities = SettingsStringUseCase.convertToList(
-            settings.getString(
-                SettingKeys.FORMALITIES,
-                "formal_high"
-            )
-        )
-        val enabledTenses = SettingsStringUseCase.convertToList(
-            settings.getString(
-                SettingKeys.TENSES,
-                "present_declarative"
-            )
-        )
+
 
         val enableReminders = settings.getBoolean(SettingKeys.DAILY_REMINDERS_ENABLED, false)
         val dailyTargetMet = settings.getInt(SettingKeys.DAILY_TARGET_MET, 0)
         val dailyTargetMax = settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
         return UserSettings(
-            enabledFormality = enabledFormalities.map { getFormalityFromString(it) },
-            enabledTenses = enabledTenses.map { getTenseFromString(it) },
             enableReminders = enableReminders,
             currentPracticeDone = dailyTargetMet,
             dailyTargetMax = dailyTargetMax
@@ -46,6 +32,7 @@ class SettingsLocalDataSourceImpl(
 
     override suspend fun updateDailyTarget(value: Int): Int {
         settings.putInt(SettingKeys.DAILY_TARGET_MAX, value)
+        Knower.d("SettingsLocalDataSourceImpl", "Updating the daily target. ${settings.getIntOrNull(SettingKeys.DAILY_TARGET_MAX)}")
         return settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
     }
 
@@ -64,9 +51,8 @@ class SettingsLocalDataSourceImpl(
     ) {
         grammarDao.updateTense(tense, formalityList, isSelected)
     }
-
-    override suspend fun getEnabled(): List<GrammarEntity> {
-        return grammarDao.getSelectedGrammar()
+    override suspend fun getAllGrammar(): List<GrammarEntity> {
+        return grammarDao.getAllGrammar()
     }
 
 

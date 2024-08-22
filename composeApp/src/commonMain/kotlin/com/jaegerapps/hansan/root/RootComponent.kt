@@ -150,6 +150,8 @@ class RootComponent(
                     OnboardingComponent(
                         componentContext = context,
                         onboardingRepo = appModule.onboardingRepo,
+                        kmpNotificationManager = appModule.kmpNotificationManager,
+                        permissionChecker = appModule.permissionChecker,
                         onComplete = {
                             navigation.replaceAll(Configuration.PracticeScreen)
                         }

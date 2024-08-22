@@ -17,6 +17,6 @@ interface SettingsRepo {
         isSelected: Boolean,
     )
 
-    suspend fun getEnabled(): Pair<List<SettingsFormalityModel>, List<SettingsTenseModel>>
+    suspend fun getGrammar(): Pair<List<SettingsFormalityModel>, List<SettingsTenseModel>>
 
 }

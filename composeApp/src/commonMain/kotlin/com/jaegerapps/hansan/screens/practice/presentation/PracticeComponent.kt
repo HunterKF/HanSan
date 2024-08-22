@@ -2,8 +2,6 @@ package com.jaegerapps.hansan.screens.practice.presentation
 
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.essenty.lifecycle.Lifecycle
-import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.UserSettings
 import com.jaegerapps.hansan.common.util.Knower
@@ -87,22 +85,39 @@ class PracticeComponent(
         }
         scope.launch {
             userSettings.value = async { repo.getUserSettings() }.await()
-            async {getNewWords()  }.invokeOnCompletion {
+            async { getNewWords() }.invokeOnCompletion {
                 _state.update {
                     it.copy(
-                        isLoading = false
+                        isLoading = false,
+                        goal = createDailyGoal(
+                            userSettings.value?.currentPracticeDone ?: 0,
+                            userSettings.value?.dailyTargetMax ?: 50,
+                            enabled = userSettings.value?.enableReminders ?: true
+                        )
                     )
                 }
             }
         }
     }
-    private fun updateDailyTargetMet(newValue: Int): Int {
 
-        if (newValue + 1 == _state.value.dailyGoalMax) return newValue
+    private fun createDailyGoal(current: Int, target: Int, enabled: Boolean): DailyGoal {
+        return DailyGoal(
+            current = current,
+            target = target,
+            complete = target == current,
+            enabled = enabled
+        )
+    }
+
+    private fun updateDailyTargetMet(oldValue: Int): Int {
+        //used when completing one more item towards your goal.
+        //Just adds and returns 1
+        val newValue = oldValue + 1
+        if (newValue == _state.value.goal?.target) return oldValue
         scope.launch {
             repo.updateDailyGoalMet(newValue)
         }
-        return newValue + 1
+        return newValue
 
     }
 
@@ -110,10 +125,15 @@ class PracticeComponent(
         scope.launch {
             repo.updateWord(updateWordLevelUp(word = _state.value.targetWord!!))
             removeAndSetNewTargetWord()
-            _state.update {
-                it.copy(
+            _state.update  { state ->
+                val newMetNumber = updateDailyTargetMet((state.goal?.current) ?: 0)
+
+                state.copy(
                     showAnswer = false,
-                    dailyGoalMet = updateDailyTargetMet(it.dailyGoalMet ?: 0)
+                    goal = state.goal?.copy(
+                        current = newMetNumber,
+                        complete = newMetNumber == state.goal.target
+                    )
                 )
             }
             if (_state.value.wordList.size < 5) {
@@ -126,10 +146,15 @@ class PracticeComponent(
         scope.launch {
             repo.updateWord(updateWordLevelDown(word = _state.value.targetWord!!))
             removeAndSetNewTargetWord()
-            _state.update {
-                it.copy(
+            _state.update { state ->
+                val newMetNumber = updateDailyTargetMet((state.goal?.current) ?: 0)
+
+                state.copy(
                     showAnswer = false,
-                    dailyGoalMet = updateDailyTargetMet(it.dailyGoalMet ?: 0)
+                    goal = state.goal?.copy(
+                        current = newMetNumber,
+                        complete = newMetNumber == state.goal.target
+                    )
                 )
             }
             if (_state.value.wordList.size < 5) {
@@ -184,7 +209,10 @@ class PracticeComponent(
                 }.await()
             }
             if (words.isEmpty()) {
-                Knower.d("PracticeComponent", "Words by id was empty. Attempting to get by no cursor.")
+                Knower.d(
+                    "PracticeComponent",
+                    "Words by id was empty. Attempting to get by no cursor."
+                )
                 words = async {
                     getWordsNoCursor()
                 }.await()

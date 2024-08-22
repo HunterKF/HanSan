@@ -42,8 +42,9 @@ class SettingsRepoImpl(
         )
     }
 
-    override suspend fun getEnabled(): Pair<List<SettingsFormalityModel>, List<SettingsTenseModel>> {
-        return convertGrammarEntities(local.getEnabled())
+
+    override suspend fun getGrammar(): Pair<List<SettingsFormalityModel>, List<SettingsTenseModel>> {
+        return convertGrammarEntities(local.getAllGrammar())
     }
 
 }

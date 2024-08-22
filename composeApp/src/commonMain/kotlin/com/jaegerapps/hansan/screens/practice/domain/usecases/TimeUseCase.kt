@@ -27,7 +27,7 @@ class TimeUseCase {
                 Level.LEVEL_EIGHT -> datetime.plus(84, DateTimeUnit.HOUR).toEpochSeconds()
             }
         }
-        private fun LocalDateTime.plus(value: Long, unit: DateTimeUnit.TimeBased): LocalDateTime {
+        fun LocalDateTime.plus(value: Long, unit: DateTimeUnit.TimeBased): LocalDateTime {
             val timeZone = TimeZone.currentSystemDefault()
             return this.toInstant(timeZone)
                 .plus(value, unit)

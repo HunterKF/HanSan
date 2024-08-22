@@ -34,4 +34,12 @@
 
     <string name="daily_task">Daily goal</string>
 
+
+    <string name="onboarding_welcome_title">Welcome</string>
+    <string name="onboarding_notifications_title">Set your goal</string>
+    <string name="onboarding_complete_title">All done</string>
+    <string name="onboarding_welcome_message">Level up your Korean abilities with HanSan! Practice and learn conjugation.</string>
+    <string name="onboarding_notifications_message">HanSan will help you keep on track with reminders working towards your daily goal.</string>
+    <string name="onboarding_complete_message">Enjoy your studies!</string>
+
 </resources>

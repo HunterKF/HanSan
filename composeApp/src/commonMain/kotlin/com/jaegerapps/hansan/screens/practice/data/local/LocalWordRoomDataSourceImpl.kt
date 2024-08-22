@@ -6,11 +6,15 @@ import com.jaegerapps.hansan.common.data.local.room.dao.WordDao
 import com.jaegerapps.hansan.common.data.local.room.entity.GrammarEntity
 import com.jaegerapps.hansan.common.data.local.room.entity.TranslationEntity
 import com.jaegerapps.hansan.common.data.local.room.entity.WordEntity
+import com.jaegerapps.hansan.common.util.SettingKeys
+import com.russhwolf.settings.Settings
+import com.russhwolf.settings.set
 
 class LocalWordRoomDataSourceImpl(
     private val wordDao: WordDao,
     private val translationDao: TranslationDao,
-    private val grammarDao: GrammarDao
+    private val grammarDao: GrammarDao,
+    private val settings: Settings,
 ) : LocalWordRoomDataSource {
 
     override suspend fun getGrammar(): List<GrammarEntity> {
@@ -45,6 +49,22 @@ class LocalWordRoomDataSourceImpl(
 
     override suspend fun updateWord(wordEntity: WordEntity) {
         wordDao.updateWord(wordEntity)
+    }
+
+    override suspend fun getDailyValue(): Pair<Int, Int> {
+        return Pair(
+            settings.getInt(SettingKeys.DAILY_TARGET_MET, 0),
+            settings.getInt(SettingKeys.DAILY_TARGET_MAX, 50)
+        )
+    }
+
+    override suspend fun updateDailyValue(value: Int): Int {
+        try {
+            settings[SettingKeys.DAILY_TARGET_MET] = value
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return value
     }
 
 }

@@ -48,6 +48,11 @@ import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.compone
 import com.jaegerapps.hansan.screens.learn.presentation.components.LearnTense
 import com.jaegerapps.hansan.screens.learn.presentation.components.TenseHeader
 import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseScreen
+import com.jaegerapps.hansan.screens.onboarding.presentation.OnboardingScreen
+import com.jaegerapps.hansan.screens.onboarding.presentation.OnboardingUiState
+import com.jaegerapps.hansan.screens.onboarding.presentation.components.ImageContainer
+import com.jaegerapps.hansan.screens.onboarding.presentation.components.MessageContainer
+import com.jaegerapps.hansan.screens.onboarding.presentation.components.OnboardingScreens
 import com.jaegerapps.hansan.screens.practice.domain.models.AnswerResponse
 import com.jaegerapps.hansan.screens.practice.domain.models.Level
 import com.jaegerapps.hansan.screens.practice.domain.models.PracticeTranslation
@@ -64,6 +69,7 @@ import com.jaegerapps.hansan.screens.settings.presentation.SettingsUiState
 import com.jaegerapps.hansan.screens.settings.presentation.components.InputItem
 import com.jaegerapps.hansan.screens.settings.presentation.components.ToggleItem
 import com.jaegerapps.hansan.screens.words.word_individual.component.ExamineWordContainer
+import hansan.composeapp.generated.resources._785_generated_transparent
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringResource
 
@@ -803,5 +809,53 @@ private fun Preview_FormalityContainer() {
                 formalityType = FormalityType.INFORMAL_LOW,
             )
         }
+    }
+}
+
+@OptIn(ExperimentalResourceApi::class)
+@Preview
+@Composable
+private fun Preview_ImageContainer() {
+    HanSanTheme(true) {
+        Column {
+            ImageContainer(
+                drawableResource = Res.drawable._785_generated_transparent
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview_MessageContainer() {
+    HanSanTheme(true) {
+        MessageContainer(
+            modifier = Modifier.fillMaxWidth(),
+            title = "Title",
+            message = "Hello this is my message I am currently at a cafe and I am wondering how long I can physically be here before someone notices I am gone."
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun Preview_OnboardingScreen() {
+    var screen: OnboardingScreens by remember {
+        mutableStateOf(OnboardingScreens.WELCOME_SCREEN)
+    }
+    HanSanTheme(true) {
+        OnboardingScreen(
+            state = OnboardingUiState(
+                currentScreen = screen
+            ),
+            onComplete = {
+                println("HERRO")
+                screen = when (screen) {
+                    OnboardingScreens.WELCOME_SCREEN -> OnboardingScreens.REMINDER_SCREEN
+                    OnboardingScreens.REMINDER_SCREEN -> OnboardingScreens.COMPLETE_SCREEN
+                    OnboardingScreens.COMPLETE_SCREEN -> OnboardingScreens.WELCOME_SCREEN
+                }
+            }
+        )
     }
 }

@@ -24,11 +24,17 @@ data class PracticeUiState(
     val enabledFormalities: List<FormalityType> = emptyList(),
     val wordList: List<PracticeWordModel> = emptyList(),
     //Use to track the user's goals.
-    val dailyGoalMax: Int = 50,
-    val dailyGoalMet: Int? = null,
+    val goal: DailyGoal? = null,
     //tbh we probably won't get errors unless room throws an error. I should add error handling to it.
     val errorMessage: PracticeErrorMessage? = null,
     val isLoading: Boolean = false
+)
+
+data class DailyGoal(
+    val current: Int,
+    val target: Int,
+    val complete: Boolean,
+    val enabled: Boolean
 )
 enum class PracticeErrorMessage {
     NOT_KOREAN,
