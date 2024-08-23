@@ -18,7 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jaegerapps.hansan.common.components.BottomBarIcon
+import com.jaegerapps.hansan.screens.BottomBarIcon
 import com.jaegerapps.hansan.common.models.ModifierType
 import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.models.typeToStringResource

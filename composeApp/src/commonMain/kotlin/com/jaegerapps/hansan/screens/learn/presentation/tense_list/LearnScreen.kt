@@ -24,7 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jaegerapps.hansan.common.components.BottomBarIcon
+import com.jaegerapps.hansan.screens.BottomBarIcon
 import com.jaegerapps.hansan.common.models.FormalityType
 import com.jaegerapps.hansan.common.models.Tense
 import com.jaegerapps.hansan.common.models.getResStringFromFormality

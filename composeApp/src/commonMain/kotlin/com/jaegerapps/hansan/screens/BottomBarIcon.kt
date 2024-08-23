@@ -1,4 +1,4 @@
-package com.jaegerapps.hansan.common.components
+package com.jaegerapps.hansan.screens
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
@@ -32,7 +32,7 @@ fun BottomBarIcon(
     onClick: () -> Unit,
 ) {
     val color by animateColorAsState(
-        if (selected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.tertiary,
+        if (selected) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
         tween(200)
     )
     Column(

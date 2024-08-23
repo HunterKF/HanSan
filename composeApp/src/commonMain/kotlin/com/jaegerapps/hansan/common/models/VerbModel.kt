@@ -6,7 +6,6 @@ import com.jaegerapps.hansan.screens.practice.domain.models.Level
 data class VerbModel(
     val baseWord: String,
     val definitionTranslations: List<DefinitionTranslation>,
-//    val type: ModifierType,
     val formalities: Formalities,
 )
 

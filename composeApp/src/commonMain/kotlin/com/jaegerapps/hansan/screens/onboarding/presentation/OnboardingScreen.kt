@@ -35,9 +35,6 @@ fun OnboardingScreen(state: OnboardingUiState, onComplete: () -> Unit) {
         modifier = Modifier.fillMaxSize().padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = state.currentScreen.toString()
-        )
         ImageContainer(
             modifier = Modifier.weight(1f),
             drawableResource = OnboardingStrings.getImage(state.currentScreen)

@@ -13,6 +13,8 @@ import com.jaegerapps.hansan.screens.loading.presentation.LoadingScreen
 import com.jaegerapps.hansan.screens.onboarding.presentation.OnboardingScreen
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeScreen
 import com.jaegerapps.hansan.screens.settings.presentation.SettingsScreen
+import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordScreen
+import com.jaegerapps.hansan.screens.words.word_individual.IndividualWordUiEvent
 import com.jaegerapps.hansan.screens.words.word_list.presentation.WordsScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -57,13 +59,12 @@ fun App(
                 }
 
                 is RootComponent.Child.IndividualWordScreen -> {
-                    Text("Individual word screen")
-                    /*val wordState = instance.component.state
+                    val wordState = instance.component.state
                     IndividualWordScreen(wordState, onNavigate = {
                         instance.component.onEvent(
                             IndividualWordUiEvent.OnNavigateBack
                         )
-                    })*/
+                    })
                 }
 
                 is RootComponent.Child.SettingsScreen -> {

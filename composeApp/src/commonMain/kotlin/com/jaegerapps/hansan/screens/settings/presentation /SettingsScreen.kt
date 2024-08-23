@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -22,21 +24,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jaegerapps.hansan.common.components.BottomBarIcon
+import com.jaegerapps.hansan.screens.BottomBarIcon
 import com.jaegerapps.hansan.common.models.getResStringFromFormality
 import com.jaegerapps.hansan.common.models.getTenseResString
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon
 import com.jaegerapps.hansan.common.util.Routes
-import com.jaegerapps.hansan.screens.practice.presentation.PracticeErrorMessage
-import com.jaegerapps.hansan.screens.practice.presentation.PracticeUiEvent
 import com.jaegerapps.hansan.screens.settings.presentation.components.InputItem
 import com.jaegerapps.hansan.screens.settings.presentation.components.ToggleItem
 import hansan.composeapp.generated.resources.Res
-import hansan.composeapp.generated.resources.error_answer_blank
 import hansan.composeapp.generated.resources.error_daily_goal_blank
-import hansan.composeapp.generated.resources.error_not_korean
 import hansan.composeapp.generated.resources.error_tense_blank
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.getString
@@ -72,7 +69,7 @@ fun SettingsScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
             BottomAppBar(
-                containerColor = MaterialTheme.colorScheme.background
+                containerColor = MaterialTheme.colorScheme.surfaceContainer
             ) {
                 BottomBarRouteIcon.routeList.forEach {
                     BottomBarIcon(
@@ -88,8 +85,9 @@ fun SettingsScreen(
             }
         },
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
         Column(
-            modifier = Modifier.fillMaxWidth().padding(paddingValues)
+            modifier = Modifier.fillMaxWidth().padding(paddingValues).verticalScroll(scrollState)
         ) {
             ItemHeader(padding, "General")
             ToggleItem(
@@ -112,7 +110,12 @@ fun SettingsScreen(
                     text = stringResource(getResStringFromFormality(formality.formalityType)),
                     isEnabled = formality.isSelected,
                     onClick = {
-                        onEvent(SettingsUiEvent.ToggleFormality(it, formality = formality.formalityType))
+                        onEvent(
+                            SettingsUiEvent.ToggleFormality(
+                                it,
+                                formality = formality.formalityType
+                            )
+                        )
                     }
                 )
             }

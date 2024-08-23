@@ -48,24 +48,24 @@ fun FormalityContainerDto.toFormality(type: FormalityType): Formality {
     return Formality(
         type = type,
         conjugation = listOf(
-            this.conjugations.present.toWord(type),
-            this.conjugations.past.toWord(type),
-            this.conjugations.future.toWord(type)
+            this.conjugations.present.toWord(Tense.PRESENT_DECLARATIVE, type),
+            this.conjugations.past.toWord(Tense.PAST_DECLARATIVE, type),
+            this.conjugations.future.toWord(Tense.FUTURE_DECLARATIVE, type)
         )
     )
 }
 
 
-fun PresentDto.toWord(type: FormalityType): Word {
-    return declarative.toWord(Tense.PRESENT_DECLARATIVE, type)
+fun PresentDto.toWord(tense: Tense, type: FormalityType): Word {
+    return declarative.toWord(tense, type)
 }
 
-fun PastDto.toWord(type: FormalityType): Word {
-    return declarative.toWord(Tense.PRESENT_DECLARATIVE, type)
+fun PastDto.toWord(tense: Tense,type: FormalityType): Word {
+    return declarative.toWord(tense, type)
 }
 
-fun FutureDto.toWord(type: FormalityType): Word {
-    return declarative.toWord(Tense.PRESENT_DECLARATIVE, type)
+fun FutureDto.toWord(tense: Tense,type: FormalityType): Word {
+    return declarative.toWord(tense, type)
 }
 
 fun WordDto.toWord(tense: Tense, formality: FormalityType): Word {

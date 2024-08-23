@@ -1,5 +1,7 @@
 package com.jaegerapps.hansan.screens.practice.domain.usecases
 
+import com.jaegerapps.hansan.common.util.Knower
+import com.jaegerapps.hansan.common.util.Knower.d
 import com.jaegerapps.hansan.screens.practice.data.local.LocalWordRoomDataSource
 import com.jaegerapps.hansan.screens.practice.domain.mappers.toPracticeTranslation
 import com.jaegerapps.hansan.screens.practice.domain.mappers.toPracticeWordModel
@@ -12,9 +14,14 @@ class GetWordsByTimeUseCase(
 
         val words = roomDataSource.getWordsByTime(time, tense, formality)
         val translations =
-            roomDataSource.getTranslation(words.map { it.conjugated_word }).groupBy { it.reference_word }
-        return words
-            .map { word -> word.toPracticeWordModel(translations[word.conjugated_word]?.map { it.toPracticeTranslation() }) }
+            roomDataSource.getTranslation(words.map { it.base_word }).groupBy { it.reference_word }
+        Knower.d("GetWordsByTimeUseCase", "Here are the translations: $translations")
+
+        val mappedWithTranslations = words
+            .map { word -> word.toPracticeWordModel(translations[word.base_word]?.map { it.toPracticeTranslation() }) }
+        Knower.d("GetWordsByTimeUseCase", "Here are the mappedWithTranslations: $translations")
+
+        return mappedWithTranslations
 
     }
 }

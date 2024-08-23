@@ -43,6 +43,9 @@ class RootComponent(
     init {
         scope.launch {
             showOnboarding.value = async { appModule.rootRepo.getOnboarding() }.await()
+            state.update { it.copy(
+                words = async { appModule.rootRepo.loadWords() }.await()
+            ) }
         }
     }
 
@@ -153,6 +156,9 @@ class RootComponent(
                         kmpNotificationManager = appModule.kmpNotificationManager,
                         permissionChecker = appModule.permissionChecker,
                         onComplete = {
+                            scope.launch(Dispatchers.IO) {
+                                appModule.rootRepo.toggleOnboarding()
+                            }
                             navigation.replaceAll(Configuration.PracticeScreen)
                         }
                     )

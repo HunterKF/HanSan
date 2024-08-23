@@ -14,9 +14,11 @@ class GetWordsByIdUseCase(
 
         val words = roomDataSource.getWordsById(id, tense, formality)
         val translations =
-            roomDataSource.getTranslation(words.map { it.conjugated_word }).groupBy { it.reference_word }
-        Knower.d("GetWordsByIdUseCase", "Here are the words found by id. ${words}")
-        return words.map { wordEntity -> wordEntity.toPracticeWordModel(translations[wordEntity.conjugated_word]?.map { it.toPracticeTranslation() }) }
+            roomDataSource.getTranslation(words.map { it.base_word }).groupBy { it.reference_word }
+
+        val mappedWords = words.map { wordEntity -> wordEntity.toPracticeWordModel(translations[wordEntity.base_word]?.map { it.toPracticeTranslation() }) }
+
+        return mappedWords
 
     }
 }

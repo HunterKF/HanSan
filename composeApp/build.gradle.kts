@@ -136,5 +136,6 @@ room {
 dependencies {
     implementation("androidx.core:core:1.13.1")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    testImplementation("org.testng:testng:6.9.6")
     ksp(libs.androidx.room.compiler)
 }

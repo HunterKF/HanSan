@@ -25,6 +25,7 @@ fun PracticeWordModel.toWordEntity(): WordEntity {
 }
 
 fun WordEntity.toPracticeWordModel(translations: List<PracticeTranslation>?): PracticeWordModel {
+
     return PracticeWordModel(
         id = id,
         baseWord = base_word,

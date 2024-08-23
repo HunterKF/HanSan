@@ -25,7 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.jaegerapps.hansan.common.components.BottomBarIcon
+import com.jaegerapps.hansan.screens.BottomBarIcon
 import com.jaegerapps.hansan.common.models.DefinitionTranslation
 import com.jaegerapps.hansan.common.models.Formalities
 import com.jaegerapps.hansan.common.models.Formality
@@ -347,13 +347,22 @@ fun Preview_BottomBarIcon() {
 
 @Preview
 @Composable
-fun Preview_PracticeScreen() {
-    val state = PracticeUiState(
-        targetWord = hadaWordModel,
-        targetTense = tenseModel.tense,
-    )
+fun Preview_PracticeScreenLight() {
+    var state = remember {
+        mutableStateOf(
+            PracticeUiState(
+                targetWord = hadaWordModel,
+                targetTense = tenseModel.tense,
+                targetFormalityType = FormalityType.FORMAL_HIGH
+            )
+        )
+    }
+    var expanded by remember { mutableStateOf(false) }
     HanSanTheme(false) {
-        PracticeScreen(state, {})
+        PracticeScreen(state.value) {
+            expanded = !expanded
+
+        }
     }
 }
 
@@ -382,6 +391,7 @@ fun Preview_PracticeScreenDark() {
             PracticeUiState(
                 targetWord = hadaWordModel,
                 targetTense = tenseModel.tense,
+                targetFormalityType = FormalityType.FORMAL_HIGH
             )
         )
     }

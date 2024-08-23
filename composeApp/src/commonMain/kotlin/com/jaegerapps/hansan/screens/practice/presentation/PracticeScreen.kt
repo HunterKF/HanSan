@@ -1,8 +1,6 @@
 package com.jaegerapps.hansan.screens.practice.presentation
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,12 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -33,12 +27,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.unit.dp
-import com.jaegerapps.hansan.common.components.BottomBarIcon
+import com.jaegerapps.hansan.screens.BottomBarIcon
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon.Companion.routeList
 import com.jaegerapps.hansan.common.util.Routes
+import com.jaegerapps.hansan.common.util.getTranslation
 import com.jaegerapps.hansan.screens.practice.presentation.components.AnswerCard
 import com.jaegerapps.hansan.screens.practice.presentation.components.WordContainer
 import hansan.composeapp.generated.resources.Res
@@ -87,7 +81,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
         },
         bottomBar = {
             BottomAppBar(
-                containerColor = MaterialTheme.colorScheme.background
+                containerColor = MaterialTheme.colorScheme.surfaceContainer
             ) {
                 routeList.forEach {
                     BottomBarIcon(
@@ -118,15 +112,13 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                     modifier = Modifier.fillMaxWidth().weight(0.7f),
                     contentAlignment = Alignment.Center
                 ) {
-                    if (state.isLoading) {
+                    if (state.isLoading || state.targetWord == null) {
                         CircularProgressIndicator()
                     } else {
-
                         WordContainer(
                             modifier = Modifier.fillMaxWidth(),
-                            word = state.targetWord?.baseWord ?: "고장",
-                            definition = state.targetWord?.translations?.firstOrNull()?.translation
-                                ?: "error",
+                            word = state.targetWord.baseWord ?: "고장",
+                            definition = state.targetWord.translations.let { getTranslation(it) } ?: "error",
                         )
                     }
                 }
@@ -151,7 +143,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                 }
                 //This will eventually be used to click and display the word and all of the bases for it.
                 //Basically a pop up with the words by tenses.
-                Box(
+                /*Box(
                     modifier = Modifier.background(MaterialTheme.colorScheme.surfaceContainer)
                         .clip(RoundedCornerShape(25.dp))
                         .padding(12.dp).clickable {
@@ -162,7 +154,7 @@ fun PracticeScreen(state: PracticeUiState, onEvent: (PracticeUiEvent) -> Unit) {
                         imageVector = Icons.Rounded.Clear,
                         contentDescription = null
                     )
-                }
+                }*/
             }
 
         }
