@@ -1,8 +1,7 @@
 package com.jaegerapps.hansan.screens.practice.presentation
 
 import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.Tense
-import com.jaegerapps.hansan.common.models.TenseModel
+import com.jaegerapps.hansan.common.models.DetailedTense
 import com.jaegerapps.hansan.screens.practice.domain.models.PracticeWordModel
 
 data class PracticeUiState(
@@ -13,14 +12,14 @@ data class PracticeUiState(
     //Target word is the current word on the screen
     val targetWord: PracticeWordModel? = null,
     //Target tense will be displayed above the word, showing what the user should be practicing.
-    val targetTense: Tense? = null,
+    val targetTense: DetailedTense? = null,
     //Displays which formality the target word is in
     val targetFormalityType: FormalityType? = null,
     //Shows the answer to the user
     val showAnswer: Boolean = false,
     //On launch, we check what tenses we have, this isn't used yet tbh
     /*TODO - Adjust Usecases to take in a tense.*/
-    val enabledTenses: List<Tense> = emptyList(),
+    val enabledTenses: List<DetailedTense> = emptyList(),
     val enabledFormalities: List<FormalityType> = emptyList(),
     val wordList: List<PracticeWordModel> = emptyList(),
     //Use to track the user's goals.

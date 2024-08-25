@@ -13,6 +13,7 @@
     <string name="tense_header_present">Present</string>
     <string name="tense_header_past">Past</string>
     <string name="tense_header_future">Future</string>
+    <string name="tense_header_other">Other</string>
 
     <string name="formality_formal_high">Formal High</string>
     <string name="formality_formal_low">Formal Low</string>
@@ -31,9 +32,7 @@
     <string name="error_tense_blank">At least one tense must be selected.</string>
     <string name="error_daily_goal_blank">Daily goal can't be blank.</string>
 
-
     <string name="daily_task">Daily goal</string>
-
 
     <string name="onboarding_welcome_title">Welcome</string>
     <string name="onboarding_notifications_title">Set your goal</string>
@@ -41,5 +40,22 @@
     <string name="onboarding_welcome_message">Level up your Korean abilities with HanSan! Practice and learn conjugation.</string>
     <string name="onboarding_notifications_message">HanSan will help you keep on track with reminders working towards your daily goal.</string>
     <string name="onboarding_complete_message">Enjoy your studies!</string>
+
+
+    <string name="tense_present_declarative">Present Declarative</string>
+    <string name="tense_present_progressive">Present Progressive</string>
+
+    <string name="tense_past_declarative">Past Declarative</string>
+    <string name="tense_past_progressive">Past Progressive</string>
+    <string name="tense_future_declarative">Future Declarative</string>
+    <string name="tense_future_progressive">Future Progressive</string>
+
+    <string name="tense_propositive">Propositive</string>
+    <string name="tense_imperative">Imperative</string>
+    <string name="tense_permission">Permission</string>
+    <string name="tense_prohibition">Prohibition</string>
+    <string name="tense_desire">Desire</string>
+    <string name="tense_necessity">Necessity</string>
+    <string name="tense_potential">Potential</string>
 
 </resources>

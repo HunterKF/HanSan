@@ -2,7 +2,7 @@ package com.jaegerapps.hansan.screens.learn.presentation.tense_list
 
 import com.arkivanov.decompose.ComponentContext
 import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.common.models.DetailedTense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.screens.learn.presentation.components.TenseHeader
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,28 +50,62 @@ class TensesComponent(
         hashMap[TenseHeader.PRESENT] = filterPresent(tenses)
         hashMap[TenseHeader.PAST] = filterPast(tenses)
         hashMap[TenseHeader.FUTURE] = filterFuture(tenses)
+        hashMap[TenseHeader.OTHER] = filterOther(tenses)
         return hashMap
     }
 
     private fun filterPresent(tenses: List<TenseModel>): List<TenseModel> {
         return tenses.filter {
-            it.tense == Tense.PRESENT_DECLARATIVE ||
-                    it.tense == Tense.PRESENT_DECLARATIVE_INQUISITIVE ||
-                    it.tense == Tense.PRESENT_DECLARATIVE_NARRATIVE ||
-                    it.tense == Tense.PRESENT_DECLARATIVE_SUGGESTIVE
+            it.detailedTense == DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH ||
+                    it.detailedTense == DetailedTense.PRESENT_DECLARATIVE_INFORMAL ||
+                    it.detailedTense == DetailedTense.PRESENT_DECLARATIVE_FORMAL_LOW ||
+                    it.detailedTense == DetailedTense.PRESENT_PROGRESSIVE_FORMAL_LOW ||
+                    it.detailedTense == DetailedTense.PRESENT_PROGRESSIVE_FORMAL_HIGH ||
+                    it.detailedTense == DetailedTense.PRESENT_PROGRESSIVE_INFORMAL_LOW
         }
     }
 
     private fun filterPast(tenses: List<TenseModel>): List<TenseModel> {
         return tenses.filter {
-            it.tense == Tense.PAST_DECLARATIVE
+            it.detailedTense == DetailedTense.PAST_DECLARATIVE_FORMAL_HIGH ||
+            it.detailedTense == DetailedTense.PAST_DECLARATIVE_FORMAL_LOW ||
+            it.detailedTense == DetailedTense.PAST_DECLARATIVE_INFORMAL ||
+            it.detailedTense == DetailedTense.PAST_PROGRESSIVE_FORMAL_LOW ||
+            it.detailedTense == DetailedTense.PAST_PROGRESSIVE_FORMAL_HIGH ||
+            it.detailedTense == DetailedTense.PAST_PROGRESSIVE_INFORMAL
         }
     }
 
     private fun filterFuture(tenses: List<TenseModel>): List<TenseModel> {
         return tenses.filter {
-            it.tense == Tense.FUTURE_DECLARATIVE ||
-                    it.tense == Tense.FUTURE_DECLARATIVE_FIRST_PERSON
+            it.detailedTense == DetailedTense.FUTURE_DECLARATIVE_FORMAL_HIGH ||
+                    it.detailedTense == DetailedTense.FUTURE_DECLARATIVE_FORMAL_LOW||
+                    it.detailedTense == DetailedTense.FUTURE_DECLARATIVE_INFORMAL||
+                    it.detailedTense == DetailedTense.FUTURE_PROGRESSIVE_FORMAL_HIGH||
+                    it.detailedTense == DetailedTense.FUTURE_PROGRESSIVE_FORMAL_LOW||
+                    it.detailedTense == DetailedTense.FUTURE_PROGRESSIVE_INFORMAL
+        }
+    }
+    private fun filterOther(tenses: List<TenseModel>): List<TenseModel> {
+        return tenses.filter {
+            it.detailedTense == DetailedTense.OTHER_IMPERATIVE_FORMAL_HIGH ||
+            it.detailedTense == DetailedTense.OTHER_IMPERATIVE_FORMAL_LOW
+            it.detailedTense == DetailedTense.OTHER_IMPERATIVE_INFORMAL_LOW ||
+            it.detailedTense == DetailedTense.OTHER_PERMISSION_FORMAL_HIGH ||
+            it.detailedTense == DetailedTense.OTHER_PERMISSION_FORMAL_LOW ||
+            it.detailedTense == DetailedTense.OTHER_PERMISSION_INFORMAL_LOW ||
+            it.detailedTense == DetailedTense.OTHER_PROHIBITION_FORMAL_HIGH ||
+            it.detailedTense == DetailedTense.OTHER_PROHIBITION_FORMAL_LOW ||
+            it.detailedTense == DetailedTense.OTHER_PROHIBITION_INFORMAL_LOW ||
+            it.detailedTense == DetailedTense.OTHER_DESIRE_FORMAL_HIGH ||
+            it.detailedTense == DetailedTense.OTHER_DESIRE_FORMAL_LOW ||
+            it.detailedTense == DetailedTense.OTHER_DESIRE_INFORMAL_LOW ||
+            it.detailedTense == DetailedTense.OTHER_NECESSITY_FORMAL_HIGH ||
+            it.detailedTense == DetailedTense.OTHER_NECESSITY_FORMAL_LOW ||
+            it.detailedTense == DetailedTense.OTHER_NECESSITY_INFORMAL_LOW ||
+            it.detailedTense == DetailedTense.OTHER_POTENTIAL_FORMAL_HIGH ||
+            it.detailedTense == DetailedTense.OTHER_POTENTIAL_FORMAL_LOW ||
+            it.detailedTense == DetailedTense.OTHER_POTENTIAL_INFORMAL_LOW
         }
     }
 }

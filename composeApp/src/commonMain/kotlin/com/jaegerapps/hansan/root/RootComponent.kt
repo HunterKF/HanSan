@@ -15,7 +15,6 @@ import com.jaegerapps.hansan.common.util.Routes
 import com.jaegerapps.hansan.di.AppModule
 import com.jaegerapps.hansan.screens.learn.presentation.individual_tense.IndividualTenseComponent
 import com.jaegerapps.hansan.screens.learn.presentation.tense_list.TensesComponent
-import com.jaegerapps.hansan.screens.loading.presentation.LoadingComponent
 import com.jaegerapps.hansan.screens.onboarding.presentation.OnboardingComponent
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeComponent
 import com.jaegerapps.hansan.screens.settings.presentation.SettingsComponent
@@ -139,7 +138,7 @@ class RootComponent(
             is Configuration.IndividualTenseScreen -> {
                 Child.IndividualTenseScreen(
                     IndividualTenseComponent(
-                        currentTense = state.value.tenses.first { it.tense.name == config.tense },
+                        currentTense = state.value.tenses.first { it.detailedTense.name == config.tense },
                         componentContext = context,
                         onNavigate = {
                             navigation.pop()

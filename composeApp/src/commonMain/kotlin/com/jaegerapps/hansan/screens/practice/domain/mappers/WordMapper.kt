@@ -2,7 +2,7 @@ package com.jaegerapps.hansan.screens.practice.domain.mappers
 
 import com.jaegerapps.hansan.common.data.local.room.entity.TranslationEntity
 import com.jaegerapps.hansan.common.models.getFormalityFromString
-import com.jaegerapps.hansan.common.models.getTenseFromString
+import com.jaegerapps.hansan.common.models.getDetailedTenseFromString
 import com.jaegerapps.hansan.common.data.local.room.entity.WordEntity
 import com.jaegerapps.hansan.common.models.getStringFromFormality
 import com.jaegerapps.hansan.common.models.getStringFromTense
@@ -17,7 +17,7 @@ fun PracticeWordModel.toWordEntity(): WordEntity {
         base_word = baseWord,
         conjugated_word = conjugatedWord,
         level = level.toInt(),
-        tense = getStringFromTense(tense),
+        tense = getStringFromTense(detailedTense),
         formality = getStringFromFormality(formality),
         irregular = irregular,
         date_expiration = dateExpire ?: 0
@@ -32,7 +32,7 @@ fun WordEntity.toPracticeWordModel(translations: List<PracticeTranslation>?): Pr
         translations = translations ?: emptyList(),
         level = level.toLevel(),
         dateExpire = date_expiration,
-        tense = getTenseFromString(tense),
+        detailedTense = getDetailedTenseFromString(tense),
         formality = getFormalityFromString(formality),
         conjugatedWord = conjugated_word,
         irregular = irregular

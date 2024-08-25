@@ -39,7 +39,7 @@ fun LearnTense(
         ) {
 
             Text(
-                text = stringResource(getTenseResString(tenseModel.tense)),
+                text = stringResource(getTenseResString(tenseModel.detailedTense)),
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(

@@ -2,21 +2,29 @@ package com.jaegerapps.hansan.screens.words.word_individual
 
 import androidx.compose.runtime.mutableStateOf
 import com.arkivanov.decompose.ComponentContext
-import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.common.models.Category
+import com.jaegerapps.hansan.common.models.DetailedTense
 import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.models.Word
+import com.jaegerapps.hansan.common.util.Knower
+import com.jaegerapps.hansan.common.util.Knower.d
+import com.jaegerapps.hansan.screens.words.word_individual.domain.use_case.FilterTenseUseCase
 
 class IndividualWordComponent(
     currentWord: VerbModel,
     private val onNavigate: () -> Unit,
     componentContext: ComponentContext,
 ) : ComponentContext by componentContext {
+    init {
+        Knower.d("IndividualWordComponent", "Here is the current word: $currentWord")
+    }
     private val _state = mutableStateOf(
         IndividualWordUiState(
             currentWord = currentWord,
-            present = filterTense(currentWord, tense = Tense.PRESENT_DECLARATIVE),
-            past = filterTense(currentWord, tense = Tense.PAST_DECLARATIVE),
-            future = filterTense(currentWord, tense = Tense.FUTURE_DECLARATIVE)
+            present = FilterTenseUseCase.filterTense(currentWord, Category.PRESENT),
+            past = FilterTenseUseCase.filterTense(currentWord, Category.PAST),
+            future = FilterTenseUseCase.filterTense(currentWord, Category.FUTURE),
+            other = FilterTenseUseCase.filterTense(currentWord, Category.OTHER)
         )
     )
     val state = _state.value
@@ -29,11 +37,5 @@ class IndividualWordComponent(
         }
     }
 
-    private fun filterTense(currentWord: VerbModel, tense: Tense): List<Word> {
-        var pairList = emptyList<Word>()
-        pairList = pairList.plus(currentWord.formalities.formalHigh.conjugation.filter { it.tense == tense })
-        pairList = pairList.plus(currentWord.formalities.formalLow.conjugation.filter { it.tense == tense })
-        pairList = pairList.plus(currentWord.formalities.informalLow.conjugation.filter { it.tense == tense })
-        return pairList
-    }
+
 }

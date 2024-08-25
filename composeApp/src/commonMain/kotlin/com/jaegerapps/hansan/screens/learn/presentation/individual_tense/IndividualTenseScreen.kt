@@ -58,7 +58,7 @@ fun IndividualTenseScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = stringResource(getTenseResString(state.tense)),
+                        text = stringResource(getTenseResString(state.detailedTense)),
                         style = MaterialTheme.typography.displayMedium.copy(
                             color = MaterialTheme.colorScheme.onTertiary
                         )

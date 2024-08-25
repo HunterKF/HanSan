@@ -24,7 +24,7 @@ class LocalRoomDataSourceImpl(
     }
 
     override suspend fun addTranslations(translationList: List<TranslationEntity>) {
-        Knower.d("addWords", "Translations are being entered. Here is the list: $translationList")
+        Knower.d("addTranslations", "Translations are being entered. Here is the list: $translationList")
         translationDao.insertTranslationList(translationList)
     }
 

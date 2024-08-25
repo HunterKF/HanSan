@@ -26,7 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.jaegerapps.hansan.screens.BottomBarIcon
 import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.common.models.DetailedTense
 import com.jaegerapps.hansan.common.models.getResStringFromFormality
 import com.jaegerapps.hansan.common.util.BottomBarRouteIcon
 import com.jaegerapps.hansan.common.util.Routes
@@ -83,7 +83,7 @@ fun LearnScreen(
                     )
                 }
             }
-            var expanded: Tense? by remember { mutableStateOf(null) }
+            var expanded: DetailedTense? by remember { mutableStateOf(null) }
             Spacer(Modifier.height(12.dp))
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
@@ -99,9 +99,9 @@ fun LearnScreen(
                         state.tensesShow[tense]?.forEach {
                             LearnTense(
                                 tenseModel = it,
-                                expanded = it.tense == expanded,
+                                expanded = it.detailedTense == expanded,
                                 onClick = {
-                                    onEvent(LearnUiEvent.OnNavigateToTense(tense = it.tense.name))
+                                    onEvent(LearnUiEvent.OnNavigateToTense(tense = it.detailedTense.name))
                                 }
                             )
                             /*if (state.tensesShow.lastIndex != index) {

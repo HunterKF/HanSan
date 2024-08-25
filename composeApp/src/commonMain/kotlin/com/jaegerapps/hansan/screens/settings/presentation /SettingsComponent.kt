@@ -3,7 +3,7 @@ package com.jaegerapps.hansan.screens.settings.presentation
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.lifecycle.Lifecycle
 import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.common.models.DetailedTense
 import com.jaegerapps.hansan.screens.settings.domain.models.SettingsFormalityModel
 import com.jaegerapps.hansan.screens.settings.domain.models.SettingsTenseModel
 import com.jaegerapps.hansan.screens.settings.domain.repo.SettingsRepo
@@ -109,7 +109,7 @@ class SettingsComponent(
                     _state.update { it.copy(errorMessage = SettingsErrorMessage.TENSE_BLANK) }
                     return
                 } else {
-                    updateTense(event.tense, event.value)
+                    updateTense(event.detailedTense, event.value)
                 }
             }
         }
@@ -146,14 +146,14 @@ class SettingsComponent(
 
 
 
-    private fun updateTense(tense: Tense, isSelected: Boolean) {
+    private fun updateTense(detailedTense: DetailedTense, isSelected: Boolean) {
         scope.launch {
-            repo.toggleTense(tense = tense, formalities = _state.value.formalities.filter { it.isSelected }, isSelected = isSelected)
+            repo.toggleTense(detailedTense = detailedTense, formalities = _state.value.formalities.filter { it.isSelected }, isSelected = isSelected)
             _state.update {
                 it.copy(
                     tenses = updateSingleTense(
                         _state.value.tenses,
-                        target = tense,
+                        target = detailedTense,
                         isSelected = isSelected,
                     )
                 )
@@ -164,10 +164,10 @@ class SettingsComponent(
 
     private fun updateSingleTense(
         list: List<SettingsTenseModel>,
-        target: Tense,
+        target: DetailedTense,
         isSelected: Boolean,
     ): List<SettingsTenseModel> {
-        return list.map { if (it.tense == target) it.copy(isSelected = isSelected) else it }
+        return list.map { if (it.detailedTense == target) it.copy(isSelected = isSelected) else it }
     }
 
 

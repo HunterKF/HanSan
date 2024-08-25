@@ -2,6 +2,7 @@ package com.jaegerapps.hansan.ui.theme
 
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.ui.graphics.Color
 
 val DarkColorScheme = darkColorScheme(
     background = backgroundDark,
@@ -10,7 +11,8 @@ val DarkColorScheme = darkColorScheme(
     onSurface = onSurfaceDark,
     secondary = secondaryDark,
     primaryContainer = primaryContainerDark,
-    onPrimary = onPrimaryDark
+    onPrimaryContainer = Color.White,
+    onPrimary = onPrimaryDark,
 )
 
 val LightColorScheme = lightColorScheme(
@@ -20,6 +22,7 @@ val LightColorScheme = lightColorScheme(
     onSurface = onSurfaceLight,
     secondary = secondaryLight,
     primaryContainer = primaryContainerLight,
+    onPrimaryContainer = Color.White,
     onPrimary = onPrimaryLight
 
 )

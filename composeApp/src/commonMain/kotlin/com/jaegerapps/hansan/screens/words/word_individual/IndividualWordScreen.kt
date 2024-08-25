@@ -25,6 +25,7 @@ import com.jaegerapps.hansan.screens.words.word_individual.component.ExamineWord
 import com.jaegerapps.hansan.screens.words.word_individual.component.TenseContainer
 import hansan.composeapp.generated.resources.Res
 import hansan.composeapp.generated.resources.tense_future
+import hansan.composeapp.generated.resources.tense_header_other
 import hansan.composeapp.generated.resources.tense_past
 import hansan.composeapp.generated.resources.tense_present
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -101,6 +102,14 @@ fun IndividualWordScreen(
                         modifier = Modifier.fillMaxWidth(),
                         tenseTitle = stringResource(Res.string.tense_future),
                         word = state.future
+                    )
+
+                }
+                item {
+                    TenseContainer(
+                        modifier = Modifier.fillMaxWidth(),
+                        tenseTitle = stringResource(Res.string.tense_header_other),
+                        word = state.other
                     )
 
                 }

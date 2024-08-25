@@ -9,6 +9,7 @@ import androidx.room.PrimaryKey
 data class GrammarEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
+    val category: String,
     val tense: String,
     val formality: String,
     val selected: Boolean

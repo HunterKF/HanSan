@@ -9,15 +9,15 @@ import com.jaegerapps.hansan.screens.practice.data.local.LocalWordRoomDataSource
 class MockLocalWordRoomDataSource : LocalWordRoomDataSource {
 
     private val mockGrammarData = listOf(
-        GrammarEntity(1, "present_declarative", "formal_high", true),
-        GrammarEntity(2, "past_declarative", "formal_high", true),
-        GrammarEntity(3, "future_declarative", "formal_high", true),
-        GrammarEntity(4, "present_declarative", "formal_low", true),
-        GrammarEntity(5, "past_declarative", "formal_low", true),
-        GrammarEntity(6, "future_declarative", "formal_low", true),
-        GrammarEntity(7, "present_declarative", "informal_low", true),
-        GrammarEntity(8, "past_declarative", "informal_low", true),
-        GrammarEntity(9, "future_declarative", "informal_low", true)
+        GrammarEntity(1, category = "present", "present_declarative", "formal_high", true),
+        GrammarEntity(2, category = "past", "past_declarative", "formal_high", true),
+        GrammarEntity(3, category = "future", "future_declarative", "formal_high", true),
+        GrammarEntity(4, category = "present", "present_declarative", "formal_low", true),
+        GrammarEntity(5, category = "past", "past_declarative", "formal_low", true),
+        GrammarEntity(6, category = "future", "future_declarative", "formal_low", true),
+        GrammarEntity(7, category = "present", "present_declarative", "informal_low", true),
+        GrammarEntity(8, category = "past", "past_declarative", "informal_low", true),
+        GrammarEntity(9, category = "future", "future_declarative", "informal_low", true)
     )
     private val mockWordData = listOf(
         WordEntity(1, "가다", "갑니다", 2, "present_declarative", "formal_high", false, 1724449669074),

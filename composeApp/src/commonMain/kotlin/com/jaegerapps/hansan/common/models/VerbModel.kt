@@ -12,7 +12,7 @@ data class VerbModel(
 data class Formalities(
     val formalHigh: Formality,
     val formalLow: Formality,
-    val informalLow: Formality
+    val informalLow: Formality,
 )
 
 data class Formality(
@@ -23,7 +23,7 @@ data class Formality(
 data class Word(
     val level: Level = Level.LEVEL_ONE,
     val dateExpire: Long?,
-    val tense: Tense,
+    val detailedTense: DetailedTense,
     val formality: FormalityType,
     val conjugatedWord: String,
     val irregular: Boolean
@@ -36,7 +36,7 @@ data class DefinitionTranslation(
 
 data class WordTenseModel(
     val string: String,
-    val tense: Tense,
+    val detailedTense: DetailedTense,
     val formalityType: FormalityType
 )
 

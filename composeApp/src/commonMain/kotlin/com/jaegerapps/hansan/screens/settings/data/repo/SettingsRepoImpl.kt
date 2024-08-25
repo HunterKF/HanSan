@@ -1,7 +1,7 @@
 package com.jaegerapps.hansan.screens.settings.data.repo
 
 import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.common.models.DetailedTense
 import com.jaegerapps.hansan.common.models.UserSettings
 import com.jaegerapps.hansan.common.models.getStringFromFormality
 import com.jaegerapps.hansan.common.models.getStringFromTense
@@ -27,16 +27,16 @@ class SettingsRepoImpl(
     }
 
     override suspend fun toggleFormality(formalityType: FormalityType, tenses: List<SettingsTenseModel>, isSelected: Boolean) {
-        local.toggleFormality(formality = getStringFromFormality(formalityType), tenses.map { getStringFromTense(it.tense) }, isSelected)
+        local.toggleFormality(formality = getStringFromFormality(formalityType), tenses.map { getStringFromTense(it.detailedTense) }, isSelected)
     }
 
     override suspend fun toggleTense(
-        tense: Tense,
+        detailedTense: DetailedTense,
         formalities: List<SettingsFormalityModel>,
         isSelected: Boolean,
     ) {
         local.toggleTense(
-            tense = getStringFromTense(tense),
+            tense = getStringFromTense(detailedTense),
             formalityList = formalities.map { getStringFromFormality(it.formalityType) },
             isSelected = isSelected,
         )

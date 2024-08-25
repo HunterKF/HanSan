@@ -6,10 +6,7 @@ import com.jaegerapps.hansan.common.models.FormalitiesDto
 import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.FormalityContainerDto
 import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.FutureDto
-import com.jaegerapps.hansan.common.models.PastDto
-import com.jaegerapps.hansan.common.models.PresentDto
-import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.common.models.DetailedTense
 import com.jaegerapps.hansan.common.models.TenseEntity
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.TranslationDto
@@ -18,7 +15,7 @@ import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.models.Word
 import com.jaegerapps.hansan.common.models.WordDto
 import com.jaegerapps.hansan.common.models.getFormalityFromString
-import com.jaegerapps.hansan.common.models.getTenseFromString
+import com.jaegerapps.hansan.common.models.getDetailedTenseFromString
 import kotlinx.serialization.json.Json
 
 fun VerbDto.toVerbModel(): VerbModel {
@@ -47,30 +44,30 @@ fun FormalitiesDto.toFormalities(): Formalities {
 fun FormalityContainerDto.toFormality(type: FormalityType): Formality {
     return Formality(
         type = type,
-        conjugation = listOf(
-            this.conjugations.present.toWord(Tense.PRESENT_DECLARATIVE, type),
-            this.conjugations.past.toWord(Tense.PAST_DECLARATIVE, type),
-            this.conjugations.future.toWord(Tense.FUTURE_DECLARATIVE, type)
-        )
+        conjugation = this.conjugations.present.map {
+            it.toWord(
+                detailedTense = getDetailedTenseFromString(it.tense_name),
+                formality = type
+            )
+        } + this.conjugations.past.map {
+            it.toWord(
+                detailedTense = getDetailedTenseFromString(it.tense_name),
+                formality = type
+            )
+        } + this.conjugations.future.map { it.toWord(
+            detailedTense = getDetailedTenseFromString(it.tense_name),
+            formality = type
+        ) }+ this.conjugations.other.map { it.toWord(
+            detailedTense = getDetailedTenseFromString(it.tense_name),
+            formality = type
+        ) }
     )
 }
 
 
-fun PresentDto.toWord(tense: Tense, type: FormalityType): Word {
-    return declarative.toWord(tense, type)
-}
-
-fun PastDto.toWord(tense: Tense,type: FormalityType): Word {
-    return declarative.toWord(tense, type)
-}
-
-fun FutureDto.toWord(tense: Tense,type: FormalityType): Word {
-    return declarative.toWord(tense, type)
-}
-
-fun WordDto.toWord(tense: Tense, formality: FormalityType): Word {
+fun WordDto.toWord(detailedTense: DetailedTense, formality: FormalityType): Word {
     return Word(
-        tense = tense,
+        detailedTense = detailedTense,
         conjugatedWord = conjugated,
         irregular = irregular,
         dateExpire = null,
@@ -81,7 +78,7 @@ fun WordDto.toWord(tense: Tense, formality: FormalityType): Word {
 
 fun TenseEntity.toTenseModel(): TenseModel {
     return TenseModel(
-        getTenseFromString(tense),
+        getDetailedTenseFromString(tense),
         getFormalityFromString(formality),
         conjugation,
         explanation,

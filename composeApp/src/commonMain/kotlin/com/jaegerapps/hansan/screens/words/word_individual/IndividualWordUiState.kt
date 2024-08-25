@@ -8,5 +8,6 @@ data class IndividualWordUiState(
     val currentWord: VerbModel,
     val present: List<Word>,
     val past:  List<Word>,
-    val future: List<Word>
+    val future: List<Word>,
+    val other: List<Word>
 )

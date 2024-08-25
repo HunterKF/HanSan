@@ -1,7 +1,7 @@
 package com.jaegerapps.hansan.screens.practice.domain.models
 
 import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.common.models.DetailedTense
 
 data class PracticeWordModel(
     val id: Int,
@@ -9,7 +9,7 @@ data class PracticeWordModel(
     val translations: List<PracticeTranslation>,
     val level: Level = Level.LEVEL_ONE,
     val dateExpire: Long?,
-    val tense: Tense,
+    val detailedTense: DetailedTense,
     val formality: FormalityType,
     val conjugatedWord: String,
     val irregular: Boolean

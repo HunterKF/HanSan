@@ -40,29 +40,15 @@ data class FormalityContainerDto(
 
 @Serializable
 data class ConjugationDto(
-    val present: PresentDto,
-    val past: PastDto,
-    val future: FutureDto
-)
-
-
-@Serializable
-data class PresentDto(
-    val declarative: WordDto
-)
-
-@Serializable
-data class PastDto(
-    val declarative: WordDto
-)
-
-@Serializable
-data class FutureDto(
-    val declarative: WordDto
+    val present: List<WordDto>,
+    val past: List<WordDto>,
+    val future: List<WordDto>,
+    val other: List<WordDto>
 )
 
 @Serializable
 data class WordDto(
+    val tense_name: String,
     val conjugated: String,
     val irregular: Boolean
 )

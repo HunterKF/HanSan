@@ -31,7 +31,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.common.models.DetailedTense
 import com.jaegerapps.hansan.common.models.getResStringFromFormality
 import com.jaegerapps.hansan.common.models.getTenseResString
 import com.jaegerapps.hansan.screens.practice.presentation.PracticeUiEvent
@@ -47,7 +47,7 @@ fun AnswerCard(
     modifier: Modifier = Modifier,
     formalityType: FormalityType,
     answer: String,
-    tenseTarget: Tense,
+    tenseTarget: DetailedTense,
     showAnswer: Boolean,
     onClick: (PracticeUiEvent) -> Unit,
 ) {

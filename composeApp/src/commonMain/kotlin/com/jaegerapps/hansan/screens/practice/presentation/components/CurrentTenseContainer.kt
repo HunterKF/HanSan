@@ -67,7 +67,7 @@ fun TargetFormsContainer(
 
             ) {
                 Text(
-                    text = stringResource(getTenseResString(tense.tense)),
+                    text = stringResource(getTenseResString(tense.detailedTense)),
                     maxLines = 1,
                     overflow = TextOverflow.Visible,
                     style = MaterialTheme.typography.labelMedium,

@@ -1,7 +1,7 @@
 package com.jaegarapps.hansan.settings
 
 import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.common.models.DetailedTense
 import com.jaegerapps.hansan.screens.settings.domain.models.SettingsFormalityModel
 import com.jaegerapps.hansan.screens.settings.domain.models.SettingsTenseModel
 import com.jaegerapps.hansan.screens.settings.domain.use_cases.CheckEnabledUseCase.Companion.checkFormalitiesAtLeastOneEnabled
@@ -91,15 +91,15 @@ class CheckEnabledUseCaseTest {
     fun `3 tenses enabled`() {
         val tense = listOf(
             SettingsTenseModel(
-                tense = Tense.PRESENT_DECLARATIVE,
+                detailedTense = DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH,
                 isSelected = true
             ),
             SettingsTenseModel(
-                tense = Tense.PAST_DECLARATIVE,
+                detailedTense = DetailedTense.PAST_DECLARATIVE_FORMAL_HIGH,
                 isSelected = true
             ),
             SettingsTenseModel(
-                tense = Tense.FUTURE_DECLARATIVE,
+                detailedTense = DetailedTense.FUTURE_DECLARATIVE_FORMAL_HIGH,
                 isSelected = true
             )
         )
@@ -110,15 +110,15 @@ class CheckEnabledUseCaseTest {
     fun `2 tenses enabled`() {
         val tense = listOf(
             SettingsTenseModel(
-                tense = Tense.PRESENT_DECLARATIVE,
+                detailedTense = DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH,
                 isSelected = false
             ),
             SettingsTenseModel(
-                tense = Tense.PAST_DECLARATIVE,
+                detailedTense = DetailedTense.PAST_DECLARATIVE_FORMAL_HIGH,
                 isSelected = true
             ),
             SettingsTenseModel(
-                tense = Tense.FUTURE_DECLARATIVE,
+                detailedTense = DetailedTense.FUTURE_DECLARATIVE_FORMAL_HIGH,
                 isSelected = true
             )
         )
@@ -129,15 +129,15 @@ class CheckEnabledUseCaseTest {
     fun `1 tenses enabled - return false`() {
         val tense = listOf(
             SettingsTenseModel(
-                tense = Tense.PRESENT_DECLARATIVE,
+                detailedTense = DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH,
                 isSelected = false
             ),
             SettingsTenseModel(
-                tense = Tense.PAST_DECLARATIVE,
+                detailedTense = DetailedTense.PAST_DECLARATIVE_FORMAL_HIGH,
                 isSelected = false
             ),
             SettingsTenseModel(
-                tense = Tense.FUTURE_DECLARATIVE,
+                detailedTense = DetailedTense.FUTURE_DECLARATIVE_FORMAL_HIGH,
                 isSelected = true
             )
         )

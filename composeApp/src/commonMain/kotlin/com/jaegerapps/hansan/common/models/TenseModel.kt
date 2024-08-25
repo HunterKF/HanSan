@@ -1,19 +1,24 @@
 package com.jaegerapps.hansan.common.models
 
 import hansan.composeapp.generated.resources.Res
-import hansan.composeapp.generated.resources.tense_future
-import hansan.composeapp.generated.resources.tense_future_first_person
-import hansan.composeapp.generated.resources.tense_past
-import hansan.composeapp.generated.resources.tense_past_inquisitive
-import hansan.composeapp.generated.resources.tense_present
-import hansan.composeapp.generated.resources.tense_present_inquisitive
-import hansan.composeapp.generated.resources.tense_present_narrative
-import hansan.composeapp.generated.resources.tense_present_suggestive
+import hansan.composeapp.generated.resources.tense_desire
+import hansan.composeapp.generated.resources.tense_future_declarative
+import hansan.composeapp.generated.resources.tense_future_progressive
+import hansan.composeapp.generated.resources.tense_imperative
+import hansan.composeapp.generated.resources.tense_necessity
+import hansan.composeapp.generated.resources.tense_past_declarative
+import hansan.composeapp.generated.resources.tense_past_progressive
+import hansan.composeapp.generated.resources.tense_permission
+import hansan.composeapp.generated.resources.tense_potential
+import hansan.composeapp.generated.resources.tense_present_declarative
+import hansan.composeapp.generated.resources.tense_present_progressive
+import hansan.composeapp.generated.resources.tense_prohibition
+import hansan.composeapp.generated.resources.tense_propositive
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.StringResource
 
 data class TenseModel(
-    val tense: Tense,
+    val detailedTense: DetailedTense,
     val formalityType: FormalityType,
     val conjugation: String,
     val explanation: String,
@@ -35,55 +40,187 @@ data class TenseModel(
     val irregularRieul: String?,
 )
 
-enum class Tense {
-    PRESENT_DECLARATIVE,
-    PRESENT_DECLARATIVE_INQUISITIVE,
-    PRESENT_DECLARATIVE_NARRATIVE,
-    PRESENT_DECLARATIVE_SUGGESTIVE,
-    PAST_DECLARATIVE,
-    PAST_DECLARATIVE_INQUISITIVE,
-    FUTURE_DECLARATIVE,
-    FUTURE_DECLARATIVE_FIRST_PERSON,
+enum class DetailedTense {
+
+    PRESENT_DECLARATIVE_FORMAL_HIGH,
+    PRESENT_DECLARATIVE_FORMAL_LOW,
+    PRESENT_DECLARATIVE_INFORMAL,
+    PRESENT_PROGRESSIVE_FORMAL_HIGH,
+    PRESENT_PROGRESSIVE_FORMAL_LOW,
+    PRESENT_PROGRESSIVE_INFORMAL_LOW,
+    PAST_DECLARATIVE_FORMAL_HIGH,
+    PAST_DECLARATIVE_FORMAL_LOW,
+    PAST_DECLARATIVE_INFORMAL,
+    PAST_PROGRESSIVE_FORMAL_HIGH,
+    PAST_PROGRESSIVE_FORMAL_LOW,
+    PAST_PROGRESSIVE_INFORMAL,
+    FUTURE_DECLARATIVE_FORMAL_HIGH,
+    FUTURE_DECLARATIVE_FORMAL_LOW,
+    FUTURE_DECLARATIVE_INFORMAL,
+    FUTURE_PROGRESSIVE_FORMAL_HIGH,
+    FUTURE_PROGRESSIVE_FORMAL_LOW,
+    FUTURE_PROGRESSIVE_INFORMAL,
+    OTHER_IMPERATIVE_FORMAL_HIGH,
+    OTHER_IMPERATIVE_FORMAL_LOW,
+    OTHER_IMPERATIVE_INFORMAL_LOW,
+    OTHER_PERMISSION_FORMAL_HIGH,
+    OTHER_PERMISSION_FORMAL_LOW,
+    OTHER_PERMISSION_INFORMAL_LOW,
+    OTHER_PROHIBITION_FORMAL_HIGH,
+    OTHER_PROHIBITION_FORMAL_LOW,
+    OTHER_PROHIBITION_INFORMAL_LOW,
+    OTHER_DESIRE_FORMAL_HIGH,
+    OTHER_DESIRE_FORMAL_LOW,
+    OTHER_DESIRE_INFORMAL_LOW,
+    OTHER_NECESSITY_FORMAL_HIGH,
+    OTHER_NECESSITY_FORMAL_LOW,
+    OTHER_NECESSITY_INFORMAL_LOW,
+    OTHER_POTENTIAL_FORMAL_HIGH,
+    OTHER_POTENTIAL_FORMAL_LOW,
+    OTHER_POTENTIAL_INFORMAL_LOW,
+    OTHER_PROPOSITIVE_FORMAL_HIGH,
+    OTHER_PROPOSITIVE_FORMAL_LOW,
+    OTHER_PROPOSITIVE_INFORMAL_LOW,
 }
 
-fun getTenseFromString(value: String): Tense {
+enum class Category {
+    PRESENT,
+    PAST,
+    FUTURE,
+    OTHER
+}
+
+fun getDetailedTenseFromString(value: String): DetailedTense {
     return when (value) {
-        "present_declarative" -> Tense.PRESENT_DECLARATIVE
-        "present_declarative_inquisitive" -> Tense.PRESENT_DECLARATIVE_INQUISITIVE
-        "present_declarative_narrative" -> Tense.PRESENT_DECLARATIVE_NARRATIVE
-        "present_declarative_suggestive" -> Tense.PRESENT_DECLARATIVE_SUGGESTIVE
-        "past_declarative" -> Tense.PAST_DECLARATIVE
-        "past_declarative_inquisitive" -> Tense.PAST_DECLARATIVE_INQUISITIVE
-        "future_declarative" -> Tense.FUTURE_DECLARATIVE
-        "future_declarative_first_person" -> Tense.FUTURE_DECLARATIVE_FIRST_PERSON
-        else -> {
-            Tense.PRESENT_DECLARATIVE
-        }
+        "present_declarative_formal_high" -> DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH
+        "present_progressive_formal_high" -> DetailedTense.PRESENT_PROGRESSIVE_FORMAL_HIGH
+        "propositive_formal_high" -> DetailedTense.OTHER_PROPOSITIVE_FORMAL_HIGH
+        "present_declarative_formal_low" -> DetailedTense.PRESENT_DECLARATIVE_FORMAL_LOW
+        "present_progressive_formal_low" -> DetailedTense.PRESENT_PROGRESSIVE_FORMAL_LOW
+        "propositive_formal_low" -> DetailedTense.OTHER_PROPOSITIVE_FORMAL_LOW
+        "present_declarative_informal" -> DetailedTense.PRESENT_DECLARATIVE_INFORMAL
+        "present_progressive_informal_low" -> DetailedTense.PRESENT_PROGRESSIVE_INFORMAL_LOW
+        "propositive_informal_low" -> DetailedTense.OTHER_PROPOSITIVE_INFORMAL_LOW
+        "past_declarative_formal_high" -> DetailedTense.PAST_DECLARATIVE_FORMAL_HIGH
+        "past_progressive_formal_high" -> DetailedTense.PAST_PROGRESSIVE_FORMAL_HIGH
+        "past_declarative_formal_low" -> DetailedTense.PAST_DECLARATIVE_FORMAL_LOW
+        "past_progressive_formal_low" -> DetailedTense.PAST_PROGRESSIVE_FORMAL_LOW
+        "past_declarative_informal" -> DetailedTense.PAST_DECLARATIVE_INFORMAL
+        "past_progressive_informal_low" -> DetailedTense.PAST_PROGRESSIVE_INFORMAL
+        "imperative_formal_high" -> DetailedTense.OTHER_IMPERATIVE_FORMAL_HIGH
+        "permission_formal_high" -> DetailedTense.OTHER_PERMISSION_FORMAL_HIGH
+        "prohibition_formal_high" -> DetailedTense.OTHER_PROHIBITION_FORMAL_HIGH
+        "desire_formal_high" -> DetailedTense.OTHER_DESIRE_FORMAL_HIGH
+        "necessity_formal_high" -> DetailedTense.OTHER_NECESSITY_FORMAL_HIGH
+        "potential_formal_high" -> DetailedTense.OTHER_POTENTIAL_FORMAL_HIGH
+        "imperative_formal_low" -> DetailedTense.OTHER_IMPERATIVE_FORMAL_LOW
+        "permission_formal_low" -> DetailedTense.OTHER_PERMISSION_FORMAL_LOW
+        "prohibition_formal_low" -> DetailedTense.OTHER_PROHIBITION_FORMAL_LOW
+        "desire_formal_low" -> DetailedTense.OTHER_DESIRE_FORMAL_LOW
+        "necessity_formal_low" -> DetailedTense.OTHER_NECESSITY_FORMAL_LOW
+        "potential_formal_low" -> DetailedTense.OTHER_POTENTIAL_FORMAL_LOW
+        "imperative_informal_low" -> DetailedTense.OTHER_IMPERATIVE_INFORMAL_LOW
+        "permission_informal_low" -> DetailedTense.OTHER_PERMISSION_INFORMAL_LOW
+        "prohibition_informal_low" -> DetailedTense.OTHER_PROHIBITION_INFORMAL_LOW
+        "desire_informal_low" -> DetailedTense.OTHER_DESIRE_INFORMAL_LOW
+        "necessity_informal_low" -> DetailedTense.OTHER_NECESSITY_INFORMAL_LOW
+        "potential_informal_low" -> DetailedTense.OTHER_POTENTIAL_INFORMAL_LOW
+        "future_declarative_formal_high" -> DetailedTense.FUTURE_DECLARATIVE_FORMAL_HIGH
+        "future_progressive_formal_high" -> DetailedTense.FUTURE_PROGRESSIVE_FORMAL_HIGH
+        "future_declarative_formal_low" -> DetailedTense.FUTURE_DECLARATIVE_FORMAL_LOW
+        "future_progressive_formal_low" -> DetailedTense.FUTURE_PROGRESSIVE_FORMAL_LOW
+        "future_declarative_informal" -> DetailedTense.FUTURE_DECLARATIVE_INFORMAL
+        "future_progressive_informal_low" -> DetailedTense.FUTURE_PROGRESSIVE_INFORMAL
+        else -> DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH // Default value
     }
 }
-fun getStringFromTense(tense: Tense): String {
-    return when (tense) {
-        Tense.PRESENT_DECLARATIVE -> "present_declarative"
-        Tense.PRESENT_DECLARATIVE_INQUISITIVE -> "present_declarative_inquisitive"
-        Tense.PRESENT_DECLARATIVE_NARRATIVE -> "present_declarative_narrative"
-        Tense.PRESENT_DECLARATIVE_SUGGESTIVE -> "present_declarative_suggestive"
-        Tense.PAST_DECLARATIVE -> "past_declarative"
-        Tense.PAST_DECLARATIVE_INQUISITIVE -> "past_declarative_inquisitive"
-        Tense.FUTURE_DECLARATIVE -> "future_declarative"
-        Tense.FUTURE_DECLARATIVE_FIRST_PERSON -> "future_declarative_first_person"
+
+fun getStringFromTense(detailedTense: DetailedTense): String {
+    return when (detailedTense) {
+        DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH -> "present_declarative_formal_high"
+        DetailedTense.PRESENT_PROGRESSIVE_FORMAL_HIGH -> "present_progressive_formal_high"
+        DetailedTense.OTHER_PROPOSITIVE_FORMAL_HIGH -> "propositive_formal_high"
+        DetailedTense.PRESENT_DECLARATIVE_FORMAL_LOW -> "present_declarative_formal_low"
+        DetailedTense.PRESENT_PROGRESSIVE_FORMAL_LOW -> "present_progressive_formal_low"
+        DetailedTense.OTHER_PROPOSITIVE_FORMAL_LOW -> "propositive_formal_low"
+        DetailedTense.PRESENT_DECLARATIVE_INFORMAL -> "present_declarative_informal"
+        DetailedTense.PRESENT_PROGRESSIVE_INFORMAL_LOW -> "present_progressive_informal_low"
+        DetailedTense.OTHER_PROPOSITIVE_INFORMAL_LOW -> "propositive_informal_low"
+        DetailedTense.PAST_DECLARATIVE_FORMAL_HIGH -> "past_declarative_formal_high"
+        DetailedTense.PAST_PROGRESSIVE_FORMAL_HIGH -> "past_progressive_formal_high"
+        DetailedTense.PAST_DECLARATIVE_FORMAL_LOW -> "past_declarative_formal_low"
+        DetailedTense.PAST_PROGRESSIVE_FORMAL_LOW -> "past_progressive_formal_low"
+        DetailedTense.PAST_DECLARATIVE_INFORMAL -> "past_declarative_informal"
+        DetailedTense.PAST_PROGRESSIVE_INFORMAL -> "past_progressive_informal_low"
+        DetailedTense.OTHER_IMPERATIVE_FORMAL_HIGH -> "imperative_formal_high"
+        DetailedTense.OTHER_PERMISSION_FORMAL_HIGH -> "permission_formal_high"
+        DetailedTense.OTHER_PROHIBITION_FORMAL_HIGH -> "prohibition_formal_high"
+        DetailedTense.OTHER_DESIRE_FORMAL_HIGH -> "desire_formal_high"
+        DetailedTense.OTHER_NECESSITY_FORMAL_HIGH -> "necessity_formal_high"
+        DetailedTense.OTHER_POTENTIAL_FORMAL_HIGH -> "potential_formal_high"
+        DetailedTense.OTHER_IMPERATIVE_FORMAL_LOW -> "imperative_formal_low"
+        DetailedTense.OTHER_PERMISSION_FORMAL_LOW -> "permission_formal_low"
+        DetailedTense.OTHER_PROHIBITION_FORMAL_LOW -> "prohibition_formal_low"
+        DetailedTense.OTHER_DESIRE_FORMAL_LOW -> "desire_formal_low"
+        DetailedTense.OTHER_NECESSITY_FORMAL_LOW -> "necessity_formal_low"
+        DetailedTense.OTHER_POTENTIAL_FORMAL_LOW -> "potential_formal_low"
+        DetailedTense.OTHER_IMPERATIVE_INFORMAL_LOW -> "imperative_informal_low"
+        DetailedTense.OTHER_PERMISSION_INFORMAL_LOW -> "permission_informal_low"
+        DetailedTense.OTHER_PROHIBITION_INFORMAL_LOW -> "prohibition_informal_low"
+        DetailedTense.OTHER_DESIRE_INFORMAL_LOW -> "desire_informal_low"
+        DetailedTense.OTHER_NECESSITY_INFORMAL_LOW -> "necessity_informal_low"
+        DetailedTense.OTHER_POTENTIAL_INFORMAL_LOW -> "potential_informal_low"
+        DetailedTense.FUTURE_DECLARATIVE_FORMAL_HIGH -> "future_declarative_formal_high"
+        DetailedTense.FUTURE_PROGRESSIVE_FORMAL_HIGH -> "future_progressive_formal_high"
+        DetailedTense.FUTURE_DECLARATIVE_FORMAL_LOW -> "future_declarative_formal_low"
+        DetailedTense.FUTURE_PROGRESSIVE_FORMAL_LOW -> "future_progressive_formal_low"
+        DetailedTense.FUTURE_DECLARATIVE_INFORMAL -> "future_declarative_informal"
+        DetailedTense.FUTURE_PROGRESSIVE_INFORMAL -> "future_progressive_informal_low"
     }
 }
+
 @OptIn(ExperimentalResourceApi::class)
-fun getTenseResString(value: Tense): StringResource {
+fun getTenseResString(value: DetailedTense): StringResource {
     return when (value) {
-        Tense.PRESENT_DECLARATIVE -> Res.string.tense_present
-        Tense.PAST_DECLARATIVE -> Res.string.tense_past
-        Tense.FUTURE_DECLARATIVE -> Res.string.tense_future
-        Tense.PRESENT_DECLARATIVE_INQUISITIVE -> Res.string.tense_present_inquisitive
-        Tense.PRESENT_DECLARATIVE_NARRATIVE -> Res.string.tense_present_narrative
-        Tense.PRESENT_DECLARATIVE_SUGGESTIVE -> Res.string.tense_present_suggestive
-        Tense.FUTURE_DECLARATIVE_FIRST_PERSON -> Res.string.tense_future_first_person
-        Tense.PAST_DECLARATIVE_INQUISITIVE -> Res.string.tense_past_inquisitive
+        DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH -> Res.string.tense_present_declarative
+        DetailedTense.PRESENT_PROGRESSIVE_FORMAL_HIGH -> Res.string.tense_present_progressive
+        DetailedTense.OTHER_PROPOSITIVE_FORMAL_HIGH -> Res.string.tense_propositive
+        DetailedTense.PRESENT_DECLARATIVE_FORMAL_LOW -> Res.string.tense_present_declarative
+        DetailedTense.PRESENT_PROGRESSIVE_FORMAL_LOW -> Res.string.tense_present_progressive
+        DetailedTense.OTHER_PROPOSITIVE_FORMAL_LOW -> Res.string.tense_propositive
+        DetailedTense.PRESENT_DECLARATIVE_INFORMAL -> Res.string.tense_present_declarative
+        DetailedTense.PRESENT_PROGRESSIVE_INFORMAL_LOW -> Res.string.tense_present_progressive
+        DetailedTense.OTHER_PROPOSITIVE_INFORMAL_LOW -> Res.string.tense_propositive
+        DetailedTense.PAST_DECLARATIVE_FORMAL_HIGH -> Res.string.tense_past_declarative
+        DetailedTense.PAST_PROGRESSIVE_FORMAL_HIGH -> Res.string.tense_past_progressive
+        DetailedTense.PAST_DECLARATIVE_FORMAL_LOW -> Res.string.tense_past_declarative
+        DetailedTense.PAST_PROGRESSIVE_FORMAL_LOW -> Res.string.tense_past_progressive
+        DetailedTense.PAST_DECLARATIVE_INFORMAL -> Res.string.tense_past_declarative
+        DetailedTense.PAST_PROGRESSIVE_INFORMAL -> Res.string.tense_past_progressive
+        DetailedTense.OTHER_IMPERATIVE_FORMAL_HIGH -> Res.string.tense_imperative
+        DetailedTense.OTHER_PERMISSION_FORMAL_HIGH -> Res.string.tense_permission
+        DetailedTense.OTHER_PROHIBITION_FORMAL_HIGH -> Res.string.tense_prohibition
+        DetailedTense.OTHER_DESIRE_FORMAL_HIGH -> Res.string.tense_desire
+        DetailedTense.OTHER_NECESSITY_FORMAL_HIGH -> Res.string.tense_necessity
+        DetailedTense.OTHER_POTENTIAL_FORMAL_HIGH -> Res.string.tense_potential
+        DetailedTense.OTHER_IMPERATIVE_FORMAL_LOW -> Res.string.tense_imperative
+        DetailedTense.OTHER_PERMISSION_FORMAL_LOW -> Res.string.tense_permission
+        DetailedTense.OTHER_PROHIBITION_FORMAL_LOW -> Res.string.tense_prohibition
+        DetailedTense.OTHER_DESIRE_FORMAL_LOW -> Res.string.tense_desire
+        DetailedTense.OTHER_NECESSITY_FORMAL_LOW -> Res.string.tense_necessity
+        DetailedTense.OTHER_POTENTIAL_FORMAL_LOW -> Res.string.tense_potential
+        DetailedTense.OTHER_IMPERATIVE_INFORMAL_LOW -> Res.string.tense_imperative
+        DetailedTense.OTHER_PERMISSION_INFORMAL_LOW -> Res.string.tense_permission
+        DetailedTense.OTHER_PROHIBITION_INFORMAL_LOW -> Res.string.tense_prohibition
+        DetailedTense.OTHER_DESIRE_INFORMAL_LOW -> Res.string.tense_desire
+        DetailedTense.OTHER_NECESSITY_INFORMAL_LOW -> Res.string.tense_necessity
+        DetailedTense.OTHER_POTENTIAL_INFORMAL_LOW -> Res.string.tense_potential
+        DetailedTense.FUTURE_DECLARATIVE_FORMAL_HIGH -> Res.string.tense_future_declarative
+        DetailedTense.FUTURE_PROGRESSIVE_FORMAL_HIGH -> Res.string.tense_future_progressive
+        DetailedTense.FUTURE_DECLARATIVE_FORMAL_LOW -> Res.string.tense_future_declarative
+        DetailedTense.FUTURE_PROGRESSIVE_FORMAL_LOW -> Res.string.tense_future_progressive
+        DetailedTense.FUTURE_DECLARATIVE_INFORMAL -> Res.string.tense_future_declarative
+        DetailedTense.FUTURE_PROGRESSIVE_INFORMAL -> Res.string.tense_future_progressive
     }
 }
 

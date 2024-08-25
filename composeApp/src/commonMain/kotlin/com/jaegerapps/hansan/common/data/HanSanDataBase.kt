@@ -9,7 +9,7 @@ import com.jaegerapps.hansan.common.data.local.room.entity.GrammarEntity
 import com.jaegerapps.hansan.common.data.local.room.entity.TranslationEntity
 import com.jaegerapps.hansan.common.data.local.room.entity.WordEntity
 
-@Database(entities = [WordEntity::class, TranslationEntity::class, GrammarEntity::class], version = 5)
+@Database(entities = [WordEntity::class, TranslationEntity::class, GrammarEntity::class], version = 6)
 abstract class HanSanDataBase : RoomDatabase() {
     abstract fun wordDao(): WordDao
     abstract fun grammarDao(): GrammarDao

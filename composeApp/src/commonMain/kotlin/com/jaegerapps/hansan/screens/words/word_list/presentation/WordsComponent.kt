@@ -3,6 +3,8 @@ package com.jaegerapps.hansan.screens.words.word_list.presentation
 import com.arkivanov.decompose.ComponentContext
 import com.jaegerapps.hansan.common.models.ModifierType
 import com.jaegerapps.hansan.common.models.VerbModel
+import com.jaegerapps.hansan.common.util.Knower
+import com.jaegerapps.hansan.common.util.Knower.d
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
@@ -16,6 +18,9 @@ class WordsComponent(
         wordFilter = ModifierType.VERBS,
         wordList = words,
     ))
+    init {
+        Knower.d("WordsComponent", "Here is the list of words: \n $words")
+    }
     val state = _state.value
     fun onEvent(event: WordsUiEvent) {
         when (event) {
@@ -24,6 +29,7 @@ class WordsComponent(
             }
 
             is WordsUiEvent.OnWordNavigate -> {
+
                 onWordNavigate(event.word)
             }
 

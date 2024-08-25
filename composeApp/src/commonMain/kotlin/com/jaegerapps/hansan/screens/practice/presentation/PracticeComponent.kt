@@ -190,7 +190,7 @@ class PracticeComponent(
             it.copy(
                 wordList = it.wordList.drop(1),
                 targetWord = it.wordList[1],
-                targetTense = it.wordList[1].tense,
+                targetTense = it.wordList[1].detailedTense,
                 targetFormalityType = it.wordList[1].formality
             )
         }
@@ -225,7 +225,7 @@ class PracticeComponent(
                 it.copy(
                     wordList = it.wordList + words,
                     targetWord = words.firstOrNull(),
-                    targetTense = words.firstOrNull()?.tense,
+                    targetTense = words.firstOrNull()?.detailedTense,
                     targetFormalityType = words.firstOrNull()?.formality
                 )
             }

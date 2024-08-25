@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.Word
 import com.jaegerapps.hansan.common.models.getTenseResString
 import org.jetbrains.compose.resources.ExperimentalResourceApi
@@ -30,12 +29,12 @@ fun TenseContainer(
         modifier.fillMaxWidth()
     ) {
         Box(
-            modifier = Modifier.background(MaterialTheme.colorScheme.tertiary).fillMaxWidth().padding(vertical = 6.dp, horizontal = 12.dp),
+            modifier = Modifier.background(MaterialTheme.colorScheme.primaryContainer).fillMaxWidth().padding(vertical = 6.dp, horizontal = 12.dp),
         ) {
             Text(
                 text = tenseTitle,
                 style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
         word.forEach {
@@ -44,7 +43,7 @@ fun TenseContainer(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = stringResource(getTenseResString(it.tense)) ,
+                    text = stringResource(getTenseResString(it.detailedTense)) ,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )

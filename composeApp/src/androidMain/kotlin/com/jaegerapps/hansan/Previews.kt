@@ -30,7 +30,7 @@ import com.jaegerapps.hansan.common.models.DefinitionTranslation
 import com.jaegerapps.hansan.common.models.Formalities
 import com.jaegerapps.hansan.common.models.Formality
 import com.jaegerapps.hansan.common.models.FormalityType
-import com.jaegerapps.hansan.common.models.Tense
+import com.jaegerapps.hansan.common.models.DetailedTense
 import com.jaegerapps.hansan.common.models.TenseModel
 import com.jaegerapps.hansan.common.models.VerbModel
 import com.jaegerapps.hansan.common.models.getResStringFromFormality
@@ -120,13 +120,13 @@ private val hadaWordModel = PracticeWordModel(
     ),
     level = Level.LEVEL_ONE,
     dateExpire = 12L,
-    tense = Tense.PRESENT_DECLARATIVE,
+    detailedTense = DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH,
     formality = FormalityType.FORMAL_HIGH,
     conjugatedWord = "합니다",
     irregular = false
 )
 private val tenseModel = TenseModel(
-    tense = Tense.PAST_DECLARATIVE,
+    detailedTense = DetailedTense.PAST_DECLARATIVE_FORMAL_HIGH,
     formalityType = FormalityType.FORMAL_HIGH,
     conjugation = "었/았/였~습니다",
     explanation = "Last vowel 아/오 - 았습니다\n" +
@@ -145,7 +145,7 @@ private val tenseModel = TenseModel(
 
 private val tenseModelList = listOf(
     TenseModel(
-        tense = Tense.PRESENT_DECLARATIVE,
+        detailedTense = DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH,
         formalityType = FormalityType.FORMAL_HIGH,
         conjugation = "~ㅂ니다/습니다",
         explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
@@ -161,7 +161,7 @@ private val tenseModelList = listOf(
         null
     ),
     TenseModel(
-        tense = Tense.PAST_DECLARATIVE,
+        detailedTense = DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH,
         formalityType = FormalityType.FORMAL_HIGH,
         conjugation = "~ㅂ니다/습니다",
         explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
@@ -177,7 +177,7 @@ private val tenseModelList = listOf(
         null
     ),
     TenseModel(
-        tense = Tense.FUTURE_DECLARATIVE,
+        detailedTense = DetailedTense.FUTURE_DECLARATIVE_FORMAL_HIGH,
         formalityType = FormalityType.FORMAL_HIGH,
         conjugation = "~ㅂ니다/습니다",
         explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
@@ -247,7 +247,7 @@ fun Preview_CurrentTenseContainer() {
                 expanded = expanded,
                 onClick = { expanded = !expanded },
                 tense = TenseModel(
-                    tense = Tense.PRESENT_DECLARATIVE,
+                    detailedTense = DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH,
                     formalityType = FormalityType.FORMAL_HIGH,
                     conjugation = "~ㅂ니다/습니다",
                     explanation = "Attach \"~ㅂ니다\" to vowel-ending stems or \"~습니다\" to consonant-ending stems, replacing \"다.\"",
@@ -268,7 +268,7 @@ fun Preview_CurrentTenseContainer() {
                 expanded = false,
                 onClick = {},
                 tense = TenseModel(
-                    tense = Tense.PRESENT_DECLARATIVE,
+                    detailedTense = DetailedTense.PRESENT_DECLARATIVE_FORMAL_HIGH,
                     formalityType = FormalityType.FORMAL_LOW,
                     conjugation = "아/어/여~요",
                     explanation = "Last vowel ㅗ/ㅏ - 아요 \n" +
@@ -352,7 +352,7 @@ fun Preview_PracticeScreenLight() {
         mutableStateOf(
             PracticeUiState(
                 targetWord = hadaWordModel,
-                targetTense = tenseModel.tense,
+                targetTense = tenseModel.detailedTense,
                 targetFormalityType = FormalityType.FORMAL_HIGH
             )
         )
@@ -372,7 +372,7 @@ fun Preview_PracticeScreenErrorMessage() {
     var errorMessage: PracticeErrorMessage? by remember { mutableStateOf(null) }
     val state = PracticeUiState(
         targetWord = hadaWordModel,
-        targetTense = tenseModel.tense,
+        targetTense = tenseModel.detailedTense,
         errorMessage = errorMessage
     )
 
@@ -390,7 +390,7 @@ fun Preview_PracticeScreenDark() {
         mutableStateOf(
             PracticeUiState(
                 targetWord = hadaWordModel,
-                targetTense = tenseModel.tense,
+                targetTense = tenseModel.detailedTense,
                 targetFormalityType = FormalityType.FORMAL_HIGH
             )
         )
@@ -734,7 +734,7 @@ private fun Preview_AnswerContainer() {
             Spacer(Modifier.height(24.dp))
             AnswerCard(
                 formalityType = FormalityType.FORMAL_HIGH,
-                tenseTarget = tenseModel.tense,
+                tenseTarget = tenseModel.detailedTense,
                 onClick = {
                     showAnswer = !showAnswer
 
@@ -745,7 +745,7 @@ private fun Preview_AnswerContainer() {
             Spacer(Modifier.height(24.dp))
             AnswerCard(
                 formalityType = FormalityType.FORMAL_HIGH,
-                tenseTarget = tenseModel.tense,
+                tenseTarget = tenseModel.detailedTense,
                 onClick = {
                     showAnswer = !showAnswer
                 },
@@ -772,7 +772,7 @@ private fun Preview_AnswerContainerDark() {
             Spacer(Modifier.height(24.dp))
             AnswerCard(
                 formalityType = FormalityType.FORMAL_HIGH,
-                tenseTarget = tenseModel.tense,
+                tenseTarget = tenseModel.detailedTense,
                 onClick = {
                     showAnswer = !showAnswer
 
@@ -783,7 +783,7 @@ private fun Preview_AnswerContainerDark() {
             Spacer(Modifier.height(24.dp))
             AnswerCard(
                 formalityType = FormalityType.FORMAL_HIGH,
-                tenseTarget = tenseModel.tense,
+                tenseTarget = tenseModel.detailedTense,
                 onClick = {
                     showAnswer = !showAnswer
                 },

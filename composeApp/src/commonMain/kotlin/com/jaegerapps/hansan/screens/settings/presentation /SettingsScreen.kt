@@ -122,10 +122,10 @@ fun SettingsScreen(
             ItemHeader(padding, "Tenses")
             state.tenses.forEach { tense ->
                 ToggleItem(
-                    text = stringResource(getTenseResString(tense.tense)),
+                    text = stringResource(getTenseResString(tense.detailedTense)),
                     isEnabled = tense.isSelected,
                     onClick = {
-                        onEvent(SettingsUiEvent.ToggleTense(it, tense = tense.tense))
+                        onEvent(SettingsUiEvent.ToggleTense(it, detailedTense = tense.detailedTense))
                     }
                 )
             }

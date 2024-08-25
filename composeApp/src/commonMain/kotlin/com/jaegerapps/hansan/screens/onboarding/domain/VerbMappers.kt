@@ -28,10 +28,17 @@ private fun addGrammarEntitiesForFormality(
     grammarEntities: MutableList<GrammarEntity>,
 ) {
     // Iterate through tenses within each formality
-    formalityContainer.conjugations.apply {
-        grammarEntities.add(GrammarEntity(0, "present_declarative", formalityString, true))
-        grammarEntities.add(GrammarEntity(0, "past_declarative", formalityString, true))
-        grammarEntities.add(GrammarEntity(0, "future_declarative", formalityString, true))
+    formalityContainer.conjugations.present.forEach {
+        grammarEntities.add(GrammarEntity(0, category = "present", it.tense_name, formalityString, true))
+    }
+    formalityContainer.conjugations.future.forEach {
+        grammarEntities.add(GrammarEntity(0, category = "future",it.tense_name, formalityString, true))
+    }
+    formalityContainer.conjugations.past.forEach {
+        grammarEntities.add(GrammarEntity(0, category = "past",it.tense_name, formalityString, true))
+    }
+    formalityContainer.conjugations.other.forEach {
+        grammarEntities.add(GrammarEntity(0, category = "other",it.tense_name, formalityString, false))
     }
 }
 
@@ -54,42 +61,56 @@ private fun addWordEntitiesForFormality(
     baseWord: String
 ) {
     formalityContainer.conjugations.apply {
-        present.declarative.let {
+        present.forEach {
             wordEntities.add(
                 WordEntity(
                     0,
                     baseWord,
                     it.conjugated,
                     1,
-                    "present_declarative",
+                    it.tense_name,
                     formalityString,
                     it.irregular,
                     null
                 )
             )
         }
-        past.declarative.let {
+        past.forEach {
             wordEntities.add(
                 WordEntity(
                     0,
                     baseWord,
                     it.conjugated,
                     1,
-                    "past_declarative",
+                    it.tense_name,
                     formalityString,
                     it.irregular,
                     null
                 )
             )
         }
-        future.declarative.let {
+        future.forEach {
             wordEntities.add(
                 WordEntity(
                     0,
                     baseWord,
                     it.conjugated,
                     1,
-                    "future_declarative",
+                    it.tense_name,
+                    formalityString,
+                    it.irregular,
+                    null
+                )
+            )
+        }
+        other.forEach {
+            wordEntities.add(
+                WordEntity(
+                    0,
+                    baseWord,
+                    it.conjugated,
+                    1,
+                    it.tense_name,
                     formalityString,
                     it.irregular,
                     null
